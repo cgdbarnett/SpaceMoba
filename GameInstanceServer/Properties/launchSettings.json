@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GameInstanceServer": {
+      "commandName": "Project",
+      "commandLineArgs": "8080 0 1 2 3 4 5"
+    }
+  }
+}

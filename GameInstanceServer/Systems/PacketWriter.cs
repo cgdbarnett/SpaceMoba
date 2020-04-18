@@ -1,0 +1,85 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+using Lidgren.Network;
+
+using GameInstanceServer.Game;
+using GameInstanceServer.Game.Objects;
+
+namespace GameInstanceServer.Systems
+{
+    /// <summary>
+    /// Takes given arguments, and creates the NetOutgoingMessage
+    /// packet.
+    /// </summary>
+    public static class PacketWriter
+    {
+        /// <summary>
+        /// Creates the packet to start the game.
+        /// </summary>
+        /// <param name="target">Target NetConnection.</param>
+        /// <param name="seconds">Milliseconds to countdown from.</param>
+        /// <returns>Packet to send to client.</returns>
+        public static NetOutgoingMessage 
+            GameStartCountdown(NetConnection target, int seconds)
+        {
+            NetOutgoingMessage message = target.Peer.CreateMessage();
+            message.Write((short)NetOpCode.StartGameCountdown);
+            message.Write(seconds);
+
+            return message;
+        }
+
+        /// <summary>
+        /// Creates a packet to assign the local player object.
+        /// </summary>
+        /// <param name="target">Target NetConnection.</param>
+        /// <param name="id">Id of object.</param>
+        /// <returns>Packet to send to client.</returns>
+        public static NetOutgoingMessage
+            AssignLocalPlayerObject(NetConnection target, int id)
+        {
+            NetOutgoingMessage message = target.Peer.CreateMessage();
+            message.Write((short)NetOpCode.AssignLocalObject);
+            message.Write(id);
+
+            return message;
+        }
+
+        /// <summary>
+        /// Creates a packet that provides the initial state for a new
+        /// client.
+        /// </summary>
+        /// <param name="target">Target NetConnection.</param>
+        /// <param name="client">Client.</param>
+        /// <returns>Packet to send to client.</returns>
+        public static NetOutgoingMessage
+            WelcomePacket(NetConnection target, Client client)
+        {
+            // Get reference to game simulation
+            GameSimulation gameSimulation = GameSimulation.GetGameSimulation();
+
+            // Create base message
+            NetOutgoingMessage message = target.Peer.CreateMessage();
+            message.Write((short)NetOpCode.WelcomePacket);
+
+            // Get list of nearby objects
+            List<IGameObject> objects = gameSimulation.GetNearbyObjects(
+                client.GameObject.GetPosition()
+                );
+
+            // Write objects into packet
+            message.Write((short)objects.Count);
+            foreach(IGameObject obj in objects)
+            {
+                obj.Serialize(message);
+            }
+
+            // Write localplayer object id
+            message.Write((int)client.GameObject.GetId());
+
+            return message;
+        }
+    }
+}
