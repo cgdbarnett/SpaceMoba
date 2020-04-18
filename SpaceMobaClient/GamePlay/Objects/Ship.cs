@@ -65,6 +65,33 @@ namespace SpaceMobaClient.GamePlay.Objects
         }
 
         /// <summary>
+        /// Returns the direction this ship is facing.
+        /// </summary>
+        /// <returns>Direction.</returns>
+        public float GetDirection()
+        {
+            return Direction;
+        }
+
+        /// <summary>
+        /// Returns a new vector2 representing the objects current momentum.
+        /// </summary>
+        /// <returns>Vector2 of current momentum.</returns>
+        public Vector2 GetMomentum()
+        {
+            return new Vector2(Momentum.X, Momentum.Y);
+        }
+
+        /// <summary>
+        /// Returns the angular momentum of this ship.
+        /// </summary>
+        /// <returns>Angular momentum.</returns>
+        public float GetAngularMomentum()
+        {
+            return AngularMomentum;
+        }
+
+        /// <summary>
         /// Returns whether to draw this object.
         /// </summary>
         /// <returns>Returns visibility.</returns>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 // XNA (Monogame) libraries
@@ -108,7 +109,20 @@ namespace SpaceMobaClient.Content.Scenes
         /// <param name="obj">Object that was created.</param>
         private void HandleCreateObject(IGameObject obj)
         {
-            GameObjectsInScene.Add(obj.GetId(), obj);
+            if (GameObjectsInScene.ContainsKey(obj.GetId()))
+            {
+                // Update instead of create
+                Ship update = (Ship)obj;
+                Ship ship = (Ship)GameObjectsInScene[obj.GetId()];
+                ship.SetPosition(update.GetPosition());
+                ship.SetDirection(update.GetDirection());
+                ship.SetMomentum(update.GetMomentum());
+                ship.SetAngularMomentum(update.GetAngularMomentum());
+            }
+            else
+            {
+                GameObjectsInScene.Add(obj.GetId(), obj);
+            }
         }
 
         /// <summary>
@@ -349,8 +363,10 @@ namespace SpaceMobaClient.Content.Scenes
             // Load GUI
             Gui.Load();
 
-            // Wait for connecting to finish
+            // Wait for connecting to finish. Thread sleeping because it keeps
+            // trying to send the ClientIsReady packet too early. Dunno why.
             connect.Wait();
+            Thread.Sleep(2000);
 
             // Update state and inform server this client is ready
             CurrentInGameState = InGameState.WaitingToStart;

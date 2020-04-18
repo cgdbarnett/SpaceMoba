@@ -81,5 +81,40 @@ namespace GameInstanceServer.Systems
 
             return message;
         }
+
+        /// <summary>
+        /// Creates a packet that updates objects in the area around
+        /// the client.
+        /// </summary>
+        /// <param name="target">Target NetConnection.</param>
+        /// <param name="client">Client.</param>
+        /// <returns>Packet to send to client.</returns>
+        public static NetOutgoingMessage
+            UpdateObjects(NetConnection target, Client client)
+        {
+            // Get reference to game simulation
+            GameSimulation gameSimulation = GameSimulation.GetGameSimulation();
+
+            // Create base message
+            NetOutgoingMessage message = target.Peer.CreateMessage();
+            message.Write((short)NetOpCode.UpdateObjects);
+
+            // Get list of nearby objects
+            List<IGameObject> objects = gameSimulation.GetNearbyObjects(
+                client.GameObject.GetPosition()
+                );
+
+            // Write objects into packet
+            message.Write((short)objects.Count);
+            foreach (IGameObject obj in objects)
+            {
+                obj.Serialize(message);
+            }
+
+            // Write localplayer object id
+            message.Write((int)client.GameObject.GetId());
+
+            return message;
+        }
     }
 }

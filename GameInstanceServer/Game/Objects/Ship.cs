@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
 
@@ -44,8 +45,8 @@ namespace GameInstanceServer.Game.Objects
             AngularMomentum = 0;
             Direction = 0;
 
-            MaxAngularMomentum = 0;
-            MaxLinearMomentum = 0;
+            MaxAngularMomentum = 180;
+            MaxLinearMomentum = 400;
         }
 
         /// <summary>
@@ -82,6 +83,18 @@ namespace GameInstanceServer.Game.Objects
         public void SetPosition(Point position)
         {
             Position = position.ToVector2();
+        }
+
+        /// <summary>
+        /// Sets the force being applied to this ship.
+        /// </summary>
+        /// <param name="force">Force to apply. Force is applied along the
+        /// axis of the ship in the direction Direction. X = forward, Y = 
+        /// Right.</param>
+        public void SetForce(Vector2 force)
+        {
+            Force.X = force.X;
+            Force.Y = force.Y;
         }
 
         /// <summary>

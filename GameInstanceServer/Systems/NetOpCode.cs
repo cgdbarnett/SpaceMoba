@@ -9,6 +9,8 @@
         StartGameCountdown,
         AssignLocalObject,
         RequestLocalObject,
-        WelcomePacket
+        WelcomePacket,
+        UpdatePlayerInput,
+        UpdateObjects
     }
 }

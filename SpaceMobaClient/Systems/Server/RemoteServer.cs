@@ -109,9 +109,32 @@ namespace SpaceMobaClient.Systems.Server
             Client.SendMessage(packet, NetDeliveryMethod.ReliableOrdered);
         }
 
+        /// <summary>
+        /// Parses the InputState, and sends it to the RemoteServer.
+        /// </summary>
+        /// <param name="input">Current input state.</param>
         public void UpdateInput(InputState input)
         {
-            //
+            // Packet structure:
+            // token (int)
+            // forward (byte) 0 = backward, 1 = none, 2 = forward
+            // sideways (byte) 0 = left, 1 = none, 2 = right
+
+            NetOutgoingMessage msg = Client.CreateMessage();
+            msg.Write((int)MatchMaker.CurrentGameToken);
+            msg.Write((short)NetOpCode.UpdatePlayerInput);
+
+            byte xx = 1;
+            byte yy = 1;
+            if (input.Forward) xx++;
+            if (input.Backward) xx--;
+            if (input.Left) yy--;
+            if (input.Right) yy++;
+
+            msg.Write(xx);
+            msg.Write(yy);
+
+            Client.SendMessage(msg, NetDeliveryMethod.UnreliableSequenced);
         }
 
         /// <summary>
@@ -236,6 +259,25 @@ namespace SpaceMobaClient.Systems.Server
 
                         Trace.Unindent();
                         Trace.WriteLine("End WelcomePacket.");
+                        break;
+                    }
+
+                case NetOpCode.UpdateObjects:
+                    {
+                        Trace.WriteLine("UpdateObjects.");
+                        // Get count of objects
+                        int count = msg.ReadInt16();
+                        for (int i = 0; i < count; i++)
+                        {
+                            IGameObject obj = CreateObjectFromMessage(msg);
+                            try
+                            {
+                                OnCreate(obj);
+                            }
+                            catch
+                            {
+                            }
+                        }
                         break;
                     }
 

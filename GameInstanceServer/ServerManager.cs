@@ -12,6 +12,7 @@ using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects;
 using GameInstanceServer.Map;
 using GameInstanceServer.Systems;
+using Microsoft.Xna.Framework;
 
 namespace GameInstanceServer
 {
@@ -298,7 +299,7 @@ namespace GameInstanceServer
             }
 
             // Check if all clients are ready, or we have timed out:
-            if (Timer.Elapsed.TotalSeconds < 30)
+            if (Timer.Elapsed.TotalSeconds < 15)
             {
                 bool ready = true;
                 foreach(Client client in Clients.Values)
@@ -390,6 +391,7 @@ namespace GameInstanceServer
         /// </summary>
         private void DoInGame()
         {
+            // Handle incoming messages
             List<NetIncomingMessage> messages = new List<NetIncomingMessage>();
 
             NetServer.ReadMessages(messages);
@@ -411,6 +413,22 @@ namespace GameInstanceServer
                         break;
                 }
             }
+
+            // Handle outgoing messages
+            foreach(Client client in Clients.Values)
+            {
+                if(client.Active)
+                {
+                    NetOutgoingMessage msg = 
+                        PacketWriter.UpdateObjects(client.NetPeer, client);
+
+                    NetServer.SendMessage(
+                        msg, 
+                        client.NetPeer, 
+                        NetDeliveryMethod.UnreliableSequenced
+                        );
+                }
+            }
         }
 
         /// <summary>
@@ -422,11 +440,59 @@ namespace GameInstanceServer
             int token = msg.ReadInt32();
             NetOpCode opcode = (NetOpCode)msg.ReadInt16();
 
-            switch(opcode)
+            try
             {
-                default:
-                    Trace.WriteLine("Received unexpected opcode.");
-                    break;
+                switch (opcode)
+                {
+                    // Handle input from the client.
+                    case NetOpCode.UpdatePlayerInput:
+                        {
+                            Trace.WriteLine("UpdatePlayerInput.");
+
+                            Client client = Clients[token];
+                            Ship ship = (Ship)client.GameObject;
+                            byte xx, yy;
+                            xx = msg.ReadByte();
+                            yy = msg.ReadByte();
+
+                            // Todo: Move these to be part of the ship
+                            const float AngularForce = 120;
+                            const float LinearForce = 200;
+
+                            Vector2 force = new Vector2();
+
+                            if(xx == 0)
+                            {
+                                force.X = -LinearForce;
+                            }
+                            else if(xx == 2)
+                            {
+                                force.X = LinearForce;
+                            }
+
+                            if(yy == 0)
+                            {
+                                force.Y = -AngularForce;
+                            }
+                            else if(yy == 2)
+                            {
+                                force.Y = AngularForce;
+                            }
+
+                            ship.SetForce(force);
+                        }
+                        break;
+
+                    default:
+                        Trace.WriteLine("Received unexpected opcode.");
+                        break;
+                }
+            }
+            catch(Exception e)
+            {
+                Trace.WriteLine("Error occurred in ServerManager."
+                    + "HandlePacket()");
+                Trace.WriteLine(e);
             }
         }
     }
