@@ -20,7 +20,7 @@ namespace SpaceMobaClient.Systems.Server
     {
         // Event handlers
         public event ObjectEventHandler OnCreate;
-        public event ObjectEventHandler OnDestroy;
+        public event IntEventHandler OnDestroy;
         public event IntEventHandler OnAssignToLocalPlayer;
         public event IntEventHandler OnGameStart;
 

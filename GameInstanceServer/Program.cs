@@ -36,13 +36,14 @@ namespace GameInstanceServer
 
                 Trace.WriteLine("Starting ServerManager.Run loop.");
                 Trace.IndentLevel++;
+
                 // Run server
                 while (server.Running)
                     server.Run();
             }
             catch(Exception e)
             {
-                Trace.WriteLine("Error occured starting GameInstanceServer:");
+                Trace.WriteLine("Unhandled exception in GameInstanceServer:");
                 Trace.WriteLine(e.Message);
             }
         }

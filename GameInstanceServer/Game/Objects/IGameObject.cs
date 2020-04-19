@@ -49,26 +49,5 @@ namespace GameInstanceServer.Game.Objects
         /// </summary>
         /// <param name="message">Outgoing message.</param>
         void Serialize(NetOutgoingMessage message);
-
-        /// <summary>
-        /// Serializes the replication data of this object into an outgoing
-        /// message. Only serializes positional + physics data.
-        /// </summary>
-        /// <param name="message">Outgoing message.</param>
-        void SerializePosition(NetOutgoingMessage message);
-
-        /// <summary>
-        /// Serializes the replication data of this object into an outgoing
-        /// message. Only serializes combat data.
-        /// </summary>
-        /// <param name="message">Outgoing message.</param>
-        void SerializeCombat(NetOutgoingMessage message);
-
-        /// <summary>
-        /// Serializes the replication data of this object into an outgoing
-        /// message. Only serializes graphic model data.
-        /// </summary>
-        /// <param name="message">Outgoing message.</param>
-        void SerializeModel(NetOutgoingMessage message);
     }
 }

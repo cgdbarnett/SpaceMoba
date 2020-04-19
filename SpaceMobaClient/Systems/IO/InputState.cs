@@ -10,6 +10,7 @@
         public bool Backward;
         public bool Left;
         public bool Right;
+        public bool Attack;
 
         /// <summary>
         /// Returns whether this struct is equal in value to another.

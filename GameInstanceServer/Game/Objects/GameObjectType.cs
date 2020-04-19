@@ -5,6 +5,7 @@
     /// </summary>
     public enum GameObjectType : short
     {
-        Ship
+        Ship,
+        Bullet
     }
 }

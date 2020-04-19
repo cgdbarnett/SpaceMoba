@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
+// XNA (Monogame) libraries
+using Microsoft.Xna.Framework;
+
 // Lidgren libraries
 using Lidgren.Network;
 
@@ -12,7 +15,6 @@ using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects;
 using GameInstanceServer.Map;
 using GameInstanceServer.Systems;
-using Microsoft.Xna.Framework;
 
 namespace GameInstanceServer
 {
@@ -49,7 +51,7 @@ namespace GameInstanceServer
 
         // State of game server
         private ServerManagerState State = ServerManagerState.Init;
-        private Stopwatch Timer;
+        private Stopwatch Timer, FrameTimer;
 
         /// <summary>
         /// Returns whether the server is currently active.
@@ -72,12 +74,16 @@ namespace GameInstanceServer
         {
             State = ServerManagerState.Init;
             GameSimulation = GameSimulation.GetGameSimulation();
+            MapData.GetMapData().SpawnWorld();
 
             InitNetworking(port);
             InitClients(tokens);
 
             Timer = new Stopwatch();
             Timer.Start();
+
+            FrameTimer = new Stopwatch();
+            FrameTimer.Start();
 
             State = ServerManagerState.WaitingForClients;
         }
@@ -87,6 +93,12 @@ namespace GameInstanceServer
         /// </summary>
         public void Run()
         {
+            // Target frequency
+            const int targetFrequency = 15;
+            const int targetMilliseconds = 1000 / targetFrequency;
+
+            FrameTimer.Restart();
+            
             switch(State)
             {
                 // Should never call Run() while the state is in Init.
@@ -119,7 +131,11 @@ namespace GameInstanceServer
                     break;
             }
 
-            Thread.Sleep(15);
+            // Wait for timer to reach target time
+            while(FrameTimer.ElapsedMilliseconds < targetMilliseconds)
+            {
+                Thread.Sleep(1);
+            }
         }
 
         /// <summary>
@@ -407,6 +423,11 @@ namespace GameInstanceServer
                         ApproveIncomingConnection(msg);
                         break;
 
+                    // Change in status (possible disconnection).
+                    case NetIncomingMessageType.StatusChanged:
+                        HandleStatusChange(msg);
+                        break;
+
                     // Incoming data
                     case NetIncomingMessageType.Data:
                         HandlePacket(msg);
@@ -447,13 +468,13 @@ namespace GameInstanceServer
                     // Handle input from the client.
                     case NetOpCode.UpdatePlayerInput:
                         {
-                            Trace.WriteLine("UpdatePlayerInput.");
-
                             Client client = Clients[token];
                             Ship ship = (Ship)client.GameObject;
                             byte xx, yy;
+                            bool attack;
                             xx = msg.ReadByte();
                             yy = msg.ReadByte();
+                            attack = msg.ReadBoolean();
 
                             // Todo: Move these to be part of the ship
                             const float AngularForce = 120;
@@ -480,6 +501,11 @@ namespace GameInstanceServer
                             }
 
                             ship.SetForce(force);
+
+                            if(attack)
+                            {
+                                ship.Attack();
+                            }
                         }
                         break;
 
@@ -493,6 +519,31 @@ namespace GameInstanceServer
                 Trace.WriteLine("Error occurred in ServerManager."
                     + "HandlePacket()");
                 Trace.WriteLine(e);
+            }
+        }
+
+        /// <summary>
+        /// Handles a change in status from a client. This may indicate
+        /// a disconnection.
+        /// </summary>
+        /// <param name="msg">Message to process.</param>
+        private void HandleStatusChange(NetIncomingMessage msg)
+        {
+            switch(msg.SenderConnection.Status)
+            {
+                case NetConnectionStatus.Disconnected:
+                    Trace.WriteLine("Client disconnected.");
+                    // Find associated client somehow
+                    foreach(Client client in Clients.Values)
+                    {
+                        if(client.NetPeer == msg.SenderConnection)
+                        {
+                            client.Active = false;
+                            client.IsReady = false;
+                            break;
+                        }
+                    }
+                    break;
             }
         }
     }

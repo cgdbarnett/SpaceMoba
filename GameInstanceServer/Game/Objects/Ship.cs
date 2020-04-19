@@ -12,7 +12,7 @@ namespace GameInstanceServer.Game.Objects
     /// <summary>
     /// Base ship class. Handles physics.
     /// </summary>
-    public class Ship : IGameObject
+    public class Ship : CollidableObject, IGameObject, ICombatObject
     {
         protected readonly int Id;
         protected WorldCell Cell;
@@ -27,6 +27,11 @@ namespace GameInstanceServer.Game.Objects
         protected float Direction;
         protected float MaxAngularMomentum;
         protected float MaxLinearMomentum;
+
+        // Combat
+        protected int Health, MaxHealth;
+        protected int Shield, MaxShield;
+        protected int WeaponCooldown;
 
         /// <summary>
         /// Creates a new Ship object.
@@ -45,8 +50,19 @@ namespace GameInstanceServer.Game.Objects
             AngularMomentum = 0;
             Direction = 0;
 
+            BoundingBox = new Rectangle(
+                new Point((int)Position.X - 32, (int)Position.Y - 32),
+                new Point(64, 64)
+                );
+
+            // Todo(Remove magic numbers)
             MaxAngularMomentum = 180;
             MaxLinearMomentum = 400;
+            Health = 100;
+            MaxHealth = 100;
+            Shield = 100;
+            MaxShield = 100;
+            WeaponCooldown = 0;
         }
 
         /// <summary>
@@ -115,6 +131,7 @@ namespace GameInstanceServer.Game.Objects
             // Calculate delta time from the frame interval. (Delta time is in
             // seconds).
             float deltaTime = (float)gameTime.TotalMilliseconds / 1000;
+            WeaponCooldown -= (int)gameTime.TotalMilliseconds;
 
             // Update angular momentum and direction
             AngularMomentum += Force.Y * deltaTime;
@@ -138,8 +155,10 @@ namespace GameInstanceServer.Game.Objects
 
             // Update position
             Position += (Momentum + ExternalMomentum) * deltaTime;
+            BoundingBox.Location = Position.ToPoint() - new Point(32, 32);
         }
 
+        #region Serialization
         /// <summary>
         /// Serializes the replication data of this object into an outgoing
         /// message.
@@ -168,40 +187,102 @@ namespace GameInstanceServer.Game.Objects
             message.Write(AngularMomentum);
         }
 
+        #endregion
+
+        #region Combat
+
         /// <summary>
-        /// Serializes the replication data of this object into an outgoing
-        /// message. Only serializes positional + physics data.
+        /// Returns health of ship.
         /// </summary>
-        /// <param name="message">Outgoing message.</param>
-        public void SerializePosition(NetOutgoingMessage message)
+        /// <returns>Health.</returns>
+        public int GetHealth()
         {
-            message.Write((int)Id);
-            message.Write(Position.X);
-            message.Write(Position.Y);
-            message.Write(Direction);
-            message.Write(Momentum.X);
-            message.Write(Momentum.Y);
-            message.Write(AngularMomentum);
+            return Health;
         }
 
         /// <summary>
-        /// Serializes the replication data of this object into an outgoing
-        /// message. Only serializes combat data.
+        /// Returns max health of ship.
         /// </summary>
-        /// <param name="message">Outgoing message.</param>
-        public void SerializeCombat(NetOutgoingMessage message)
+        /// <returns>Max health.</returns>
+        public int GetMaxHealth()
         {
-
+            return MaxHealth;
         }
 
         /// <summary>
-        /// Serializes the replication data of this object into an outgoing
-        /// message. Only serializes graphic model data.
+        /// Returns shield value of ship.
         /// </summary>
-        /// <param name="message">Outgoing message.</param>
-        public void SerializeModel(NetOutgoingMessage message)
+        /// <returns>Shield.</returns>
+        public int GetShield()
         {
-
+            return Shield;
         }
+
+        /// <summary>
+        /// Returns max shield value of ship.
+        /// </summary>
+        /// <returns>Shield.</returns>
+        public int GetMaxShield()
+        {
+            return MaxShield;
+        }
+
+        /// <summary>
+        /// Applies damage to the ship.
+        /// </summary>
+        /// <param name="damage">Damage to apply.</param>
+        public void ApplyDamage(int damage)
+        {
+            if(Shield > 0)
+            {
+                Shield -= damage;
+            }
+
+            if(Shield < 0)
+            {
+                Health += Shield;
+                Shield = 0;
+            }
+
+            // Death event?!!
+            if(Health < 0)
+            {
+                HandleDeath();
+            }
+        }
+
+        /// <summary>
+        /// Spawns a bullet in direction facing if off cooldown.
+        /// </summary>
+        public void Attack()
+        {
+            if(WeaponCooldown <= 0)
+            {
+                Vector2 spawn = new Vector2(
+                    (float)Math.Cos(MathHelper.ToRadians(Direction)),
+                    (float)Math.Sin(MathHelper.ToRadians(Direction))
+                    ) * 50;
+
+                Bullet bullet = new Bullet(
+                    GameSimulation.GetGameSimulation().CreateNewUniqueId(),
+                    GetPosition() + spawn.ToPoint(), 
+                    400, Direction, 40
+                    );
+                GameSimulation.GetGameSimulation().AddObject(bullet);
+
+                WeaponCooldown = 500;
+            }
+        }
+
+        /// <summary>
+        /// Handles the death of this ship.
+        /// </summary>
+        protected void HandleDeath()
+        {
+            // Destroy!
+            GameSimulation.GetGameSimulation().RemoveObject(this);
+        }
+
+        #endregion
     }
 }

@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../../../Resources/Sprites/Rockets/GreenBeacon.png;Objects/Ships/GreenBeacon.png
 
+#begin Backgrounds/831b03dd-06c4-4ba2-b8a7-b23c4f268623.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Backgrounds/831b03dd-06c4-4ba2-b8a7-b23c4f268623.png;Backgrounds/starfield.png
+
 #begin Backgrounds/loading.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -37,7 +49,14 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/loading.jpg
 
-#begin Backgrounds/starfield.jpg
+#begin Fonts/Arial14.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Arial14.spritefont
+
+#begin Objects/Weapons/bullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,14 +66,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Backgrounds/starfield.jpg
-
-#begin Fonts/Arial14.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/Arial14.spritefont
+/build:Objects/Weapons/bullet.png
 
 #begin SplashScreenTest.png
 /importer:TextureImporter

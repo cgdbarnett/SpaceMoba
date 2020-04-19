@@ -47,7 +47,11 @@ namespace GameInstanceServer.Map
         /// </summary>
         public void SpawnWorld()
         {
+            // Random droid that just chills
+            Ship droid = new Ship(GameSimulation.CreateNewUniqueId());
+            droid.SetPosition(new Point(5500, 200));
 
+            GameSimulation.AddObject(droid);
         }
 
         /// <summary>

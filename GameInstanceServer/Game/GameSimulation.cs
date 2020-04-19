@@ -182,6 +182,40 @@ namespace GameInstanceServer.Game
         }
 
         /// <summary>
+        /// Returns a list (which can be empty) of all objects currently
+        /// colliding with a given object.
+        /// </summary>
+        /// <param name="obj">Reference object.</param>
+        /// <returns>List of colliding objects.</returns>
+        public List<IGameObject> GetCollidingObjects(IGameObject obj)
+        {
+            if(!(obj is CollidableObject))
+            {
+                throw (new ArgumentException());
+            }
+
+            List<IGameObject> objects = new List<IGameObject>();
+            List<IGameObject> nearbyObjects = 
+                GetNearbyObjects(obj.GetPosition());
+
+            foreach(IGameObject testObj in nearbyObjects)
+            {
+                if (testObj != obj)
+                {
+                    if (testObj is CollidableObject)
+                    {
+                        if (((CollidableObject)obj).Intersects((CollidableObject)testObj))
+                        {
+                            objects.Add(testObj);
+                        }
+                    }
+                }
+            }
+
+            return objects;
+        }
+
+        /// <summary>
         /// Runs the game loop.
         /// </summary>
         private void GameSimulationLoop()

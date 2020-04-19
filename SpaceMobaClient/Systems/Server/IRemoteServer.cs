@@ -26,7 +26,7 @@ namespace SpaceMobaClient.Systems.Server
         /// <summary>
         /// Triggers when an object is destroyed.
         /// </summary>
-        event ObjectEventHandler OnDestroy;
+        event IntEventHandler OnDestroy;
 
         /// <summary>
         /// Triggers when an object is assigned to the local player.

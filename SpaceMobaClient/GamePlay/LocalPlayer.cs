@@ -101,7 +101,8 @@ namespace SpaceMobaClient.GamePlay
                 Backward = state.IsKeyDown(Keys.S),
                 Forward = state.IsKeyDown(Keys.W),
                 Left = state.IsKeyDown(Keys.A),
-                Right = state.IsKeyDown(Keys.D)
+                Right = state.IsKeyDown(Keys.D),
+                Attack = state.IsKeyDown(Keys.Space)
             };
 
             // Check if any input state has changed

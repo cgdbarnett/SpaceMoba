@@ -130,11 +130,11 @@ namespace SpaceMobaClient.Content.Scenes
         /// is destroyed.
         /// </summary>
         /// <param name="obj">Object that was destroyed.</param>
-        private void HandleDestroyObject(IGameObject obj)
+        private void HandleDestroyObject(int id)
         {
             try
             {
-                GameObjectsInScene.Remove(obj.GetId());
+                GameObjectsInScene.Remove(id);
             }
             catch
             {

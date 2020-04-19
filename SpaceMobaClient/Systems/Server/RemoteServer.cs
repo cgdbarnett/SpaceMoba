@@ -28,11 +28,15 @@ namespace SpaceMobaClient.Systems.Server
 
         // Event handlers when specific object events occur from server.
         public event ObjectEventHandler OnCreate;
-        public event ObjectEventHandler OnDestroy;
+        public event IntEventHandler OnDestroy;
         public event IntEventHandler OnAssignToLocalPlayer;
 
         // Event handlers for generic events occuring on server.
         public event IntEventHandler OnGameStart;
+
+        // Stores objects in each frame, to identify when an object is
+        // destroyed, updated or created.
+        private List<int> ObjectsInFrame;
 
         /// <summary>
         /// Creates an instance of the remote server, and starts the
@@ -41,6 +45,7 @@ namespace SpaceMobaClient.Systems.Server
         public RemoteServer()
         {
             MatchMaker = MatchmakerServer.GetMatchmakerServer();
+            ObjectsInFrame = new List<int>();
 
             Client = new NetClient(new NetPeerConfiguration("smc20"));
             Client.Start();
@@ -133,6 +138,7 @@ namespace SpaceMobaClient.Systems.Server
 
             msg.Write(xx);
             msg.Write(yy);
+            msg.Write(input.Attack);
 
             Client.SendMessage(msg, NetDeliveryMethod.UnreliableSequenced);
         }
@@ -240,6 +246,7 @@ namespace SpaceMobaClient.Systems.Server
                             IGameObject obj = CreateObjectFromMessage(msg);
                             try
                             {
+                                ObjectsInFrame.Add(obj.GetId());
                                 OnCreate(obj);
                             }
                             catch
@@ -265,6 +272,8 @@ namespace SpaceMobaClient.Systems.Server
                 case NetOpCode.UpdateObjects:
                     {
                         Trace.WriteLine("UpdateObjects.");
+                        List<int> objectsInPreviousFrame = new List<int>(ObjectsInFrame);
+
                         // Get count of objects
                         int count = msg.ReadInt16();
                         for (int i = 0; i < count; i++)
@@ -272,7 +281,29 @@ namespace SpaceMobaClient.Systems.Server
                             IGameObject obj = CreateObjectFromMessage(msg);
                             try
                             {
+                                if(objectsInPreviousFrame.Contains(obj.GetId()))
+                                {
+                                    // remove
+                                    objectsInPreviousFrame.Remove(obj.GetId());
+                                }
+                                else
+                                {
+                                    ObjectsInFrame.Add(obj.GetId());
+                                }
                                 OnCreate(obj);
+                            }
+                            catch
+                            {
+                            }
+                        }
+
+                        // Remove any objects remaining
+                        foreach(int id in objectsInPreviousFrame)
+                        {
+                            try
+                            {
+                                ObjectsInFrame.Remove(id);
+                                OnDestroy(id);
                             }
                             catch
                             {
@@ -331,6 +362,39 @@ namespace SpaceMobaClient.Systems.Server
                         ship.SetAngularMomentum(angularMomentum);
 
                         obj = ship;
+                        break;
+                    }
+
+                case GameObjectType.Bullet:
+                    {
+                        // Packet:
+                        // Id (int)
+                        // Type (short)
+                        // Position (vec2)
+                        // Direction (float)
+                        // Momentum (vec2)
+                        ContentManager content =
+                            GameClient.GetGameClient().GetContentManager();
+
+                        // Deserialize message.
+                        Vector2 spawn = new Vector2(
+                            msg.ReadFloat(), msg.ReadFloat()
+                            );
+                        float direction = msg.ReadFloat();
+                        Vector2 momentum = new Vector2(
+                            msg.ReadFloat(), msg.ReadFloat()
+                            );
+
+                        // Create bullet object
+                        Bullet bullet = new Bullet(
+                            id,
+                            content.Load<Texture2D>("Objects/Weapons/bullet"),
+                            spawn,
+                            direction
+                            );
+                        bullet.SetMomentum(momentum);
+
+                        obj = bullet;
                         break;
                     }
 

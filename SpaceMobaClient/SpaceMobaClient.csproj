@@ -59,6 +59,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GamePlay\Objects\GameObjectType.cs" />
+    <Compile Include="GamePlay\Objects\Bullet.cs" />
     <Compile Include="Systems\Gui\GuiLabel.cs" />
     <Compile Include="Systems\Gui\IGuiComponent.cs" />
     <Compile Include="Content\Gui\InGameGui.cs" />
