@@ -20,8 +20,8 @@ namespace SpaceMobaClient.Systems.Scenes
         /// it requires. Reference to ContentManager included
         /// if required.
         /// </summary>
-        /// <param name="content"></param>
-        void Load();
+        /// <param name="handover">Handover state from previous scene.</param>
+        void Load(object handover);
 
         /// <summary>
         /// Instructs the IScene to unload any resources it has loaded

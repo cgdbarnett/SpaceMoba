@@ -58,8 +58,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Content\Scenes\GameStart.cs" />
     <Compile Include="GamePlay\Objects\GameObjectType.cs" />
     <Compile Include="GamePlay\Objects\Bullet.cs" />
+    <Compile Include="Systems\Gui\GuiHealthbar.cs" />
     <Compile Include="Systems\Gui\GuiLabel.cs" />
     <Compile Include="Systems\Gui\IGuiComponent.cs" />
     <Compile Include="Content\Gui\InGameGui.cs" />

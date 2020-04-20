@@ -6,13 +6,15 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using SpaceMobaClient.Content.Scenes;
+using SpaceMobaClient.GamePlay;
 using SpaceMobaClient.Systems.Scenes;
+using SpaceMobaClient.Systems.Server;
 
 namespace SpaceMobaClient
 {
     /// <summary>
     /// Implemented as a Singleton, this is the main entry point of the
-    /// GameClient.
+    /// GameClient. It also provides global state between scenes.
     /// </summary>
     public class GameClient : Game
     {
@@ -71,9 +73,10 @@ namespace SpaceMobaClient
         protected override void Initialize()
         {
             // Initialise game window
-            Window.Title = "SpaceMobaClient";
-            Graphics.PreferredBackBufferWidth = 1080;
-            Graphics.PreferredBackBufferHeight = 720;
+            Window.Title = "Black Hole";
+            Graphics.PreferredBackBufferWidth = 1920;
+            Graphics.PreferredBackBufferHeight = 1080;
+            Graphics.IsFullScreen = true;
             Graphics.ApplyChanges();
 
             IsFixedTimeStep = false;
@@ -133,8 +136,9 @@ namespace SpaceMobaClient
             List<IScene> scenes = new List<IScene>
             {
                 new SplashScreen(0),
+                new GameStart(1),
                 //new MainMenu(1),
-                new InGame(1)
+                new InGame(2)
             };
 
             SceneManager.GetSceneManager().SetSceneList(scenes);

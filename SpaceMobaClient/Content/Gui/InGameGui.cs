@@ -37,8 +37,22 @@ namespace SpaceMobaClient.Content.Gui
                 // Game duration timer
                 {
                     "timer",
-                    new GuiLabel(16, 16, "Timer", content.
+                    new GuiLabel(960, 16, "Timer", content.
                     Load<SpriteFont>("Fonts/Arial14"), Color.White)
+                },
+                {
+                    "shield",
+                    new GuiHealthbar(16, 16, 150, 15,
+                    content.Load<Texture2D>("Gui/barbackground"),
+                    content.Load<Texture2D>("Gui/barforeground"),
+                    0.8f)
+                },
+                {
+                    "health",
+                    new GuiHealthbar(16, 33, 150, 15,
+                    content.Load<Texture2D>("Gui/barbackground"),
+                    content.Load<Texture2D>("Gui/barforeground"),
+                    0.8f)
                 }
             };
         }

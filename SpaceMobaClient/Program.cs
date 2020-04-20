@@ -1,5 +1,7 @@
 ﻿using System;
 
+using System.Threading;
+
 namespace SpaceMobaClient
 {
     /// <summary>
@@ -13,6 +15,8 @@ namespace SpaceMobaClient
         [STAThread]
         static void Main()
         {
+            Thread.Sleep(2000);
+
             using (var game = GameClient.GetGameClient())
                 game.Run();
         }

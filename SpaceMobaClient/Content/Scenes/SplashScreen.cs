@@ -47,11 +47,11 @@ namespace SpaceMobaClient.Content.Scenes
         /// <summary>
         /// Loads the Image used for the splash screen into memory.
         /// </summary>
-        /// <param name="content">ContentManager from Game.Content</param>
-        public void Load()
+        /// <param name="handover">Null.</param>
+        public void Load(object handover)
         {
             Image = GameClient.GetGameClient().GetContentManager().
-                Load<Texture2D>("SplashScreen");
+                Load<Texture2D>("Backgrounds/title_screen");
             Timer.Start();
             Ready = true;
         }

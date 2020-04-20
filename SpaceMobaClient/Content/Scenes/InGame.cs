@@ -263,7 +263,7 @@ namespace SpaceMobaClient.Content.Scenes
                 // Draw label for timer as a countdown
                 ((GuiLabel)Gui.GetComponent("timer")).
                     SetText("Game Starts in: " + 
-                    (6.0 - Timer.Elapsed.TotalSeconds).ToString());
+                    ((int)(7.0 - Timer.Elapsed.TotalSeconds)).ToString());
                 Gui.Draw(null, SpriteBatch);
             }
             catch
@@ -332,11 +332,13 @@ namespace SpaceMobaClient.Content.Scenes
         /// into memory, and then begin the asynchronous method to complete
         /// the process.
         /// </summary>
-        public void Load()
+        /// <param name="handover">object[] { LocalPlayer, RemoteServer,
+        /// List<IGameObject> }</param>
+        public void Load(object handover)
         {
             CurrentInGameState = InGameState.Loading;
             LoadingScreen = GameClient.GetGameClient().
-                Content.Load<Texture2D>("Backgrounds/loading");
+                Content.Load<Texture2D>("Backgrounds/loading_screen");
             Camera.SetPosition(0, 0);
 
             // Begin asynchronously loading. Do not await this, as we want
@@ -419,11 +421,14 @@ namespace SpaceMobaClient.Content.Scenes
         /// <param name="gameTime">Gameupdate interval.</param>
         public void Update(GameTime gameTime)
         {
-            GameServer.HandleIncomingMessages();
-
             switch (CurrentInGameState)
             {
+                case InGameState.WaitingToStart:
+                    GameServer.HandleIncomingMessages();
+                    break;
+
                 case InGameState.Countdown:
+                    GameServer.HandleIncomingMessages();
                     // When the timer reaches the time sent by the server
                     // (to do implement that), we move into game state.
                     if (Timer.ElapsedMilliseconds > 6000)
@@ -435,14 +440,14 @@ namespace SpaceMobaClient.Content.Scenes
                     break;
 
                 case InGameState.InGame:
+                    GameServer.HandleIncomingMessages();
                     try
                     {
                         // First run any scene level logic required.
                         LocalPlayer.Update(gameTime);
 
                         // Update Gui
-                        ((GuiLabel)Gui.GetComponent("timer")).
-                            SetText(Timer.Elapsed.TotalSeconds.ToString());
+                        UpdateGui();
                     }
                     catch
                     {
@@ -502,6 +507,17 @@ namespace SpaceMobaClient.Content.Scenes
                         Color.White);
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the GUI values.
+        /// </summary>
+        private void UpdateGui()
+        {
+            ((GuiLabel)Gui.GetComponent("timer")).
+                            SetText(((int)Timer.Elapsed.TotalSeconds).ToString());
+            ((GuiHealthbar)Gui.GetComponent("shield")).
+                SetValue(0.5f);
         }
     }
 }

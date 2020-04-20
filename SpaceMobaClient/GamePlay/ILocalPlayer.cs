@@ -20,6 +20,12 @@ namespace SpaceMobaClient.GamePlay
         IGameObject GetLocalGameObject();
 
         /// <summary>
+        /// Sets the current GameObject that is being played locally.
+        /// </summary>
+        /// <param name="obj">Reference to local GameObject.</param>
+        void SetLocalGameObject(IGameObject obj);
+
+        /// <summary>
         /// Returns a vector representing the local players current position.
         /// </summary>
         /// <returns>A vector2 containing the players position.</returns>

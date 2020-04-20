@@ -31,7 +31,7 @@ namespace SpaceMobaClient.Content.Scenes
             return Id;
         }
 
-        public void Load()
+        public void Load(object handover)
         {
             //UIPackage.AddPackage("Content/SpaceMobaClient");
             //GComponent view = UIPackage.CreateObject("SpaceMobaClient", "SplashScreen").asCom;

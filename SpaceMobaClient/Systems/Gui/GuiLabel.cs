@@ -12,6 +12,7 @@ namespace SpaceMobaClient.Systems.Gui
         private Point Position;
         private Color Color;
         private SpriteFont Font;
+        private int Offset;
 
         /// <summary>
         /// Creates a new GuiLabel.
@@ -28,6 +29,7 @@ namespace SpaceMobaClient.Systems.Gui
             Position = new Point(x, y);
             Font = font;
             Color = color;
+            Offset = (int)Font.MeasureString(Text).X / 2;
         }
 
         /// <summary>
@@ -45,6 +47,7 @@ namespace SpaceMobaClient.Systems.Gui
             Position = new Point(x, y);
             Font = font;
             Color = color;
+            Offset = (int)Font.MeasureString(Text).X / 2;
         }
 
         /// <summary>
@@ -54,6 +57,7 @@ namespace SpaceMobaClient.Systems.Gui
         public void SetText(string text)
         {
             Text = text;
+            Offset = (int)Font.MeasureString(Text).X / 2;
         }
 
         /// <summary>
@@ -73,6 +77,7 @@ namespace SpaceMobaClient.Systems.Gui
         public void SetFont(SpriteFont font)
         {
             Font = font;
+            Offset = (int)Font.MeasureString(Text).X / 2;
         }
 
         /// <summary>
@@ -91,6 +96,8 @@ namespace SpaceMobaClient.Systems.Gui
         /// <param name="spriteBatch">Current sprite batch.</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            // Todo: Alignment
+            //spriteBatch.DrawString(Font, Text, Position.ToVector2() - new Vector2(Offset, 0), Color);
             spriteBatch.DrawString(Font, Text, Position.ToVector2(), Color);
         }
     }

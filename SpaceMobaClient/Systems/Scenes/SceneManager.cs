@@ -18,6 +18,7 @@ namespace SpaceMobaClient.Systems.Scenes
         private Dictionary<int, IScene> SceneMap;
         private int ActiveSceneIndex;
         private int GotoSceneIndex;
+        private object Handover;
 
         /// <summary>
         /// Private constructor so that this can only be instantiated from a
@@ -114,7 +115,7 @@ namespace SpaceMobaClient.Systems.Scenes
                 }
 
                 ActiveSceneIndex = GotoSceneIndex;
-                SceneMap[ActiveSceneIndex].Load();
+                SceneMap[ActiveSceneIndex].Load(Handover);
             }
 
             // Don't try to update if scene doesn't exist.
@@ -157,11 +158,34 @@ namespace SpaceMobaClient.Systems.Scenes
         }
 
         /// <summary>
+        /// Instructs the SceneManager to change the active scene to the
+        /// specified scene. This will only trigger after the current update
+        /// is completed.
+        /// </summary>
+        /// <param name="scene">IScene reference to go to.</param>
+        /// <param name="handover">Handover state passed to next scene.</param>
+        /// <exception cref="ArgumentException">Thrown when the scene
+        /// referenced is not contained within the SceneList.</exception>
+        public void GotoScene(IScene scene, object handover = null)
+        {
+            if (SceneMap.ContainsKey(scene.GetId()))
+            {
+                GotoSceneIndex = scene.GetId();
+                Handover = handover;
+            }
+            else
+            {
+                throw (new ArgumentException());
+            }
+        }
+
+        /// <summary>
         /// Instructs the SceneManager to change the active scene to the next
         /// scene chronologically. This will only trigger after the current
         /// update is completed.
         /// </summary>
-        public void GotoNextScene()
+        /// <param name="handover">Handover state passed to next scene.</param>
+        public void GotoNextScene(object handover = null)
         {
             if(SceneMap.ContainsKey(ActiveSceneIndex + 1))
             {
@@ -171,6 +195,7 @@ namespace SpaceMobaClient.Systems.Scenes
             {
                 GotoSceneIndex = 0;
             }
+            Handover = handover;
         }
     }
 }
