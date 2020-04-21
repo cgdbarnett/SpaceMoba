@@ -476,8 +476,8 @@ namespace SpaceMobaClient.Content.Scenes
             {
                 object[] handover = new object[]
                 {
-                    GameServer,
                     LocalPlayer,
+                    GameServer,
                     ObjectsInScene.Values
                 };
 

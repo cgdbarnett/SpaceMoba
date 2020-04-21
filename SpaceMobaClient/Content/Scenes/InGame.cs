@@ -22,19 +22,6 @@ using SpaceMobaClient.Systems.Server;
 namespace SpaceMobaClient.Content.Scenes
 {
     /// <summary>
-    /// Represents the states the InGame scene can be active in.
-    /// </summary>
-    public enum InGameState
-    {
-        Init,
-        Loading,
-        WaitingToStart,
-        Countdown,
-        InGame,
-        GameOver
-    }
-
-    /// <summary>
     /// This scene is used when the player is in a game. This scene manages
     /// all the game objects, and inputs from the remote server, and from
     /// the player. It will then draw these objects to screen, and update
@@ -44,7 +31,16 @@ namespace SpaceMobaClient.Content.Scenes
     {
         // Unique identifier for the scene.
         private readonly int Id;
-        private InGameState CurrentInGameState;
+
+        // State
+        private enum InGameState
+        {
+            Init,
+            InGame,
+            GameOver,
+            Error
+        }
+        private InGameState State;
 
         // Map of objects active in the scene.
         private Dictionary<int, IGameObject> GameObjectsInScene;
@@ -75,7 +71,7 @@ namespace SpaceMobaClient.Content.Scenes
 
             // Copy unique id, and instantiate local data structures
             Id = id;
-            CurrentInGameState = InGameState.Init;
+            State = InGameState.Init;
             GameObjectsInScene = new Dictionary<int, IGameObject>();
 
             // Instantiate sprite batch
@@ -87,16 +83,6 @@ namespace SpaceMobaClient.Content.Scenes
 
             // Instantiate gui
             Gui = new InGameGui();
-
-            // Instantiate remote server
-            GameServer = new RemoteServer();
-            GameServer.OnCreate += HandleCreateObject;
-            GameServer.OnDestroy += HandleDestroyObject;
-            GameServer.OnAssignToLocalPlayer += HandleAssignToLocalPlayer;
-            GameServer.OnGameStart += HandleGameStart;
-
-            // Create localplayer
-            LocalPlayer = new LocalPlayer(GameServer);
 
             // Instantiate timer
             Timer = new Stopwatch();
@@ -168,18 +154,7 @@ namespace SpaceMobaClient.Content.Scenes
         /// <param name="timer">Time til game starts (in milliseconds).</param>
         private void HandleGameStart(int timer)
         {
-            if(CurrentInGameState == InGameState.WaitingToStart)
-            {
-                CurrentInGameState = InGameState.Countdown;
-                Timer.Reset();
-                Timer.Start();
-
-                // To do, track timer rather than just assuming it will be 6000
-            }
-            else
-            {
-                throw (new InvalidOperationException());
-            }
+            throw (new InvalidOperationException());
         }
 
         /// <summary>
@@ -198,23 +173,8 @@ namespace SpaceMobaClient.Content.Scenes
 
             // If game is loaded, draw scene
             // otherwise draw loading screen.
-            switch(CurrentInGameState)
+            switch(State)
             {
-                case InGameState.Loading:
-                    // Draw loading screen
-                    DrawLoadingScreen();
-                    break;
-
-                case InGameState.WaitingToStart:
-                    // Draw loading screen
-                    DrawLoadingScreen();
-                    break;
-
-                case InGameState.Countdown:
-                    // Draw countdown
-                    DrawCountdownScreen();
-                    break;
-
                 case InGameState.InGame:
                     // Draw game
                     DrawGame(gameTime);
@@ -230,45 +190,6 @@ namespace SpaceMobaClient.Content.Scenes
             }
 
             SpriteBatch.End();
-        }
-
-        /// <summary>
-        /// Draws the loading screen.
-        /// </summary>
-        private void DrawLoadingScreen()
-        {
-            GraphicsDevice graphics = GameClient.GetGameClient().
-                GetGraphicsDevice();
-            try
-            {
-                // Draw loading screen
-                SpriteBatch.Draw(LoadingScreen, graphics.Viewport.Bounds,
-                    Color.White);
-            }
-            catch
-            {
-            }
-        }
-
-        /// <summary>
-        /// Draws the countdown until the game starts.
-        /// </summary>
-        private void DrawCountdownScreen()
-        {
-            GraphicsDevice graphics = GameClient.GetGameClient().
-                GetGraphicsDevice();
-            try
-            {
-                // Todo: BEAUTIFY
-                // Draw label for timer as a countdown
-                ((GuiLabel)Gui.GetComponent("timer")).
-                    SetText("Game Starts in: " + 
-                    ((int)(7.0 - Timer.Elapsed.TotalSeconds)).ToString());
-                Gui.Draw(null, SpriteBatch);
-            }
-            catch
-            {
-            }
         }
 
         /// <summary>
@@ -327,80 +248,64 @@ namespace SpaceMobaClient.Content.Scenes
         }
 
         /// <summary>
-        /// Begins loading the resources for this game level. This is done
-        /// asynchronously, so this function will load the loading screen
-        /// into memory, and then begin the asynchronous method to complete
-        /// the process.
+        /// Copies resources from handover into memory.
         /// </summary>
-        /// <param name="handover">object[] { LocalPlayer, RemoteServer,
-        /// List<IGameObject> }</param>
+        /// <param name="handover">
+        /// object[] { LocalPlayer, RemoteServer, ICollection<IGameObject> }
+        /// </param>
         public void Load(object handover)
-        {
-            CurrentInGameState = InGameState.Loading;
-            LoadingScreen = GameClient.GetGameClient().
-                Content.Load<Texture2D>("Backgrounds/loading_screen");
-            Camera.SetPosition(0, 0);
-
-            // Begin asynchronously loading. Do not await this, as we want
-            // the main thread to continue executing.
-            Task.Factory.StartNew(() => EndLoad());
-        }
-
-        /// <summary>
-        /// Asynchronously loads resources for this game level. When completed,
-        /// this should update the Ready flag.
-        /// </summary>
-        private void EndLoad()
-        {
-            // Asynchronously start connecting to remote server.
-            Task connect = new Task(() => ConnectToRemoteServer());
-            connect.Start();
-
-            // Get reference to content manager, it will be used frequently.
-            ContentManager content = GameClient.GetGameClient().Content;
-
-            // Load background
-            Background = content.Load<Texture2D>("Backgrounds/starfield");
-
-            // Load GUI
-            Gui.Load();
-
-            // Wait for connecting to finish. Thread sleeping because it keeps
-            // trying to send the ClientIsReady packet too early. Dunno why.
-            connect.Wait();
-            Thread.Sleep(2000);
-
-            // Update state and inform server this client is ready
-            CurrentInGameState = InGameState.WaitingToStart;
-            GameServer.ClientIsReady();
-        }
-
-        /// <summary>
-        /// Connects to remote server for this game.
-        /// </summary>
-        private void ConnectToRemoteServer()
         {
             try
             {
-                MatchmakerServer matchmaker = 
-                    MatchmakerServer.GetMatchmakerServer();
-                if (matchmaker.CurrentGameActive)
+                if (State != InGameState.Init)
                 {
-                    GameServer.Connect(
-                        matchmaker.CurrentGameHost,
-                        matchmaker.CurrentGamePort, 
-                        matchmaker.CurrentGameToken
-                        );
+                    throw (new InvalidOperationException());
                 }
-                else
+
+                // Deserialize handover
+                object[] handoverArray = (object[])handover;
+                LocalPlayer = (LocalPlayer)handoverArray[0];
+                GameServer = (IRemoteServer)handoverArray[1];
+                Dictionary<int, IGameObject>.ValueCollection initialObjects =
+                    (Dictionary<int, IGameObject>.ValueCollection)
+                    handoverArray[2];
+
+                // Insert objects into map
+                foreach (IGameObject obj in initialObjects)
                 {
-                    throw (new Exception());
+                    try
+                    {
+                        GameObjectsInScene.Add(obj.GetId(), obj);
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine(e.ToString());
+                    }
                 }
+
+                // Register event handlers
+                GameServer.OnCreate += HandleCreateObject;
+                GameServer.OnDestroy += HandleDestroyObject;
+                GameServer.OnAssignToLocalPlayer += HandleAssignToLocalPlayer;
+                GameServer.OnGameStart += HandleGameStart;
+
+                //// Temp code ////
+                Background = GameClient.GetGameClient().GetContentManager()
+                    .Load<Texture2D>("Backgrounds/starfield");
+                Gui = new InGameGui();
+                Gui.Load();
+                ///////////////////
+
+                // Move forward state
+                Timer.Start();
+                State = InGameState.InGame;
             }
-            catch
+            catch(Exception e)
             {
-                // Go to disconnected scene?
-                GameClient.GetGameClient().Exit();
+                Trace.WriteLine("Error in InGame.Load():");
+                Trace.WriteLine(e.ToString());
+
+                State = InGameState.Error;
             }
         }
 
@@ -409,10 +314,18 @@ namespace SpaceMobaClient.Content.Scenes
         /// </summary>
         public void Unload()
         {
-            Timer.Stop();
-            CurrentInGameState = InGameState.Init;
+            // Dispose of structures that are passed to scene in handover.
+            GameServer = null;
+            LocalPlayer = null;
+
+            // Unload resources
             GameClient.GetGameClient().GetContentManager().Unload();
             GameObjectsInScene.Clear();
+
+            // Reset timer, and return state to init
+            Timer.Stop();
+            Timer.Reset();
+            State = InGameState.Init;
         }
 
         /// <summary>
@@ -421,24 +334,8 @@ namespace SpaceMobaClient.Content.Scenes
         /// <param name="gameTime">Gameupdate interval.</param>
         public void Update(GameTime gameTime)
         {
-            switch (CurrentInGameState)
+            switch (State)
             {
-                case InGameState.WaitingToStart:
-                    GameServer.HandleIncomingMessages();
-                    break;
-
-                case InGameState.Countdown:
-                    GameServer.HandleIncomingMessages();
-                    // When the timer reaches the time sent by the server
-                    // (to do implement that), we move into game state.
-                    if (Timer.ElapsedMilliseconds > 6000)
-                    {
-                        // Change state to ingame
-                        CurrentInGameState = InGameState.InGame;
-                        Timer.Restart();
-                    }
-                    break;
-
                 case InGameState.InGame:
                     GameServer.HandleIncomingMessages();
                     try

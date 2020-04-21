@@ -74,9 +74,11 @@ namespace SpaceMobaClient
         {
             // Initialise game window
             Window.Title = "Black Hole";
-            Graphics.PreferredBackBufferWidth = 1920;
-            Graphics.PreferredBackBufferHeight = 1080;
-            Graphics.IsFullScreen = true;
+            //Graphics.PreferredBackBufferWidth = 1920;
+            //Graphics.PreferredBackBufferHeight = 1080;
+            Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 740;
+            Graphics.IsFullScreen = false; // While debugging
             Graphics.ApplyChanges();
 
             IsFixedTimeStep = false;
@@ -137,7 +139,6 @@ namespace SpaceMobaClient
             {
                 new SplashScreen(0),
                 new GameStart(1),
-                //new MainMenu(1),
                 new InGame(2)
             };
 
