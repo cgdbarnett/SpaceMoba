@@ -6,6 +6,7 @@
     public enum GameObjectType : short
     {
         Ship,
-        Bullet
+        Bullet,
+        Blackhole
     }
 }

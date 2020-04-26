@@ -65,14 +65,14 @@ namespace GameInstanceServer.Game.World
         /// </summary>
         /// <param name="position">Reference point.</param>
         /// <returns></returns>
-        public List<IGameObject> GetObjectsInCellsAroundPoint(Point position)
+        public List<WorldComponent> GetObjectsInCellsAroundPoint(Point position)
         {
             // Find cell this point is in
             Tuple<int, int> cell = GetCellFromPoint(position);
 
             // Loop through all cells, and combine their outputed lists
             // into a single list to return.
-            List<IGameObject> objectsInCells = new List<IGameObject>();
+            List<WorldComponent> objectsInCells = new List<WorldComponent>();
             for(int yy = -1; yy < 1; yy++)
             {
                 for(int xx = -1; xx < 2; xx++)
@@ -90,15 +90,16 @@ namespace GameInstanceServer.Game.World
         /// Adds an object to the WorldGrid.
         /// </summary>
         /// <param name="obj">Object to add.</param>
-        public void Add(IGameObject obj)
+        public void Add(WorldComponent obj)
         {
             try
             {
-                Tuple<int, int> cellIndex = GetCellFromPoint(obj.GetPosition());
+                Tuple<int, int> cellIndex = 
+                    GetCellFromPoint(obj.Position.ToPoint());
                 WorldCell cell = Cells[cellIndex.Item1][cellIndex.Item2];
 
                 cell.Add(obj);
-                obj.SetCell(cell);
+                obj.Cell = cell;
             }
             catch
             {
@@ -109,11 +110,11 @@ namespace GameInstanceServer.Game.World
         /// Removes an object from the WorldGrid.
         /// </summary>
         /// <param name="obj">Object to remove.</param>
-        public void Remove(IGameObject obj)
+        public void Remove(WorldComponent obj)
         {
             try
             {
-                obj.GetCell().Remove(obj);
+                obj.Cell.Remove(obj);
             }
             catch
             {
@@ -125,18 +126,19 @@ namespace GameInstanceServer.Game.World
         /// cell if required.
         /// </summary>
         /// <param name="obj">Object to update.</param>
-        public void Update(IGameObject obj)
+        public void Update(WorldComponent obj)
         {
             try
             {
-                Tuple<int, int> cellIndex = GetCellFromPoint(obj.GetPosition());
+                Tuple<int, int> cellIndex = 
+                    GetCellFromPoint(obj.Position.ToPoint());
                 WorldCell cell = Cells[cellIndex.Item1][cellIndex.Item2];
 
-                if (obj.GetCell() != cell)
+                if (obj.Cell != cell)
                 {
-                    obj.GetCell().Remove(obj);
+                    obj.Cell.Remove(obj);
                     cell.Add(obj);
-                    obj.SetCell(cell);
+                    obj.Cell = cell;
                 }
             }
             catch

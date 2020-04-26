@@ -22,6 +22,8 @@ namespace GameInstanceServer.Game.Objects
         /// <returns>Whether there is a collision.</returns>
         public bool Intersects(CollidableObject obj)
         {
+            // Note: AABB collision isn't very nice, this will eventually
+            // have to be upgrade significantly.
             if(obj.BoundingBox.Intersects(BoundingBox))
             {
                 return true;

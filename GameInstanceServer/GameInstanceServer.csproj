@@ -6,12 +6,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Game\GameSimulation.cs" />
+    <Compile Remove="Game\Objects\Combat\Bullet.cs" />
     <Compile Remove="Systems\NetManager.cs" />
+    <Compile Remove="Systems\PacketWriter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Game\GameSimulation.cs" />
+    <None Include="Game\Objects\Combat\Bullet.cs" />
+    <None Include="Systems\Networking\PacketWriter.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Lidgren.Network.Core2" Version="1.0.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.8.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>mscorlib</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>System</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

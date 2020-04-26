@@ -7,7 +7,7 @@ using GameInstanceServer.Game.World;
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
 
-namespace GameInstanceServer.Game.Objects
+namespace GameInstanceServer.Game.Objects.Combat
 {
     public class Bullet : CollidableObject, IGameObject
     {

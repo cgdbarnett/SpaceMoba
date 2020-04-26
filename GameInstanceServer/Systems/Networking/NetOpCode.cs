@@ -1,4 +1,4 @@
-﻿namespace GameInstanceServer.Systems
+﻿namespace GameInstanceServer.Systems.Networking
 {
     /// <summary>
     /// OpCodes of incoming and outgoing messages to the client.

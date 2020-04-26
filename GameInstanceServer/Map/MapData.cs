@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 using GameInstanceServer.Game;
-using GameInstanceServer.Game.Objects;
+using GameInstanceServer.Game.Objects.Ships;
 using GameInstanceServer.Systems;
 
 namespace GameInstanceServer.Map
@@ -13,56 +13,32 @@ namespace GameInstanceServer.Map
     /// <summary>
     /// Singleton instance that loads map data into game.
     /// </summary>
-    public class MapData
+    public static class MapData
     {
-        // Private singleton reference to MapData instance.
-        private static MapData Instance;
-
-        private GameSimulation GameSimulation;
-
-        /// <summary>
-        /// Private constructor of singleton.
-        /// </summary>
-        private MapData()
-        {
-            GameSimulation = GameSimulation.GetGameSimulation();
-        }
-
-        /// <summary>
-        /// Returns a reference to the MapData instance.
-        /// </summary>
-        /// <returns>MapData reference.</returns>
-        public static MapData GetMapData()
-        {
-            if(Instance == null)
-            {
-                Instance = new MapData();
-            }
-
-            return Instance;
-        }
+        public static readonly Point Dimensions = new Point(12000, 12000);
 
         /// <summary>
         /// Spawns all objects that should exist when the game starts.
         /// </summary>
-        public void SpawnWorld()
+        public static void SpawnWorld()
         {
             // Random droid that just chills
-            Ship droid = new Ship(GameSimulation.CreateNewUniqueId());
+            /*Ship droid = new Ship(GameSimulation.GetGameSimulation()
+                .CreateNewUniqueId());
             droid.SetPosition(new Point(5500, 200));
 
-            GameSimulation.AddObject(droid);
+            GameSimulation.GetGameSimulation().AddObject(droid);*/
         }
 
         /// <summary>
         /// Spawns the player object for a given client.
         /// </summary>
         /// <param name="client">Client.</param>
-        public void SpawnPlayerObject(Client client)
+        public static void SpawnPlayerObject(Client client)
         {
             // Create player ship object
-            PlayerShip newShip = new PlayerShip(
-                        GameSimulation.CreateNewUniqueId()
+            /*PlayerShip newShip = new PlayerShip(
+                        GameSimulation.GetGameSimulation().CreateNewUniqueId()
                         );
 
             // Move ship into position
@@ -84,10 +60,10 @@ namespace GameInstanceServer.Map
             }
 
             // Add to game simulation
-            GameSimulation.AddObject(newShip);
+            GameSimulation.GetGameSimulation().AddObject(newShip);
 
             // Assign to player
-            client.GameObject = newShip;
+            client.GameObject = newShip;*/
         }
     }
 }

@@ -6,8 +6,9 @@ using Lidgren.Network;
 
 using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects;
+using GameInstanceServer.Game.World;
 
-namespace GameInstanceServer.Systems
+namespace GameInstanceServer.Systems.Networking
 {
     /// <summary>
     /// Takes given arguments, and creates the NetOutgoingMessage
@@ -54,33 +55,35 @@ namespace GameInstanceServer.Systems
         /// <param name="target">Target NetConnection.</param>
         /// <param name="client">Client.</param>
         /// <returns>Packet to send to client.</returns>
+        
         public static NetOutgoingMessage
-            WelcomePacket(NetConnection target, Client client)
+            WelcomePacket(NetConnection target, PlayerEntity player)
         {
-            // Get reference to game simulation
-            GameSimulation gameSimulation = GameSimulation.GetGameSimulation();
 
             // Create base message
             NetOutgoingMessage message = target.Peer.CreateMessage();
             message.Write((short)NetOpCode.WelcomePacket);
 
             // Get list of nearby objects
-            List<IGameObject> objects = gameSimulation.GetNearbyObjects(
-                client.GameObject.GetPosition()
-                );
+            List<WorldComponent> objects = 
+                player.World.Cell.GetNearbyObjects(
+                    player.Position.Position
+                    );
 
             // Write objects into packet
             message.Write((short)objects.Count);
-            foreach(IGameObject obj in objects)
+            foreach(WorldComponent obj in objects)
             {
-                obj.Serialize(message);
+                // Hmmmm
+                //obj.Serialize(message);
             }
 
             // Write localplayer object id
-            message.Write((int)client.GameObject.GetId());
+            message.Write((int)player.Id);
 
             return message;
         }
+        
 
         /// <summary>
         /// Creates a packet that updates objects in the area around
@@ -89,6 +92,7 @@ namespace GameInstanceServer.Systems
         /// <param name="target">Target NetConnection.</param>
         /// <param name="client">Client.</param>
         /// <returns>Packet to send to client.</returns>
+        /*
         public static NetOutgoingMessage
             UpdateObjects(NetConnection target, Client client)
         {
@@ -116,5 +120,6 @@ namespace GameInstanceServer.Systems
 
             return message;
         }
+        */
     }
 }

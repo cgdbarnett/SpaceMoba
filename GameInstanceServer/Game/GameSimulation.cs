@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 // Game libraries.
 using GameInstanceServer.Game.Objects;
 using GameInstanceServer.Game.World;
+using GameInstanceServer.Systems.ECS;
 
 namespace GameInstanceServer.Game
 {
@@ -227,6 +228,9 @@ namespace GameInstanceServer.Game
                     // Execute game loop
                     TimeSpan gameTime = DateTime.Now - LastUpdate;
                     LastUpdate = DateTime.Now;
+
+                    // Run an ECS frame.
+                    ECS.Update(gameTime);
 
                     lock (ObjectsInGame)
                     {

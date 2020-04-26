@@ -107,9 +107,7 @@ namespace SpaceMobaClient.Systems.Server
         public void ClientIsReady()
         {
             NetOutgoingMessage packet = Client.CreateMessage();
-            packet.Write((int)MatchMaker.CurrentGameToken);
             packet.Write((short)NetOpCode.ClientIsReady);
-            packet.Write(true);
 
             Client.SendMessage(packet, NetDeliveryMethod.ReliableOrdered);
         }
@@ -154,9 +152,6 @@ namespace SpaceMobaClient.Systems.Server
 
             foreach(NetIncomingMessage msg in messages)
             {
-                Trace.WriteLine("Handling message.");
-                Trace.Indent();
-
                 try
                 {
                     switch (msg.MessageType)
@@ -176,9 +171,6 @@ namespace SpaceMobaClient.Systems.Server
                         + "HandleIncomingMessages():");
                     Trace.WriteLine(e);
                 }
-
-                Trace.Unindent();
-                Trace.WriteLine("End message.");
             }
         }
 
@@ -216,33 +208,27 @@ namespace SpaceMobaClient.Systems.Server
         /// <param name="msg">Incoming message to handle.</param>
         private void HandleData(NetIncomingMessage msg)
         {
-            Trace.WriteLine("Reading data:");
-            Trace.Indent();
             NetOpCode opcode = (NetOpCode)msg.ReadInt16();
 
             switch(opcode)
             {
                 // Handle the Game Start command.
                 case NetOpCode.StartGameCountdown:
-                    Trace.WriteLine("StartGameCountdown.");
                     OnGameStart(msg.ReadInt32());
                     break;
 
                 case NetOpCode.AssignLocalObject:
-                    Trace.WriteLine("AssignLocalObject.");
                     OnAssignToLocalPlayer(msg.ReadInt32());
                     break;
 
                 case NetOpCode.WelcomePacket:
                     {
-                        Trace.WriteLine("WelcomePacket.");
                         Trace.Indent();
 
                         // Create objects
                         int count = msg.ReadInt16();
                         for(int i = 0; i < count; i++)
                         {
-                            Trace.WriteLine("Creating object.");
                             IGameObject obj = CreateObjectFromMessage(msg);
                             try
                             {
@@ -257,21 +243,16 @@ namespace SpaceMobaClient.Systems.Server
                         // Assign local player
                         try
                         {
-                            Trace.WriteLine("Assigning local object.");
                             OnAssignToLocalPlayer(msg.ReadInt32());
                         }
                         catch
                         {
                         }
-
-                        Trace.Unindent();
-                        Trace.WriteLine("End WelcomePacket.");
                         break;
                     }
 
                 case NetOpCode.UpdateObjects:
                     {
-                        Trace.WriteLine("UpdateObjects.");
                         List<int> objectsInPreviousFrame = new List<int>(ObjectsInFrame);
 
                         // Get count of objects
@@ -316,9 +297,6 @@ namespace SpaceMobaClient.Systems.Server
                     Trace.WriteLine("Unexpected opcode.");
                     break;
             }
-
-            Trace.Unindent();
-            Trace.WriteLine("End data.");
         }
 
         /// <summary>
@@ -354,7 +332,8 @@ namespace SpaceMobaClient.Systems.Server
                         // Create ship object
                         Ship ship = new Ship(
                             id,
-                            content.Load<Texture2D>("Objects/Ships/GreenBeacon"),
+                            content.Load<Texture2D>
+                                ("Objects/Ships/GreenBeacon"),
                             spawn,
                             direction
                             );

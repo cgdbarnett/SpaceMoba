@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using GameInstanceServer.Game.Objects;
+using Microsoft.Xna.Framework;
 
 namespace GameInstanceServer.Game.World
 {
@@ -14,7 +14,7 @@ namespace GameInstanceServer.Game.World
         private readonly WorldGrid Parent;
 
         // List of objects in cell
-        private List<IGameObject> ObjectsInCell;
+        private List<WorldComponent> ObjectsInCell;
 
         /// <summary>
         /// Creates an instance of a world cell.
@@ -23,23 +23,33 @@ namespace GameInstanceServer.Game.World
         public WorldCell(WorldGrid parent)
         {
             Parent = parent;
-            ObjectsInCell = new List<IGameObject>();
+            ObjectsInCell = new List<WorldComponent>();
         }
 
         /// <summary>
         /// Returns a list of all objects in the cell.
         /// </summary>
         /// <returns>List of objects.</returns>
-        public List<IGameObject> GetObjects()
+        public List<WorldComponent> GetObjects()
         {
-            return new List<IGameObject>(ObjectsInCell);
+            return new List<WorldComponent>(ObjectsInCell);
+        }
+
+        /// <summary>
+        /// Returns a list of all objects in surounding cells.
+        /// </summary>
+        /// <param name="position">Position to test from.</param>
+        /// <returns>List of nearby objects.</returns>
+        public List<WorldComponent> GetNearbyObjects(Vector2 position)
+        {
+            return Parent.GetObjectsInCellsAroundPoint(position.ToPoint());
         }
 
         /// <summary>
         /// Adds an object to this cell.
         /// </summary>
         /// <param name="obj">Object to add.</param>
-        public void Add(IGameObject obj)
+        public void Add(WorldComponent obj)
         {
             ObjectsInCell.Add(obj);
         }
@@ -48,7 +58,7 @@ namespace GameInstanceServer.Game.World
         /// Trys to remove an object from this cell.
         /// </summary>
         /// <param name="obj">Object to remove.</param>
-        public void Remove(IGameObject obj)
+        public void Remove(WorldComponent obj)
         {
             try
             {

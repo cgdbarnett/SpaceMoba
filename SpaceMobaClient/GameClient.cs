@@ -82,6 +82,7 @@ namespace SpaceMobaClient
             Graphics.ApplyChanges();
 
             IsFixedTimeStep = false;
+            TargetElapsedTime = new TimeSpan(150000);
             IsMouseVisible = true;
 
             base.Initialize();

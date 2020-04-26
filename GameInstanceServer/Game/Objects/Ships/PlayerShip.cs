@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameInstanceServer.Game.Objects
+namespace GameInstanceServer.Game.Objects.Ships
 {
     class PlayerShip : Ship
     {

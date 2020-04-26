@@ -1,13 +1,17 @@
-﻿using System;
-using System.Diagnostics;
+﻿// System libraries
+using System;
 
+// Xna (Monogame) libraries
 using Microsoft.Xna.Framework;
 
+// Lidgren libraries
 using Lidgren.Network;
 
+// Game libraries
 using GameInstanceServer.Game.World;
+using GameInstanceServer.Game.Objects.Combat;
 
-namespace GameInstanceServer.Game.Objects
+namespace GameInstanceServer.Game.Objects.Ships
 {
     /// <summary>
     /// Base ship class. Handles physics.
@@ -263,12 +267,12 @@ namespace GameInstanceServer.Game.Objects
                     (float)Math.Sin(MathHelper.ToRadians(Direction))
                     ) * 50;
 
-                Bullet bullet = new Bullet(
+                /*Bullet bullet = new Bullet(
                     GameSimulation.GetGameSimulation().CreateNewUniqueId(),
                     GetPosition() + spawn.ToPoint(), 
                     400, Direction, 40
                     );
-                GameSimulation.GetGameSimulation().AddObject(bullet);
+                GameSimulation.GetGameSimulation().AddObject(bullet);*/
 
                 WeaponCooldown = 500;
             }
@@ -280,7 +284,7 @@ namespace GameInstanceServer.Game.Objects
         protected void HandleDeath()
         {
             // Destroy!
-            GameSimulation.GetGameSimulation().RemoveObject(this);
+            //GameSimulation.GetGameSimulation().RemoveObject(this);
         }
 
         #endregion

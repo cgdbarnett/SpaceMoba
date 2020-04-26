@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameInstanceServer.Game.Objects
+namespace GameInstanceServer.Game.Objects.Combat
 {
     /// <summary>
     /// All combat objects must implment this interface. Provides structure
