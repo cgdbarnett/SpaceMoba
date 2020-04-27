@@ -250,45 +250,32 @@ namespace SpaceMobaClient.Systems.Server
                         }
                         break;
                     }
-
-                case NetOpCode.UpdateObjects:
+                
+                // Create or Update an object
+                case NetOpCode.UpdateObject:
+                case NetOpCode.CreateObject:
                     {
-                        List<int> objectsInPreviousFrame = new List<int>(ObjectsInFrame);
-
-                        // Get count of objects
-                        int count = msg.ReadInt16();
-                        for (int i = 0; i < count; i++)
+                        IGameObject obj = CreateObjectFromMessage(msg);
+                        try
                         {
-                            IGameObject obj = CreateObjectFromMessage(msg);
-                            try
-                            {
-                                if(objectsInPreviousFrame.Contains(obj.GetId()))
-                                {
-                                    // remove
-                                    objectsInPreviousFrame.Remove(obj.GetId());
-                                }
-                                else
-                                {
-                                    ObjectsInFrame.Add(obj.GetId());
-                                }
-                                OnCreate(obj);
-                            }
-                            catch
-                            {
-                            }
+                            ObjectsInFrame.Add(obj.GetId());
+                            OnCreate(obj);
                         }
-
-                        // Remove any objects remaining
-                        foreach(int id in objectsInPreviousFrame)
+                        catch
                         {
-                            try
-                            {
-                                ObjectsInFrame.Remove(id);
-                                OnDestroy(id);
-                            }
-                            catch
-                            {
-                            }
+                        }
+                        break;
+                    }
+
+                // Destroy an object
+                case NetOpCode.DestroyObject:
+                    {
+                        try
+                        {
+                            OnDestroy(msg.ReadInt32());
+                        }
+                        catch
+                        {
                         }
                         break;
                     }
@@ -306,85 +293,53 @@ namespace SpaceMobaClient.Systems.Server
         /// <returns>GameObject.</returns>
         private IGameObject CreateObjectFromMessage(NetIncomingMessage msg)
         {
+            ContentManager content =
+                GameClient.GetGameClient().GetContentManager();
+
+            // Defaults
+            Vector2 spawn = new Vector2();
+            Vector2 momentum = new Vector2();
+            float direction = 0, angularMomentum = 0;
+            string sprite = "Objects/Ships/GreenBeacon";
+            byte componentId;
+
+            // Object id
             int id = msg.ReadInt32();
-            GameObjectType type = GameObjectType.Ship;
 
-            IGameObject obj;
-
-            switch (type)
+            // Components
+            while ((componentId = msg.ReadByte()) != 0)
             {
-                // Create ship object
-                case GameObjectType.Ship:
-                    {
-                        ContentManager content =
-                            GameClient.GetGameClient().GetContentManager();
-
-                        // Position
-                        msg.ReadByte();
-
-                        // Deserialize message.
-                        Vector2 spawn = new Vector2(
-                            msg.ReadFloat(), msg.ReadFloat()
-                            );
-                        Vector2 momentum = new Vector2(
-                            msg.ReadFloat(), msg.ReadFloat()
-                            );
-                        float direction = msg.ReadFloat();
-                        float angularMomentum = msg.ReadFloat();
-
-                        // Create ship object
-                        Ship ship = new Ship(
-                            id,
-                            content.Load<Texture2D>
-                                ("Objects/Ships/GreenBeacon"),
-                            spawn,
-                            direction
-                            );
-                        ship.SetMomentum(momentum);
-                        ship.SetAngularMomentum(angularMomentum);
-
-                        obj = ship;
+                switch(componentId)
+                {
+                    // Position
+                    case 1:
+                        spawn.X = msg.ReadFloat();
+                        spawn.Y = msg.ReadFloat();
+                        momentum.X = msg.ReadFloat();
+                        momentum.Y = msg.ReadFloat();
+                        direction = msg.ReadFloat();
+                        angularMomentum = msg.ReadFloat();
                         break;
-                    }
 
-                case GameObjectType.Bullet:
-                    {
-                        // Packet:
-                        // Id (int)
-                        // Type (short)
-                        // Position (vec2)
-                        // Direction (float)
-                        // Momentum (vec2)
-                        ContentManager content =
-                            GameClient.GetGameClient().GetContentManager();
-
-                        // Deserialize message.
-                        Vector2 spawn = new Vector2(
-                            msg.ReadFloat(), msg.ReadFloat()
-                            );
-                        float direction = msg.ReadFloat();
-                        Vector2 momentum = new Vector2(
-                            msg.ReadFloat(), msg.ReadFloat()
-                            );
-
-                        // Create bullet object
-                        Bullet bullet = new Bullet(
-                            id,
-                            content.Load<Texture2D>("Objects/Weapons/bullet"),
-                            spawn,
-                            direction
-                            );
-                        bullet.SetMomentum(momentum);
-
-                        obj = bullet;
+                    // Animation
+                    case 2:
+                        sprite = msg.ReadString();
                         break;
-                    }
-
-                default:
-                    throw (new NotSupportedException());
+                }
             }
 
-            return obj;
+            // Create ship object
+            Ship ship = new Ship(
+                id,
+                content.Load<Texture2D>
+                    (sprite),
+                spawn,
+                direction
+                );
+            ship.SetMomentum(momentum);
+            ship.SetAngularMomentum(angularMomentum);
+            
+            return ship;
         }
     }
 }

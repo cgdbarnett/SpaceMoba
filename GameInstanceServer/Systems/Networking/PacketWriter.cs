@@ -94,35 +94,54 @@ namespace GameInstanceServer.Systems.Networking
 
 
         /// <summary>
-        /// Creates a packet that updates objects in the area around
-        /// the client.
+        /// Creates a packet that updates an object for the client.
         /// </summary>
         /// <param name="target">Target NetConnection.</param>
-        /// <param name="player">Player Entity.</param>
+        /// <param name="obj">Entity.</param>
         /// <returns>Packet to send to client.</returns>
         public static NetOutgoingMessage
-            UpdateObjects(NetConnection target, PlayerEntity player)
+            UpdateObject(NetConnection target, Entity obj)
         {
             // Create base message
             NetOutgoingMessage message = target.Peer.CreateMessage();
-            message.Write((short)NetOpCode.UpdateObjects);
+            message.Write((short)NetOpCode.UpdateObject);
 
-            // Get list of nearby objects
-            List<Entity> objects = 
-                player.World.Cell.GetNearbyObjects(
-                    player.Position.Position
-                    );
+            obj.Serialize(message);
 
-            // Write objects into packet
-            message.Write((short)objects.Count);
-            foreach(Entity obj in objects)
-            {
-                // Hmmmm
-                if(obj.Serializable)
-                {
-                    obj.Serialize(message);
-                }
-            }
+            return message;
+        }
+
+        /// <summary>
+        /// Creates a packet that creates an object for the client.
+        /// </summary>
+        /// <param name="target">Target NetConnection.</param>
+        /// <param name="obj">Entity.</param>
+        /// <returns>Packet to send to client.</returns>
+        public static NetOutgoingMessage
+            CreateObject(NetConnection target, Entity obj)
+        {
+            // Create base message
+            NetOutgoingMessage message = target.Peer.CreateMessage();
+            message.Write((short)NetOpCode.CreateObject);
+
+            obj.Serialize(message);
+
+            return message;
+        }
+
+        /// <summary>
+        /// Creates a packet that destroys an object for the client.
+        /// </summary>
+        /// <param name="target">Target NetConnection.</param>
+        /// <param name="obj">Entity.</param>
+        /// <returns>Packet to send to client.</returns>
+        public static NetOutgoingMessage
+            DestroyObject(NetConnection target, Entity obj)
+        {
+            // Create base message
+            NetOutgoingMessage message = target.Peer.CreateMessage();
+            message.Write((short)NetOpCode.DestroyObject);
+            message.Write(obj.Id);
 
             return message;
         }

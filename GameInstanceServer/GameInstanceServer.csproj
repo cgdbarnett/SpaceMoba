@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="Game\Objects\Combat\" />
-    <Folder Include="Game\Objects\Ships\" />
   </ItemGroup>
 
 </Project>

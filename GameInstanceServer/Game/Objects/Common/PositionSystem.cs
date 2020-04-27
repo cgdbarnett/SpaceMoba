@@ -39,7 +39,7 @@ namespace GameInstanceServer.Game.Objects.Common
             )
         {
             // Calculate delta (in seconds)
-            float delta = (float)gameTime.TotalMilliseconds / 1000;
+            float delta = (float)gameTime.TotalSeconds;
 
             // Update position
             PositionComponent position = (PositionComponent)component;

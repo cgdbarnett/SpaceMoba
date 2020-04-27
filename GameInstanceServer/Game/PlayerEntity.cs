@@ -74,14 +74,16 @@ namespace GameInstanceServer.Game
                 new NetworkingClientComponent(this),
                 new PositionComponent(),
                 new WorldComponent(),
-                new AnimationComponent()
+                new AnimationComponent(),
+                new AffectedByBlackholeComponent()
             };
 
             // Link components as required
             Client.Entity = this;
             World.PositionComponent = Position;
             World.Entity = this;
-            Animation.Sprite = "Resources/Objects/GreenBeacon";
+            Animation.Sprite = "Objects/Ships/GreenBeacon";
+            ((AffectedByBlackholeComponent)Components[4]).Position = Position;
         }
 
         /// <summary>

@@ -37,6 +37,12 @@ namespace GameInstanceServer.Systems.ECS
         }
 
         /// <summary>
+        /// Flags when the last update was made to this entity. Intended
+        /// for use with serialization.
+        /// </summary>
+        public long LastUpdated;
+
+        /// <summary>
         /// Creates a new entity with a given id.
         /// </summary>
         /// <param name="id">Identifier of entity.</param>

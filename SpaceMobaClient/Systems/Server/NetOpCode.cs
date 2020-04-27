@@ -12,6 +12,8 @@
         RequestLocalObject,
         WelcomePacket,
         UpdatePlayerInput,
-        UpdateObjects
+        CreateObject,
+        UpdateObject,
+        DestroyObject
     }
 }

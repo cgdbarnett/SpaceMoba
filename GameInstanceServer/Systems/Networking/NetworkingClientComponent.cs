@@ -14,13 +14,22 @@ namespace GameInstanceServer.Systems.Networking
     /// </summary>
     public class NetworkingClientComponent : IComponent
     {
+        // Networking
         public NetPeer NetPeer;
         public NetConnection NetConnection;
         public bool Active;
         public bool Ready;
+
+        // Message queues
         public Queue<NetIncomingMessage> IncomingMessageQueue;
         public Queue<NetOutgoingMessage> OutgoingMessageQueue;
+
+        // Replication
+        public Dictionary<Entity, long> ReplicatedEntities;
+
+        // Player reference
         public PlayerEntity Entity;
+
 
         /// <summary>
         /// Get the ComponentSystemId for the Networking Client System.
@@ -42,6 +51,7 @@ namespace GameInstanceServer.Systems.Networking
             Entity = entity;
             IncomingMessageQueue = new Queue<NetIncomingMessage>();
             OutgoingMessageQueue = new Queue<NetOutgoingMessage>();
+            ReplicatedEntities = new Dictionary<Entity, long>();
         }
 
         /// <summary>

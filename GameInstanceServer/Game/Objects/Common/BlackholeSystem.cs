@@ -42,7 +42,7 @@ namespace GameInstanceServer.Game.Objects.Common
             )
         {
             // Calculate delta (in seconds)
-            float delta = (float)gameTime.TotalMilliseconds / 1000;
+            float delta = (float)gameTime.TotalSeconds;
 
             // Get position
             AffectedByBlackholeComponent blackhole = 
@@ -53,11 +53,10 @@ namespace GameInstanceServer.Game.Objects.Common
             float decay = Blackhole.GetDecay(position.Position);
             Vector2 gravity = Blackhole.GetMomentum(position.Position);
 
+            position.Momentum += gravity * delta;
+
             // Apply decay to momentums, and then apply gravity
             position.Momentum -= position.Momentum * decay;
-            gravity -= gravity * decay;
-
-            position.Position += gravity;
         }
     }
 }

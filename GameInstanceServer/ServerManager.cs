@@ -7,6 +7,7 @@ using System.Threading;
 using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.World;
+using GameInstanceServer.Map;
 using GameInstanceServer.Systems.ECS;
 using GameInstanceServer.Systems.Networking;
 
@@ -43,6 +44,7 @@ namespace GameInstanceServer
         public ServerManager(int port, int[] tokens)
         {
             GameMaster.State = GameMaster.GameState.Loading;
+            GameMaster.StartMasterTimer();
 
             // Register ECS systems
             Trace.WriteLine("Registering ECS Systems.");
@@ -68,6 +70,17 @@ namespace GameInstanceServer
 
             Trace.Unindent();
             Trace.WriteLine("ECS Registered.");
+
+
+            // Load map data
+            Trace.WriteLine("Loading map data.");
+            Trace.Indent();
+
+            MapData.SpawnWorld();
+
+            Trace.Unindent();
+            Trace.WriteLine("Map loaded.");
+
 
             // Register to State event handlers
             GameMaster.OnStartCountdown += HandleOnCountdown;

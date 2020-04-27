@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Lidgren.Network;
 
 using GameInstanceServer.Game;
+using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Systems.ECS;
 
 // Modify component system id from ECS for a new id.
@@ -175,8 +176,8 @@ namespace GameInstanceServer.Systems.Networking
                 player.RegisterComponents();
 
                 // Player spawn. 
-                player.Position.Position = new Vector2(5000, 600);
-                player.Position.Momentum = new Vector2();
+                player.Position.Position = new Vector2(6000, 1800);
+                player.Position.Momentum = new Vector2(-120, 0);
                 player.Position.Direction = 0;
                 player.Position.AngularMomentum = 20;
 

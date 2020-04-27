@@ -18,7 +18,7 @@ namespace GameInstanceServer.Game.Objects.Common
         {
             get
             {
-                return ComponentSystemId.PositionSystem;
+                return ComponentSystemId.BlackholeSystem;
             }
         }
 

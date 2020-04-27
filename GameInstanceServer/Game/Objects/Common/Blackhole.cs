@@ -131,14 +131,16 @@ namespace GameInstanceServer.Game.Objects.Common
             float momentum = 110f + 2f / 150f * (4400f - distance);
 
             // Get direction tangent
-            float direction = (float)Math.Atan2(
-                Position.Y - position.Y, Position.X - position.X
-                ) + (float)(Math.PI / 4);
+            Vector2 direction = Position - position;
+            direction.Normalize();
 
-            // Convert polar to cartesian
-            return distance * new Vector2(
-                (float)Math.Cos(direction), (float)Math.Sin(direction)
-                );
+            // Rotate anticlockwise 90 degrees
+            float roty = -direction.Y;
+            direction.Y = direction.X;
+            direction.X = roty;
+
+            // Apply magnitude to direction
+            return (110f + 2f / 150f * (4400f - distance)) * direction;
         }
 
         /// <summary>
@@ -155,6 +157,8 @@ namespace GameInstanceServer.Game.Objects.Common
             float force = GravityConstant / distance;
             Vector2 direction = position - Position;
             direction.Normalize();
+            direction.Y *= -1;
+            direction.X *= -1;
 
             return direction * force;
         }

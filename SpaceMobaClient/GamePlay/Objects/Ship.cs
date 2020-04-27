@@ -159,7 +159,8 @@ namespace SpaceMobaClient.GamePlay.Objects
             // WELCOME TO HIDEOUSNESS
             spriteBatch.Draw(Sprite, 
                 new Rectangle(
-                    (int)Position.X + camera.OffsetX, (int)Position.Y + camera.OffsetY, 
+                    (int)Position.X + camera.OffsetX, 
+                    (int)Position.Y + camera.OffsetY, 
                     Sprite.Width, Sprite.Height
                     ),
                 Sprite.Bounds, Color.White, 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace GameInstanceServer.Game
 {
@@ -29,6 +30,24 @@ namespace GameInstanceServer.Game
         public static event EventHandler<int> OnStartCountdown;
         public static event EventHandler<object> OnStartGame;
         public static event EventHandler<object> OnEndGame;
+
+        // Public game timer
+        private readonly static Stopwatch ServerTimer = new Stopwatch();
+        public static long ElapsedMilliseconds
+        {
+            get
+            {
+                return ServerTimer.ElapsedMilliseconds;
+            }
+        }
+
+        /// <summary>
+        /// Starts the game master timer.
+        /// </summary>
+        public static void StartMasterTimer()
+        {
+            ServerTimer.Start();
+        }
 
         /// <summary>
         /// Starts the countdown timer.

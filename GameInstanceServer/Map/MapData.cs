@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Objects.Ships;
 using GameInstanceServer.Systems;
 
 namespace GameInstanceServer.Map
@@ -24,6 +25,10 @@ namespace GameInstanceServer.Map
             // BLACK HOLE OF DOOM
             Blackhole blackhole = new Blackhole(new Vector2(6000, 6000));
             blackhole.RegisterComponents();
+
+            // Mothership of lessor doom
+            Mothership mothership = new Mothership();
+            mothership.RegisterComponents();
         }
     }
 }

@@ -92,6 +92,30 @@
 /processorParam:TextureFormat=Color
 /build:Gui/barforeground.png
 
+#begin Objects/3e78cd76-c433-47f5-af1b-c7757fdb086c.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Objects/3e78cd76-c433-47f5-af1b-c7757fdb086c.png;Objects/Blackhole.png
+
+#begin Objects/Ships/30c59aeb-ab4e-4e69-9f57-11705c28d17c.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Objects/Ships/30c59aeb-ab4e-4e69-9f57-11705c28d17c.png;Objects/Ships/Mothership.png
+
 #begin Objects/Weapons/bullet.png
 /importer:TextureImporter
 /processor:TextureProcessor

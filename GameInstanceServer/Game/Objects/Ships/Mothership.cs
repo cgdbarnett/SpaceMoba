@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+using Microsoft.Xna.Framework;
+
+using Lidgren.Network;
+
+using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.World;
+using GameInstanceServer.Systems.ECS;
+
+namespace GameInstanceServer.Game.Objects.Ships
+{
+    /// <summary>
+    /// The mothership is the primary base for the game. Serving as the place
+    /// where droids are made, and the primary objective to destroy of the 
+    /// opposition.
+    /// </summary>
+    public class Mothership : Entity
+    {
+        /// <summary>
+        /// This is a serializable object.
+        /// </summary>
+        public override bool Serializable => true;
+
+        /// <summary>
+        /// Position component of mothership.
+        /// </summary>
+        public PositionComponent Position => (PositionComponent)Components[0];
+
+        /// <summary>
+        /// World component of mothership.
+        /// </summary>
+        public WorldComponent World => (WorldComponent)Components[1];
+
+        /// <summary>
+        /// Creates a Mothership entity.
+        /// </summary>
+        public Mothership() : base(ECS.GetNextId())
+        {
+            // Register components.
+            Components = new IComponent[]
+            {
+                new PositionComponent()
+                {
+                    Position = new Vector2(6000, 1600),
+                    Momentum = Blackhole.GetInitialMomentum(
+                        new Vector2(6000, 1600)
+                        ),
+                    Direction = 0,
+                    AngularMomentum = 0
+                },
+                new WorldComponent(),
+                new AnimationComponent()
+                {
+                    Sprite = "Objects/Ships/Mothership"
+                },
+                new AffectedByBlackholeComponent()
+            };
+
+            // Link components
+            World.Entity = this;
+            World.PositionComponent = Position;
+            ((AffectedByBlackholeComponent)Components[3]).Position = Position;
+        }
+    }
+}

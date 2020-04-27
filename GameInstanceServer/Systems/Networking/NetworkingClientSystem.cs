@@ -46,6 +46,9 @@ namespace GameInstanceServer.Systems.Networking
         {
             NetworkingClientComponent client = (NetworkingClientComponent)component;
 
+            // Replicate
+            ReplicateForClient(client);
+
             // Flush outgoing messages
             while(client.OutgoingMessageQueue.Count > 0)
             {
@@ -61,6 +64,79 @@ namespace GameInstanceServer.Systems.Networking
             {
                 HandleMessage(client, client.IncomingMessageQueue.Dequeue());
             }
+        }
+
+        /// <summary>
+        /// Creates replication updates for client.
+        /// </summary>
+        private void ReplicateForClient(NetworkingClientComponent client)
+        {
+            // Get nearby objects
+            List<Entity> objects =
+                client.Entity.World.Cell.GetNearbyObjects(
+                    client.Entity.Position.Position
+                    );
+
+            // Iterate through objects
+            Dictionary<Entity, long> newReplicated = new Dictionary<Entity, long>();
+
+            foreach(Entity entity in objects)
+            {
+                if (entity.Serializable)
+                {
+                    if (client.ReplicatedEntities.ContainsKey(entity))
+                    {
+                        // Update
+                        newReplicated.Add(
+                            entity, client.ReplicatedEntities[entity]
+                            );
+
+                        // Only update if entity has had a state change, or if
+                        // it hasn't been updated in over 1 second.
+                        if (entity.LastUpdated > newReplicated[entity] ||
+                            GameMaster.ElapsedMilliseconds
+                            > newReplicated[entity] + 1000
+                            )
+                        {
+                            NetOutgoingMessage msg =
+                                PacketWriter.UpdateObject(
+                                    client.NetConnection, entity
+                                    );
+                            client.OutgoingMessageQueue.Enqueue(msg);
+                            newReplicated[entity] = 
+                                GameMaster.ElapsedMilliseconds;
+                        }
+
+                        client.ReplicatedEntities.Remove(entity);
+                    }
+                    else
+                    {
+                        // New
+                        newReplicated.Add(
+                            entity, GameMaster.ElapsedMilliseconds
+                            );
+                        NetOutgoingMessage msg =
+                            PacketWriter.CreateObject(
+                                client.NetConnection, entity
+                                );
+                        client.OutgoingMessageQueue.Enqueue(msg);
+                    }
+                }
+            }
+
+            // Any entities left in Replicated Entities need to be destroyed
+            foreach(Entity entity in client.ReplicatedEntities.Keys)
+            {
+                // Destroy
+                NetOutgoingMessage msg =
+                    PacketWriter.DestroyObject(
+                        client.NetConnection, entity
+                        );
+                client.OutgoingMessageQueue.Enqueue(msg);
+            }
+
+            // GC should clear up the old dictionary
+            client.ReplicatedEntities = newReplicated;
         }
 
         /// <summary>
