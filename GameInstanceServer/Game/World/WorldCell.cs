@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using GameInstanceServer.Systems.ECS;
 using Microsoft.Xna.Framework;
 
 namespace GameInstanceServer.Game.World
@@ -14,7 +14,7 @@ namespace GameInstanceServer.Game.World
         private readonly WorldGrid Parent;
 
         // List of objects in cell
-        private List<WorldComponent> ObjectsInCell;
+        private Dictionary<WorldComponent, Entity> ObjectsInCell;
 
         /// <summary>
         /// Creates an instance of a world cell.
@@ -23,16 +23,16 @@ namespace GameInstanceServer.Game.World
         public WorldCell(WorldGrid parent)
         {
             Parent = parent;
-            ObjectsInCell = new List<WorldComponent>();
+            ObjectsInCell = new Dictionary<WorldComponent, Entity>();
         }
 
         /// <summary>
         /// Returns a list of all objects in the cell.
         /// </summary>
         /// <returns>List of objects.</returns>
-        public List<WorldComponent> GetObjects()
+        public List<Entity> GetObjects()
         {
-            return new List<WorldComponent>(ObjectsInCell);
+            return new List<Entity>(ObjectsInCell.Values);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace GameInstanceServer.Game.World
         /// </summary>
         /// <param name="position">Position to test from.</param>
         /// <returns>List of nearby objects.</returns>
-        public List<WorldComponent> GetNearbyObjects(Vector2 position)
+        public List<Entity> GetNearbyObjects(Vector2 position)
         {
             return Parent.GetObjectsInCellsAroundPoint(position.ToPoint());
         }
@@ -51,7 +51,7 @@ namespace GameInstanceServer.Game.World
         /// <param name="obj">Object to add.</param>
         public void Add(WorldComponent obj)
         {
-            ObjectsInCell.Add(obj);
+            ObjectsInCell.Add(obj, obj.Entity);
         }
 
         /// <summary>

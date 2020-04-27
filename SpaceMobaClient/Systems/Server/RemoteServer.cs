@@ -223,7 +223,7 @@ namespace SpaceMobaClient.Systems.Server
 
                 case NetOpCode.WelcomePacket:
                     {
-                        Trace.Indent();
+                        int localPlayer = msg.ReadInt32();
 
                         // Create objects
                         int count = msg.ReadInt16();
@@ -243,7 +243,7 @@ namespace SpaceMobaClient.Systems.Server
                         // Assign local player
                         try
                         {
-                            OnAssignToLocalPlayer(msg.ReadInt32());
+                            OnAssignToLocalPlayer(localPlayer);
                         }
                         catch
                         {
@@ -307,7 +307,7 @@ namespace SpaceMobaClient.Systems.Server
         private IGameObject CreateObjectFromMessage(NetIncomingMessage msg)
         {
             int id = msg.ReadInt32();
-            GameObjectType type = (GameObjectType)msg.ReadInt16();
+            GameObjectType type = GameObjectType.Ship;
 
             IGameObject obj;
 
@@ -319,14 +319,17 @@ namespace SpaceMobaClient.Systems.Server
                         ContentManager content =
                             GameClient.GetGameClient().GetContentManager();
 
+                        // Position
+                        msg.ReadByte();
+
                         // Deserialize message.
                         Vector2 spawn = new Vector2(
                             msg.ReadFloat(), msg.ReadFloat()
                             );
-                        float direction = msg.ReadFloat();
                         Vector2 momentum = new Vector2(
                             msg.ReadFloat(), msg.ReadFloat()
                             );
+                        float direction = msg.ReadFloat();
                         float angularMomentum = msg.ReadFloat();
 
                         // Create ship object

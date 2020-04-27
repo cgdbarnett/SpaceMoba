@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
+
+using Lidgren.Network;
 
 using GameInstanceServer.Systems.ECS;
 using GameInstanceServer.Game.World;
@@ -13,7 +17,8 @@ namespace GameInstanceServer.Game.Objects.Common
         // Positional data.
         public Vector2 Position;
         public Vector2 Momentum;
-        public WorldCell Cell;
+        public float Direction;
+        public float AngularMomentum;
 
         /// <summary>
         /// Gets the ComponentSystem for Positioned objects.
@@ -24,6 +29,33 @@ namespace GameInstanceServer.Game.Objects.Common
             {
                 return ComponentSystemId.PositionSystem;
             }
+        }
+
+        /// <summary>
+        /// This is a serializable component.
+        /// </summary>
+        public bool Serializable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Serializes position into a out going msg.
+        /// </summary>
+        /// <param name="msg">Outgoing message.</param>
+        public void Serialize(NetOutgoingMessage msg)
+        {
+            // Id | X | Y | MoX | MoY | Direction | AngMo
+            msg.Write((byte)SerializableComponentId.Position);
+            msg.Write(Position.X);
+            msg.Write(Position.Y);
+            msg.Write(Momentum.X);
+            msg.Write(Momentum.Y);
+            msg.Write(Direction);
+            msg.Write(AngularMomentum);
         }
     }
 }

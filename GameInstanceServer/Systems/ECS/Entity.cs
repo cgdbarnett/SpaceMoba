@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Lidgren.Network;
+
 namespace GameInstanceServer.Systems.ECS
 {
     /// <summary>
@@ -20,6 +22,18 @@ namespace GameInstanceServer.Systems.ECS
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// A flag to indicate whether this entity should be serialized
+        /// when replicating.
+        /// </summary>
+        public virtual bool Serializable
+        {
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -65,6 +79,25 @@ namespace GameInstanceServer.Systems.ECS
                     component.ComponentSystem, Id, component
                     );
             }
+        }
+
+        /// <summary>
+        /// Serializes the entity to a given outgoing message.
+        /// </summary>
+        /// <param name="msg">Outgoing message to append to.</param>
+        public virtual void Serialize(NetOutgoingMessage msg)
+        {
+            msg.Write(Id);
+            foreach(IComponent component in Components)
+            {
+                if(component.Serializable)
+                {
+                    component.Serialize(msg);
+                }
+            }
+
+            // Null termination
+            msg.Write((byte)0);
         }
     }
 }

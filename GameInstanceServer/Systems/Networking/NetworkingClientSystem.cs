@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Lidgren.Network;
 
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Game;
 
 // Modify component system id from ECS for a new id.
 namespace GameInstanceServer.Systems.ECS
@@ -81,6 +82,13 @@ namespace GameInstanceServer.Systems.Networking
                         {
                             Trace.WriteLine("Client is ready.");
                             client.Ready = true;
+
+                            // Send welcome packet
+                            NetOutgoingMessage welcome = 
+                                PacketWriter.WelcomePacket(
+                                    client.NetConnection, client.Entity
+                                    );
+                            client.OutgoingMessageQueue.Enqueue(welcome);
                         }
                         break;
 
@@ -99,6 +107,6 @@ namespace GameInstanceServer.Systems.Networking
             {
 
             }
-        }
+        } 
     }
 }

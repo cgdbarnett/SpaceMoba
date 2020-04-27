@@ -44,6 +44,9 @@ namespace GameInstanceServer.Game.Objects.Common
             // Update position
             PositionComponent position = (PositionComponent)component;
             position.Position += position.Momentum * delta;
+
+            // Update direction
+            position.Direction += position.AngularMomentum * delta;
         }
     }
 }

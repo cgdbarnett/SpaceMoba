@@ -7,14 +7,11 @@
 
   <ItemGroup>
     <Compile Remove="Game\GameSimulation.cs" />
-    <Compile Remove="Game\Objects\Combat\Bullet.cs" />
     <Compile Remove="Systems\NetManager.cs" />
     <Compile Remove="Systems\PacketWriter.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Game\GameSimulation.cs" />
-    <None Include="Game\Objects\Combat\Bullet.cs" />
     <None Include="Systems\Networking\PacketWriter.cs" />
   </ItemGroup>
 
@@ -30,6 +27,11 @@
     <Reference Include="System">
       <HintPath>System</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Game\Objects\Combat\" />
+    <Folder Include="Game\Objects\Ships\" />
   </ItemGroup>
 
 </Project>

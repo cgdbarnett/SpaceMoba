@@ -7,10 +7,11 @@ using Microsoft.Xna.Framework;
 using Lidgren.Network;
 
 using GameInstanceServer.Game.World;
+using GameInstanceServer.Systems.ECS;
 
 namespace GameInstanceServer.Game.Objects.Common
 {
-    public class Blackhole : CollidableObject, IGameObject
+    public class Blackhole : Entity
     {
         /// <summary>
         /// Position of the centre of the black hole.
@@ -27,26 +28,34 @@ namespace GameInstanceServer.Game.Objects.Common
         /// </summary>
         private const float GravityConstant = 50000000f;
 
-        // Object Identifier
-        private readonly int Id;
-
-        // Cell object is located in
-        private WorldCell Cell;
-
         /// <summary>
         /// Creates a blachole object.
         /// </summary>
-        /// <param name="id">Unique identifier for object.</param>
         /// <param name="position">Spawn position of object.</param>
-        public Blackhole(int id, Vector2 position)
+        public Blackhole(Vector2 position) : base(ECS.GetNextId())
         {
-            Id = id;
-            Position = new Vector2(position.X, position.Y);
+            // Register components
+            Components = new IComponent[]
+            {
+                new AnimationComponent()
+                {
+                    Sprite = "Resources/Objects/Blackhole"
+                },
+                new PositionComponent()
+                {
+                    Position = new Vector2(position.X, position.Y),
+                    Momentum = new Vector2(),
+                    Direction = 0,
+                    AngularMomentum = 0
+                },
+                new WorldComponent()
+            };
 
-            BoundingBox = new Rectangle(
-                new Point((int)position.X - 400, (int)position.Y - 400),
-                new Point(800, 800)
-                );
+            // Link components
+            Position = ((PositionComponent)Components[1]).Position;
+            ((WorldComponent)Components[2]).PositionComponent = 
+                (PositionComponent)Components[1];
+            ((WorldComponent)Components[2]).Entity = this;
         }
 
         /// <summary>
@@ -148,73 +157,6 @@ namespace GameInstanceServer.Game.Objects.Common
             direction.Normalize();
 
             return direction * force;
-        }
-
-        /// <summary>
-        /// Returns a reference to the current cell containing this object.
-        /// </summary>
-        /// <returns>Cell containing this object.</returns>
-        public WorldCell GetCell()
-        {
-            return Cell;
-        }
-
-        /// <summary>
-        /// Returns the unique id of this object.
-        /// </summary>
-        /// <returns>Id</returns>
-        public int GetId()
-        {
-            return Id;
-        }
-
-        /// <summary>
-        /// Returns the current position of this object.
-        /// </summary>
-        /// <returns>Returns point this object is at.</returns>
-        public Point GetPosition()
-        {
-            return Position.ToPoint();
-        }
-
-        /// <summary>
-        /// Serializes this object into a packet.
-        /// </summary>
-        /// <param name="message">Outgoing message.</param>
-        public void Serialize(NetOutgoingMessage message)
-        {
-            // Packet:
-            // Id (int)
-            // Type (short)
-            // Position (vec2)
-
-            // ** not yet implemented
-
-            message.Write((int)Id);
-            message.Write((short)GameObjectType.Blackhole);
-            message.Write(Position.X);
-            message.Write(Position.Y);
-        }
-
-        /// <summary>
-        /// Sets the cell reference containing this object.
-        /// </summary>
-        /// <param name="cell">Cell containing this object.</param>
-        public void SetCell(WorldCell cell)
-        {
-            Cell = cell;
-        }
-
-        /// <summary>
-        /// Apply gravity as external momentum to all IAffectedByBlackhole
-        /// objects in the game.
-        /// </summary>
-        /// <param name="gameTime">Game frame interval.</param>
-        public void Update(TimeSpan gameTime)
-        {
-            // Calculate delta time from the frame interval. (Delta time is in
-            // seconds).
-            float deltaTime = (float)gameTime.TotalMilliseconds / 1000;
         }
     }
 }

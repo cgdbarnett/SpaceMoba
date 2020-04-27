@@ -43,5 +43,25 @@ namespace GameInstanceServer.Systems.Networking
             IncomingMessageQueue = new Queue<NetIncomingMessage>();
             OutgoingMessageQueue = new Queue<NetOutgoingMessage>();
         }
+
+        /// <summary>
+        /// This is not a serializable component.
+        /// </summary>
+        public bool Serializable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// This is not a serializable component.
+        /// </summary>
+        /// <param name="msg"></param>
+        public void Serialize(NetOutgoingMessage msg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

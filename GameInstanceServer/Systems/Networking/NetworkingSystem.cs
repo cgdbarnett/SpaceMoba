@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using Microsoft.Xna.Framework;
+
 using Lidgren.Network;
 
 using GameInstanceServer.Game;
@@ -171,6 +173,12 @@ namespace GameInstanceServer.Systems.Networking
                 // Create new player entity
                 PlayerEntity player = new PlayerEntity();
                 player.RegisterComponents();
+
+                // Player spawn. 
+                player.Position.Position = new Vector2(5000, 600);
+                player.Position.Momentum = new Vector2();
+                player.Position.Direction = 0;
+                player.Position.AngularMomentum = 20;
 
                 // Set new player client component
                 component.Clients.Add(token, player.Client);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
-using GameInstanceServer.Game.Objects;
+using GameInstanceServer.Systems.ECS;
 
 namespace GameInstanceServer.Game.World
 {
@@ -16,7 +16,7 @@ namespace GameInstanceServer.Game.World
     {
         private readonly int Width, Height, CellWidth, CellHeight;
 
-        private WorldCell[][] Cells;
+        private readonly WorldCell[][] Cells;
 
         private int CellCountX
         {
@@ -65,14 +65,14 @@ namespace GameInstanceServer.Game.World
         /// </summary>
         /// <param name="position">Reference point.</param>
         /// <returns></returns>
-        public List<WorldComponent> GetObjectsInCellsAroundPoint(Point position)
+        public List<Entity> GetObjectsInCellsAroundPoint(Point position)
         {
             // Find cell this point is in
             Tuple<int, int> cell = GetCellFromPoint(position);
 
             // Loop through all cells, and combine their outputed lists
             // into a single list to return.
-            List<WorldComponent> objectsInCells = new List<WorldComponent>();
+            List<Entity> objectsInCells = new List<Entity>();
             for(int yy = -1; yy < 1; yy++)
             {
                 for(int xx = -1; xx < 2; xx++)

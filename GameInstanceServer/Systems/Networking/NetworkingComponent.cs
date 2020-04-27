@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Lidgren.Network;
 
@@ -55,6 +56,26 @@ namespace GameInstanceServer.Systems.Networking
 
             // Start server
             NetServer = new NetServer(config);
+        }
+
+        /// <summary>
+        /// This is not a serializable component.
+        /// </summary>
+        public bool Serializable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// This is not a serializable component.
+        /// </summary>
+        /// <param name="msg"></param>
+        public void Serialize(NetOutgoingMessage msg)
+        {
+            throw new NotImplementedException();
         }
     }
 }

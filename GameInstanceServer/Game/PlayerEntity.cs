@@ -15,6 +15,11 @@ namespace GameInstanceServer.Game
     public class PlayerEntity : Entity
     {
         /// <summary>
+        /// Serialize this entity.
+        /// </summary>
+        public override bool Serializable => true;
+
+        /// <summary>
         /// Gets the networking component for the player.
         /// </summary>
         public NetworkingClientComponent Client
@@ -48,18 +53,35 @@ namespace GameInstanceServer.Game
         }
 
         /// <summary>
+        /// Gets the animation component for the player.
+        /// </summary>
+        public AnimationComponent Animation
+        {
+            get
+            {
+                return (AnimationComponent)Components[3];
+            }
+        }
+
+        /// <summary>
         /// Creates a new player entity.
         /// </summary>
         public PlayerEntity() : base(ECS.GetNextId())
         {
+            // Create components
             Components = new IComponent[]
             {
                 new NetworkingClientComponent(this),
                 new PositionComponent(),
-                new WorldComponent()
+                new WorldComponent(),
+                new AnimationComponent()
             };
 
+            // Link components as required
+            Client.Entity = this;
             World.PositionComponent = Position;
+            World.Entity = this;
+            Animation.Sprite = "Resources/Objects/GreenBeacon";
         }
 
         /// <summary>

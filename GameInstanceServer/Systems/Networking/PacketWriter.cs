@@ -7,6 +7,7 @@ using Lidgren.Network;
 using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects;
 using GameInstanceServer.Game.World;
+using GameInstanceServer.Systems.ECS;
 
 namespace GameInstanceServer.Systems.Networking
 {
@@ -53,73 +54,77 @@ namespace GameInstanceServer.Systems.Networking
         /// client.
         /// </summary>
         /// <param name="target">Target NetConnection.</param>
-        /// <param name="client">Client.</param>
+        /// <param name="player">Player Entity.</param>
         /// <returns>Packet to send to client.</returns>
-        
         public static NetOutgoingMessage
             WelcomePacket(NetConnection target, PlayerEntity player)
         {
-
             // Create base message
             NetOutgoingMessage message = target.Peer.CreateMessage();
             message.Write((short)NetOpCode.WelcomePacket);
 
+            // Write localplayer object id
+            message.Write((int)player.Id);
+
             // Get list of nearby objects
-            List<WorldComponent> objects = 
+            List<Entity> objects = 
                 player.World.Cell.GetNearbyObjects(
                     player.Position.Position
                     );
 
             // Write objects into packet
             message.Write((short)objects.Count);
-            foreach(WorldComponent obj in objects)
+            foreach(Entity obj in objects)
             {
-                // Hmmmm
-                //obj.Serialize(message);
+                try
+                {
+                    // Hmmmm
+                    if (obj.Serializable)
+                    {
+                        obj.Serialize(message);
+                    }
+                }
+                catch
+                {
+                }
             }
-
-            // Write localplayer object id
-            message.Write((int)player.Id);
 
             return message;
         }
-        
+
 
         /// <summary>
         /// Creates a packet that updates objects in the area around
         /// the client.
         /// </summary>
         /// <param name="target">Target NetConnection.</param>
-        /// <param name="client">Client.</param>
+        /// <param name="player">Player Entity.</param>
         /// <returns>Packet to send to client.</returns>
-        /*
         public static NetOutgoingMessage
-            UpdateObjects(NetConnection target, Client client)
+            UpdateObjects(NetConnection target, PlayerEntity player)
         {
-            // Get reference to game simulation
-            GameSimulation gameSimulation = GameSimulation.GetGameSimulation();
-
             // Create base message
             NetOutgoingMessage message = target.Peer.CreateMessage();
             message.Write((short)NetOpCode.UpdateObjects);
 
             // Get list of nearby objects
-            List<IGameObject> objects = gameSimulation.GetNearbyObjects(
-                client.GameObject.GetPosition()
-                );
+            List<Entity> objects = 
+                player.World.Cell.GetNearbyObjects(
+                    player.Position.Position
+                    );
 
             // Write objects into packet
             message.Write((short)objects.Count);
-            foreach (IGameObject obj in objects)
+            foreach(Entity obj in objects)
             {
-                obj.Serialize(message);
+                // Hmmmm
+                if(obj.Serializable)
+                {
+                    obj.Serialize(message);
+                }
             }
-
-            // Write localplayer object id
-            message.Write((int)client.GameObject.GetId());
 
             return message;
         }
-        */
     }
 }
