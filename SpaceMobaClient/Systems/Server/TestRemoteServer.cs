@@ -77,7 +77,7 @@ namespace SpaceMobaClient.Systems.Server
             if (input.Left) force.Y -= AngularForce;
             if (input.Right) force.Y += AngularForce;
 
-            LocalPlayerShip.SetForce(force);
+            LocalPlayerShip.SetForce(force, force.Y);
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace SpaceMobaClient.GamePlay.Objects
         private Vector2 Momentum;
         private Vector2 Force;
         private float AngularMomentum;
+        private float AngularForce;
         private float Direction;
 
         // Sprite
@@ -38,6 +39,7 @@ namespace SpaceMobaClient.GamePlay.Objects
             Momentum = new Vector2();
             Force = new Vector2();
             AngularMomentum = 0;
+            AngularForce = 0;
 
             // Copy direction
             Direction = direction;
@@ -92,6 +94,24 @@ namespace SpaceMobaClient.GamePlay.Objects
         }
 
         /// <summary>
+        /// Returns the force on this ship.
+        /// </summary>
+        /// <returns>Force.</returns>
+        public Vector2 GetForce()
+        {
+            return Force;
+        }
+
+        /// <summary>
+        /// Returns the torque on this ship.
+        /// </summary>
+        /// <returns>Torque / angular force.</returns>
+        public float GetAngularForce()
+        {
+            return AngularForce;
+        }
+
+        /// <summary>
         /// Returns whether to draw this object.
         /// </summary>
         /// <returns>Returns visibility.</returns>
@@ -106,10 +126,11 @@ namespace SpaceMobaClient.GamePlay.Objects
         /// <param name="force">Force to apply. Force is applied along the
         /// axis of the ship in the direction Direction. X = forward, Y = 
         /// Right.</param>
-        public void SetForce(Vector2 force)
+        public void SetForce(Vector2 force, float angularForce)
         {
             Force.X = force.X;
             Force.Y = force.Y;
+            AngularForce = angularForce;
         }
 
         /// <summary>
@@ -180,39 +201,16 @@ namespace SpaceMobaClient.GamePlay.Objects
             float deltaTime = 
                 (float)gameTime.ElapsedGameTime.Milliseconds / 1000;
 
-            // Update physics
-            const float MaxAngularMomentum = 180; // (Degrees / second)
-            const float MinAngularMomentum = 1;
-            const float MaxMomentum = 400; // (Pixels / second)
-            const float MinMomentum = 3;
-
             // Update angular momentum and direction
-            AngularMomentum += Force.Y * deltaTime;
-            if (Math.Abs(AngularMomentum) < MinAngularMomentum)
-            {
-                AngularMomentum = 0;
-            }
-            else
-            {
-                AngularMomentum = MathHelper.Clamp(AngularMomentum,
-                    -MaxAngularMomentum, MaxAngularMomentum);
-            }
+            AngularMomentum += AngularForce * deltaTime;
             Direction += AngularMomentum * deltaTime;
 
             // Update momentum (apply Force.Y in direction of Direction)
-            Momentum += new Vector2((float)Math.Cos(
-                MathHelper.ToRadians(Direction)),
-                (float)Math.Sin(MathHelper.ToRadians(Direction))) 
-                * Force.X * deltaTime;
-            if(Momentum.Length() < MinMomentum)
-            {
-                Momentum = Vector2.Zero;
-            }
-            else if(Momentum.Length() > MaxMomentum)
-            {
-                Momentum.Normalize();
-                Momentum *= MaxMomentum;
-            }
+            //Momentum += new Vector2((float)Math.Cos(
+            //    MathHelper.ToRadians(Direction)),
+            //    (float)Math.Sin(MathHelper.ToRadians(Direction))) 
+            //    * Force.X * deltaTime;
+            Momentum += Force * deltaTime;
 
             // Update position
             Position += Momentum * deltaTime;

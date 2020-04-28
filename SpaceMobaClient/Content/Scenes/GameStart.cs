@@ -84,7 +84,13 @@ namespace SpaceMobaClient.Content.Scenes
         {
             try
             {
-                ObjectsInScene.Add(obj.GetId(), obj);
+                if (ObjectsInScene.ContainsKey(obj.GetId()))
+                {
+                }
+                else
+                {
+                    ObjectsInScene.Add(obj.GetId(), obj);
+                }
             }
             catch(Exception e)
             {

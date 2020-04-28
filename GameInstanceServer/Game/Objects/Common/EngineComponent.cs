@@ -21,12 +21,26 @@ namespace GameInstanceServer.Game.Objects.Common
 
         // State
         public PositionComponent Position;
-        public Vector2 Force;
+        public Vector2 InputForce;
+        public Vector2 Force
+        {
+            get
+            {
+                return InputForce.X * new Vector2(
+                (float)Math.Cos(
+                    MathHelper.ToRadians(Position.Direction)
+                    ),
+                (float)Math.Sin(
+                    MathHelper.ToRadians(Position.Direction)
+                    )
+                );
+            }
+        }
 
         /// <summary>
         /// This is a serializable object.
         /// </summary>
-        public bool Serializable => false;
+        public bool Serializable => true;
 
         /// <summary>
         /// Serializes the component into a message.
@@ -34,7 +48,10 @@ namespace GameInstanceServer.Game.Objects.Common
         /// <param name="msg"></param>
         public void Serialize(NetOutgoingMessage msg)
         {
-            throw new NotImplementedException();
+            msg.Write((byte)SerializableComponentId.Engine);
+            msg.Write(Force.X);
+            msg.Write(Force.Y);
+            msg.Write(InputForce.Y);
         }
     }
 }

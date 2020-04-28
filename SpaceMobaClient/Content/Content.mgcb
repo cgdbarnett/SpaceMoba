@@ -104,6 +104,18 @@
 /processorParam:TextureFormat=Color
 /build:Objects/3e78cd76-c433-47f5-af1b-c7757fdb086c.png;Objects/Blackhole.png
 
+#begin Objects/Resources/b3969192-0bb4-4d92-9ebf-84110894491d.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Objects/Resources/b3969192-0bb4-4d92-9ebf-84110894491d.png;Objects/Resources/Debri.png
+
 #begin Objects/Ships/30c59aeb-ab4e-4e69-9f57-11705c28d17c.png
 /importer:TextureImporter
 /processor:TextureProcessor

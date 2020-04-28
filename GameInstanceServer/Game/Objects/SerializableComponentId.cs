@@ -6,8 +6,9 @@
     public enum SerializableComponentId
     {
         EntityEnd = 0,
-        Position = 1,
+        Position,
         Animation,
-        AffectedByBlackhole
+        AffectedByBlackhole,
+        Engine
     }
 }

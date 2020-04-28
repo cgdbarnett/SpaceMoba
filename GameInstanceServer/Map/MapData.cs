@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 using Microsoft.Xna.Framework;
 
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Objects.Resources;
 using GameInstanceServer.Game.Objects.Ships;
-using GameInstanceServer.Systems;
 
 namespace GameInstanceServer.Map
 {
@@ -22,6 +20,9 @@ namespace GameInstanceServer.Map
         /// </summary>
         public static void SpawnWorld()
         {
+            const int debriCount = 160;
+            Random random = new Random();
+
             // BLACK HOLE OF DOOM
             Blackhole blackhole = new Blackhole(new Vector2(6000, 6000));
             blackhole.RegisterComponents();
@@ -29,6 +30,18 @@ namespace GameInstanceServer.Map
             // Mothership of lessor doom
             Mothership mothership = new Mothership();
             mothership.RegisterComponents();
+
+            // Fill the void with debri
+            for(int i = 0; i < debriCount; i++)
+            {
+                float dir = (float)(random.NextDouble() * Math.PI * 2);
+                float len = random.Next(2000, 5000);
+                float xpos = 6000 + len * (float)Math.Cos(dir);
+                float ypos = 6000 + len * (float)Math.Sin(dir);
+
+                Debri debri = new Debri(new Vector2(xpos, ypos));
+                debri.RegisterComponents();
+            }
         }
     }
 }

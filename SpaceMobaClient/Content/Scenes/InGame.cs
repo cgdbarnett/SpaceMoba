@@ -104,9 +104,14 @@ namespace SpaceMobaClient.Content.Scenes
                 ship.SetDirection(update.GetDirection());
                 ship.SetMomentum(update.GetMomentum());
                 ship.SetAngularMomentum(update.GetAngularMomentum());
+                ship.SetForce(update.GetForce(), update.GetAngularForce());
             }
             else
             {
+                if(obj.GetId() == LocalPlayer.GetLocalGameObject().GetId())
+                {
+                    LocalPlayer.SetLocalGameObject(obj);
+                }
                 GameObjectsInScene.Add(obj.GetId(), obj);
             }
         }

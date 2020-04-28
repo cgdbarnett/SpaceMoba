@@ -97,7 +97,7 @@ namespace GameInstanceServer.Systems.Networking
                         // it hasn't been updated in over 1 second.
                         if (entity.LastUpdated > newReplicated[entity] ||
                             GameMaster.ElapsedMilliseconds
-                            > newReplicated[entity] + 1000
+                            > newReplicated[entity] + 100
                             )
                         {
                             NetOutgoingMessage msg =
@@ -173,11 +173,14 @@ namespace GameInstanceServer.Systems.Networking
                     // Handle input from the client.
                     case NetOpCode.UpdatePlayerInput:
                         {
+                            // Temporary force input
                             float forceX = (msg.ReadByte() - 1f) * 100f;
                             float forceY = (msg.ReadByte() - 1f) * 120f;
                             bool attack = msg.ReadBoolean(); // Disregard atm
-                            client.Entity.Engine.Force 
+                            client.Entity.Engine.InputForce 
                                 = new Vector2(forceX, forceY);
+                            client.Entity.LastUpdated = 
+                                GameMaster.ElapsedMilliseconds;
                         }
                         break;
 

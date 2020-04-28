@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
@@ -66,7 +68,7 @@ namespace GameInstanceServer.Game
         /// <summary>
         /// Gets the engine component for the player.
         /// </summary>
-        public EngineComponent Engine => (EngineComponent)Components[5];
+        public EngineComponent Engine => (EngineComponent)Components[4];
 
         /// <summary>
         /// Creates a new player entity.
@@ -77,19 +79,28 @@ namespace GameInstanceServer.Game
             Components = new IComponent[]
             {
                 new NetworkingClientComponent(this),
-                new PositionComponent(),
+                new PositionComponent()
+                {
+                    Position = new Vector2(),
+                    Momentum = new Vector2(),
+                    AngularMomentum = 0,
+                    Direction = 0
+                },
                 new WorldComponent(),
-                new AnimationComponent(),
-                new AffectedByBlackholeComponent(),
-                new EngineComponent(),
+                new AnimationComponent()
+                {
+                    Sprite = "Objects/Ships/GreenBeacon"
+                },
+                new EngineComponent()
+                {
+                    InputForce = new Vector2()
+                }
             };
 
             // Link components as required
             Client.Entity = this;
             World.PositionComponent = Position;
             World.Entity = this;
-            Animation.Sprite = "Objects/Ships/GreenBeacon";
-            ((AffectedByBlackholeComponent)Components[4]).Position = Position;
             Engine.Position = Position;
         }
 

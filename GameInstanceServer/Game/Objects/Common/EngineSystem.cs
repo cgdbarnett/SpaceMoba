@@ -1,4 +1,7 @@
 ﻿using System;
+
+using Microsoft.Xna.Framework;
+
 using GameInstanceServer.Systems.ECS;
 
 // Modify component system id from ECS for a new id.
@@ -44,6 +47,8 @@ namespace GameInstanceServer.Game.Objects.Common
 
             // Update momentum
             EngineComponent engine = (EngineComponent)component;
+            
+            engine.Position.AngularMomentum += engine.InputForce.Y * delta;
             engine.Position.Momentum += engine.Force * delta;
         }
     }
