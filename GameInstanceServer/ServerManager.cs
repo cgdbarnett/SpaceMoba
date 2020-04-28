@@ -61,6 +61,7 @@ namespace GameInstanceServer
             ECS.RegisterSystem(new PositionSystem());
             ECS.RegisterSystem(new AnimationSystem());
             ECS.RegisterSystem(new BlachholeSystem());
+            ECS.RegisterSystem(new EngineSystem());
 
             // Create networking component without an entity
             ECS.RegisterComponentToSystem(

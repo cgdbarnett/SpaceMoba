@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using Microsoft.Xna.Framework;
+
 using Lidgren.Network;
 
 using GameInstanceServer.Systems.ECS;
@@ -171,6 +173,11 @@ namespace GameInstanceServer.Systems.Networking
                     // Handle input from the client.
                     case NetOpCode.UpdatePlayerInput:
                         {
+                            float forceX = (msg.ReadByte() - 1f) * 100f;
+                            float forceY = (msg.ReadByte() - 1f) * 120f;
+                            bool attack = msg.ReadBoolean(); // Disregard atm
+                            client.Entity.Engine.Force 
+                                = new Vector2(forceX, forceY);
                         }
                         break;
 

@@ -176,8 +176,8 @@ namespace GameInstanceServer.Systems.Networking
                 player.RegisterComponents();
 
                 // Player spawn. 
-                player.Position.Position = new Vector2(6000, 1800);
-                player.Position.Momentum = new Vector2(-120, 0);
+                player.Position.Position = new Vector2(6000, 1600);
+                player.Position.Momentum = new Vector2(-110, 0);
                 player.Position.Direction = 0;
                 player.Position.AngularMomentum = 20;
 

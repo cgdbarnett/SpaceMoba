@@ -7,6 +7,7 @@
     {
         EntityEnd = 0,
         Position = 1,
-        Animation
+        Animation,
+        AffectedByBlackhole
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-
-using Microsoft.Xna.Framework;
-
 using GameInstanceServer.Systems.ECS;
 
 // Modify component system id from ECS for a new id.
@@ -11,7 +8,7 @@ namespace GameInstanceServer.Systems.ECS
     public partial class ComponentSystemId
     {
         // Create Id for Position System.
-        public static readonly ComponentSystemId BlackholeSystem
+        public static readonly ComponentSystemId EngineSystem
             = new ComponentSystemId();
     }
 }
@@ -19,21 +16,22 @@ namespace GameInstanceServer.Systems.ECS
 namespace GameInstanceServer.Game.Objects.Common
 {
     /// <summary>
-    /// Resource system.
+    /// The EngineSystem provides force to the PositionSystem to enable
+    /// controlled movement of a ship.
     /// </summary>
-    public class BlachholeSystem : ComponentSystem
+    public class EngineSystem : ComponentSystem
     {
         /// <summary>
-        /// Creates a BlackholeSystem.
+        /// Creates a new EngineSystem.
         /// </summary>
-        public BlachholeSystem()
+        public EngineSystem()
         {
-            Id = ComponentSystemId.BlackholeSystem;
+            Id = ComponentSystemId.EngineSystem;
             WantsUpdates = true;
         }
 
         /// <summary>
-        /// Update the position of the component.
+        /// Update the force applied to the PositionComponent.
         /// </summary>
         /// <param name="component">Component to update.</param>
         /// <param name="gameTime">Game frame interval.</param>
@@ -44,19 +42,9 @@ namespace GameInstanceServer.Game.Objects.Common
             // Calculate delta (in seconds)
             float delta = (float)gameTime.TotalSeconds;
 
-            // Get position
-            AffectedByBlackholeComponent blackhole = 
-                (AffectedByBlackholeComponent)component;
-            PositionComponent position = blackhole.Position;
-
-            // Get decay, and gravity vector
-            float decay = Blackhole.GetDecay(position.Position);
-            blackhole.Gravity = Blackhole.GetMomentum(position.Position);
-
-            position.Momentum += blackhole.Gravity * delta;
-
-            // Apply decay to momentums, and then apply gravity
-            position.Momentum -= position.Momentum * decay;
+            // Update momentum
+            EngineComponent engine = (EngineComponent)component;
+            engine.Position.Momentum += engine.Force * delta;
         }
     }
 }

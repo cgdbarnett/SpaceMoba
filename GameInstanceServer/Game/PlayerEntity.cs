@@ -64,6 +64,11 @@ namespace GameInstanceServer.Game
         }
 
         /// <summary>
+        /// Gets the engine component for the player.
+        /// </summary>
+        public EngineComponent Engine => (EngineComponent)Components[5];
+
+        /// <summary>
         /// Creates a new player entity.
         /// </summary>
         public PlayerEntity() : base(ECS.GetNextId())
@@ -75,7 +80,8 @@ namespace GameInstanceServer.Game
                 new PositionComponent(),
                 new WorldComponent(),
                 new AnimationComponent(),
-                new AffectedByBlackholeComponent()
+                new AffectedByBlackholeComponent(),
+                new EngineComponent(),
             };
 
             // Link components as required
@@ -84,6 +90,7 @@ namespace GameInstanceServer.Game
             World.Entity = this;
             Animation.Sprite = "Objects/Ships/GreenBeacon";
             ((AffectedByBlackholeComponent)Components[4]).Position = Position;
+            Engine.Position = Position;
         }
 
         /// <summary>

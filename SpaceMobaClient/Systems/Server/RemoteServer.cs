@@ -124,7 +124,6 @@ namespace SpaceMobaClient.Systems.Server
             // sideways (byte) 0 = left, 1 = none, 2 = right
 
             NetOutgoingMessage msg = Client.CreateMessage();
-            msg.Write((int)MatchMaker.CurrentGameToken);
             msg.Write((short)NetOpCode.UpdatePlayerInput);
 
             byte xx = 1;
@@ -299,6 +298,7 @@ namespace SpaceMobaClient.Systems.Server
             // Defaults
             Vector2 spawn = new Vector2();
             Vector2 momentum = new Vector2();
+            Vector2 externalMomentum = new Vector2();
             float direction = 0, angularMomentum = 0;
             string sprite = "Objects/Ships/GreenBeacon";
             byte componentId;
@@ -325,6 +325,12 @@ namespace SpaceMobaClient.Systems.Server
                     case 2:
                         sprite = msg.ReadString();
                         break;
+
+                    // Blackhole gravity
+                    case 3:
+                        externalMomentum.X = msg.ReadFloat();
+                        externalMomentum.Y = msg.ReadFloat();
+                        break;
                 }
             }
 
@@ -338,6 +344,7 @@ namespace SpaceMobaClient.Systems.Server
                 );
             ship.SetMomentum(momentum);
             ship.SetAngularMomentum(angularMomentum);
+            ship.SetForce(externalMomentum);
             
             return ship;
         }

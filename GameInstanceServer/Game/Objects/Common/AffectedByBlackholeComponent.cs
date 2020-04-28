@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Microsoft.Xna.Framework;
+
 using Lidgren.Network;
 
 using GameInstanceServer.Systems.ECS;
@@ -10,6 +12,7 @@ namespace GameInstanceServer.Game.Objects.Common
     {
         // Positional and blackhole fields.
         public PositionComponent Position;
+        public Vector2 Gravity;
 
         /// <summary>
         /// Gets the ComponentSystem for AffectedByBlackholeComponent.
@@ -25,13 +28,7 @@ namespace GameInstanceServer.Game.Objects.Common
         /// <summary>
         /// This is not a serializable component.
         /// </summary>
-        public bool Serializable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool Serializable => true;
 
         /// <summary>
         /// This is not a serializable component.
@@ -39,7 +36,9 @@ namespace GameInstanceServer.Game.Objects.Common
         /// <param name="msg"></param>
         public void Serialize(NetOutgoingMessage msg)
         {
-            throw new NotImplementedException();
+            msg.Write((byte)SerializableComponentId.AffectedByBlackhole);
+            msg.Write(Gravity.X);
+            msg.Write(Gravity.Y);
         }
     }
 }
