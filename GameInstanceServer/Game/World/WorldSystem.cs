@@ -24,7 +24,7 @@ namespace GameInstanceServer.Game.World
         private readonly WorldGrid WorldGrid;
 
         // Size of cells in grid.
-        private const int CellSize = 2000;
+        private const int CellSize = 1000;
 
         /// <summary>
         /// Creates a WorldSystem.

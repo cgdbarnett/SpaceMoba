@@ -59,6 +59,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Content\Scenes\GameStart.cs" />
+    <Compile Include="GamePlay\Components\AnimationComponent.cs" />
+    <Compile Include="GamePlay\Components\PositionComponent.cs" />
     <Compile Include="GamePlay\Objects\GameObjectType.cs" />
     <Compile Include="GamePlay\Objects\Bullet.cs" />
     <Compile Include="Systems\Gui\GuiHealthbar.cs" />
@@ -73,6 +75,10 @@
     <Compile Include="Systems\Gui\IGui.cs" />
     <Compile Include="GamePlay\ILocalPlayer.cs" />
     <Compile Include="Systems\IO\InputState.cs" />
+    <Compile Include="Systems\Objects\ComponentId.cs" />
+    <Compile Include="Systems\Objects\Entity.cs" />
+    <Compile Include="Systems\Objects\EntityManager.cs" />
+    <Compile Include="Systems\Objects\IComponent.cs" />
     <Compile Include="Systems\Scenes\IScene.cs" />
     <Compile Include="GamePlay\LocalPlayer.cs" />
     <Compile Include="GamePlay\Objects\IGameObject.cs" />
@@ -84,7 +90,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Systems\Scenes\SceneManager.cs" />
-    <Compile Include="Systems\Server\TestRemoteServer.cs" />
+    <None Include="Systems\Server\TestRemoteServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">

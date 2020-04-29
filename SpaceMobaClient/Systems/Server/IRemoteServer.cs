@@ -19,21 +19,6 @@ namespace SpaceMobaClient.Systems.Server
     public interface IRemoteServer
     {
         /// <summary>
-        /// Triggers when an object is created.
-        /// </summary>
-        event ObjectEventHandler OnCreate;
-
-        /// <summary>
-        /// Triggers when an object is destroyed.
-        /// </summary>
-        event IntEventHandler OnDestroy;
-
-        /// <summary>
-        /// Triggers when an object is assigned to the local player.
-        /// </summary>
-        event IntEventHandler OnAssignToLocalPlayer;
-
-        /// <summary>
         /// Triggers when the server issues the command to start the game.
         /// </summary>
         event IntEventHandler OnGameStart;

@@ -47,7 +47,7 @@ namespace SpaceMobaClient.Content.Scenes
 
         // Graphics
         private SpriteBatch SpriteBatch;
-        private Texture2D LoadingScreen, Background;
+        private Texture2D Background;
 
         // Scene controllers, Camera, GUI and LocalPlayer
         private Camera Camera;

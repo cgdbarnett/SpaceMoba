@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using Lidgren.Network;
 
+using SpaceMobaClient.GamePlay.Components;
 using SpaceMobaClient.GamePlay.Objects;
 using SpaceMobaClient.Systems.IO;
-using Microsoft.Xna.Framework;
+using SpaceMobaClient.Systems.Objects;
 
 namespace SpaceMobaClient.Systems.Server
 {
@@ -20,23 +22,15 @@ namespace SpaceMobaClient.Systems.Server
     public class RemoteServer : IRemoteServer
     {
         // Reference to match maker
-        MatchmakerServer MatchMaker;
+        private readonly MatchmakerServer MatchMaker;
 
         // Lidgren netclient object that handles communications with
         // remote server.
         private NetClient Client;
 
-        // Event handlers when specific object events occur from server.
-        public event ObjectEventHandler OnCreate;
-        public event IntEventHandler OnDestroy;
-        public event IntEventHandler OnAssignToLocalPlayer;
-
         // Event handlers for generic events occuring on server.
+        public event IntEventHandler OnAssignToLocalPlayer;
         public event IntEventHandler OnGameStart;
-
-        // Stores objects in each frame, to identify when an object is
-        // destroyed, updated or created.
-        private List<int> ObjectsInFrame;
 
         /// <summary>
         /// Creates an instance of the remote server, and starts the
@@ -45,7 +39,6 @@ namespace SpaceMobaClient.Systems.Server
         public RemoteServer()
         {
             MatchMaker = MatchmakerServer.GetMatchmakerServer();
-            ObjectsInFrame = new List<int>();
 
             Client = new NetClient(new NetPeerConfiguration("smc20"));
             Client.Start();
@@ -229,15 +222,7 @@ namespace SpaceMobaClient.Systems.Server
                         int count = msg.ReadInt16();
                         for(int i = 0; i < count; i++)
                         {
-                            IGameObject obj = CreateObjectFromMessage(msg);
-                            try
-                            {
-                                ObjectsInFrame.Add(obj.GetId());
-                                OnCreate(obj);
-                            }
-                            catch
-                            {
-                            }
+                            EntityManager.CreateEntityFromMessage(msg);
                         }
 
                         // Assign local player
@@ -251,111 +236,25 @@ namespace SpaceMobaClient.Systems.Server
                         break;
                     }
                 
-                // Create or Update an object
+                // Update an object
                 case NetOpCode.UpdateObject:
+                    EntityManager.UpdateEntityFromMessage(msg);
+                    break;
+                
+                // Create an object
                 case NetOpCode.CreateObject:
-                    {
-                        IGameObject obj = CreateObjectFromMessage(msg);
-                        try
-                        {
-                            ObjectsInFrame.Add(obj.GetId());
-                            OnCreate(obj);
-                        }
-                        catch
-                        {
-                        }
-                        break;
-                    }
+                    EntityManager.CreateEntityFromMessage(msg);
+                    break;
 
                 // Destroy an object
                 case NetOpCode.DestroyObject:
-                    {
-                        try
-                        {
-                            OnDestroy(msg.ReadInt32());
-                        }
-                        catch
-                        {
-                        }
-                        break;
-                    }
+                    EntityManager.Remove(msg.ReadInt32());
+                    break;
 
                 default:
                     Trace.WriteLine("Unexpected opcode.");
                     break;
             }
-        }
-
-        /// <summary>
-        /// Deserializes and creates a new game object from a message.
-        /// </summary>
-        /// <param name="msg">Incoming message.</param>
-        /// <returns>GameObject.</returns>
-        private IGameObject CreateObjectFromMessage(NetIncomingMessage msg)
-        {
-            ContentManager content =
-                GameClient.GetGameClient().GetContentManager();
-
-            // Defaults
-            Vector2 spawn = new Vector2();
-            Vector2 momentum = new Vector2();
-            Vector2 force = new Vector2();
-            float direction = 0, angularMomentum = 0;
-            float angularForce = 0;
-            string sprite = "Objects/Ships/GreenBeacon";
-            byte componentId;
-
-            // Object id
-            int id = msg.ReadInt32();
-
-            // Components
-            while ((componentId = msg.ReadByte()) != 0)
-            {
-                switch(componentId)
-                {
-                    // Position
-                    case 1:
-                        spawn.X = msg.ReadFloat();
-                        spawn.Y = msg.ReadFloat();
-                        momentum.X = msg.ReadFloat();
-                        momentum.Y = msg.ReadFloat();
-                        direction = msg.ReadFloat();
-                        angularMomentum = msg.ReadFloat();
-                        break;
-
-                    // Animation
-                    case 2:
-                        sprite = msg.ReadString();
-                        break;
-
-                    // Blackhole gravity
-                    case 3:
-                        force.X = msg.ReadFloat();
-                        force.Y = msg.ReadFloat();
-                        break;
-
-                    // Engine force
-                    case 4:
-                        force.X = msg.ReadFloat();
-                        force.Y = msg.ReadFloat();
-                        angularForce = msg.ReadFloat();
-                        break;
-                }
-            }
-
-            // Create ship object
-            Ship ship = new Ship(
-                id,
-                content.Load<Texture2D>
-                    (sprite),
-                spawn,
-                direction
-                );
-            ship.SetMomentum(momentum);
-            ship.SetAngularMomentum(angularMomentum);
-            ship.SetForce(force, angularForce);
-            
-            return ship;
         }
     }
 }

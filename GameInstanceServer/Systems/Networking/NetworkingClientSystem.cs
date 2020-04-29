@@ -97,7 +97,8 @@ namespace GameInstanceServer.Systems.Networking
                         // it hasn't been updated in over 1 second.
                         if (entity.LastUpdated > newReplicated[entity] ||
                             GameMaster.ElapsedMilliseconds
-                            > newReplicated[entity] + 100
+                            > newReplicated[entity] 
+                            + Settings.ReplicationMaxUpdatePeriod
                             )
                         {
                             NetOutgoingMessage msg =

@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../../../../Resources/Sprites/Rockets/GreenBeacon.png
+#begin ../../../Resources/Objects/Ships/GreenBeacon.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../../../../Resources/Sprites/Rockets/GreenBeacon.png;Objects/Ships/GreenBeacon.png
+/build:../../../Resources/Objects/Ships/GreenBeacon.png;Objects/Ships/GreenBeacon.png
 
 #begin Backgrounds/831b03dd-06c4-4ba2-b8a7-b23c4f268623.png
 /importer:TextureImporter

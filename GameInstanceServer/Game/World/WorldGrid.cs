@@ -73,7 +73,7 @@ namespace GameInstanceServer.Game.World
             // Loop through all cells, and combine their outputed lists
             // into a single list to return.
             List<Entity> objectsInCells = new List<Entity>();
-            for(int yy = -1; yy < 1; yy++)
+            for(int yy = -1; yy < 2; yy++)
             {
                 for(int xx = -1; xx < 2; xx++)
                 {
@@ -171,7 +171,7 @@ namespace GameInstanceServer.Game.World
         /// </summary>
         /// <param name="position">Reference point.</param>
         /// <returns>Tuple of cell index.</returns>
-        private Tuple<int, int> GetCellFromPoint(Point position)
+        public Tuple<int, int> GetCellFromPoint(Point position)
         {
             // Find cell this point is in
             if (position.X < 0 || position.Y < 0 ||
