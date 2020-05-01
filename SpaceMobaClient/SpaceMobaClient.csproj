@@ -58,7 +58,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Content\Scenes\GameStart.cs" />
+    <None Include="Content\Scenes\GameStart.cs" />
+    <Compile Include="Content\Scenes\ErrorScene.cs" />
+    <Compile Include="Content\Scenes\LoadGameScene.cs" />
+    <Compile Include="Content\Scenes\WaitForPlayersScene.cs" />
     <Compile Include="GamePlay\Components\AnimationComponent.cs" />
     <Compile Include="GamePlay\Components\PositionComponent.cs" />
     <Compile Include="GamePlay\Objects\GameObjectType.cs" />
@@ -67,14 +70,15 @@
     <Compile Include="Systems\Gui\GuiLabel.cs" />
     <Compile Include="Systems\Gui\IGuiComponent.cs" />
     <Compile Include="Content\Gui\InGameGui.cs" />
-    <Compile Include="Content\Scenes\InGame.cs" />
-    <Compile Include="Content\Scenes\MainMenu.cs" />
-    <Compile Include="Content\Scenes\SplashScreen.cs" />
+    <None Include="Content\Scenes\InGame.cs" />
+    <None Include="Content\Scenes\MainMenu.cs" />
+    <Compile Include="Content\Scenes\SplashScreenScene.cs" />
     <Compile Include="GameClient.cs" />
     <Compile Include="GamePlay\Camera.cs" />
     <Compile Include="Systems\Gui\IGui.cs" />
     <Compile Include="GamePlay\ILocalPlayer.cs" />
     <Compile Include="Systems\IO\InputState.cs" />
+    <Compile Include="Systems\Network\NetworkManager.cs" />
     <Compile Include="Systems\Objects\ComponentId.cs" />
     <Compile Include="Systems\Objects\Entity.cs" />
     <Compile Include="Systems\Objects\EntityManager.cs" />
@@ -82,6 +86,7 @@
     <Compile Include="Systems\Scenes\IScene.cs" />
     <Compile Include="GamePlay\LocalPlayer.cs" />
     <Compile Include="GamePlay\Objects\IGameObject.cs" />
+    <Compile Include="Systems\Network\INetworkInputHandler.cs" />
     <Compile Include="Systems\Server\IRemoteServer.cs" />
     <Compile Include="Systems\Server\MatchmakerServer.cs" />
     <Compile Include="Systems\Server\NetOpCode.cs" />

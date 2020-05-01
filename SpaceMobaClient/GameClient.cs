@@ -6,9 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using SpaceMobaClient.Content.Scenes;
-using SpaceMobaClient.GamePlay;
 using SpaceMobaClient.Systems.Scenes;
-using SpaceMobaClient.Systems.Server;
 
 namespace SpaceMobaClient
 {
@@ -112,7 +110,7 @@ namespace SpaceMobaClient
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            SceneManager.GetSceneManager().Update(gameTime);
+            SceneManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -122,7 +120,7 @@ namespace SpaceMobaClient
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            SceneManager.GetSceneManager().Draw(gameTime);
+            SceneManager.Draw(gameTime);
             base.Draw(gameTime);
         }
 
@@ -138,12 +136,14 @@ namespace SpaceMobaClient
             // Note: ID's need to be unique.
             List<IScene> scenes = new List<IScene>
             {
-                new SplashScreen(0),
-                new GameStart(1),
-                new InGame(2)
+                new SplashScreenScene(),
+                new LoadGameScene(),
+                new WaitForPlayersScene(),
+                new ErrorScene()
             };
 
-            SceneManager.GetSceneManager().SetSceneList(scenes);
+            SceneManager.SetSceneList(scenes);
+            SceneManager.GotoScene<SplashScreenScene>();
         }
     }
 }

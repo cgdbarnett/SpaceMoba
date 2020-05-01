@@ -10,10 +10,14 @@ namespace SpaceMobaClient.Systems.Scenes
     public interface IScene
     {
         /// <summary>
-        /// Returns the unique ID of this IScene.
+        /// Next scene in list.
         /// </summary>
-        /// <returns>Unique identifier for the scene.</returns>
-        int GetId();
+        IScene Next { get; set; }
+
+        /// <summary>
+        /// Previous scene in list.
+        /// </summary>
+        IScene Previous { get; set; }
 
         /// <summary>
         /// Instructs the IScene to load into memory any resources

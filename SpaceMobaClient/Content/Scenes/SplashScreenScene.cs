@@ -12,10 +12,8 @@ namespace SpaceMobaClient.Content.Scenes
     /// The SplashScreen Scene shows an image on the screen for 5 seconds,
     /// then goes to the next scene.
     /// </summary>
-    public class SplashScreen : IScene
+    public class SplashScreenScene : IScene
     {
-        private readonly int Id;
-
         // Image to be drawn as a SplashScreen.
         private Texture2D Image;
         private Rectangle ImageDestination;
@@ -29,13 +27,15 @@ namespace SpaceMobaClient.Content.Scenes
         // State indicator, when content is loaded / unloaded.
         private bool Ready;
 
+        // Scene iterators
+        public IScene Next { get; set; }
+        public IScene Previous { get; set; }
+
         /// <summary>
         /// Creats a splashscreen scene that renders the game logo.
         /// </summary>
-        /// <param name="graphics">Graphics device from Game.Graphics</param>
-        public SplashScreen(int id)
+        public SplashScreenScene()
         {
-            Id = id;
             SpriteBatch = new SpriteBatch(GameClient.GetGameClient().
                 GetGraphicsDevice());
             ImageDestination = GameClient.GetGameClient().GetGraphicsDevice().
@@ -81,24 +81,21 @@ namespace SpaceMobaClient.Content.Scenes
         }
 
         /// <summary>
-        /// Returns unique ID of this Scene.
-        /// </summary>
-        /// <returns>Unique identifier for this scene.</returns>
-        public int GetId()
-        {
-            return Id;
-        }
-
-        /// <summary>
         /// Runs an update of the scene.
         /// </summary>
         /// <param name="gameTime">GameTime of Game.</param>
         public void Update(GameTime gameTime)
         {
-            // When elapsed time reaches 5 seconds, goto next scene.
-            if(Timer.ElapsedMilliseconds > 5000)
+            // When elapsed time reaches 2 seconds, goto next scene.
+            if(Timer.ElapsedMilliseconds > 2000)
             {
-                SceneManager.GetSceneManager().GotoNextScene();
+                // Temporary
+                SceneManager.GotoNextScene(
+                    new object[] {
+                        "localhost",
+                        8080,
+                        1
+                    });
             }
         }
     }

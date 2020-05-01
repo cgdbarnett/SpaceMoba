@@ -77,65 +77,6 @@ namespace SpaceMobaClient.Content.Scenes
         }
 
         /// <summary>
-        /// Handles the ObjectCreate event from GameServer.
-        /// </summary>
-        /// <param name="obj">Obj to create.</param>
-        private void HandleCreateObject(IGameObject obj)
-        {
-            try
-            {
-                if (ObjectsInScene.ContainsKey(obj.GetId()))
-                {
-                }
-                else
-                {
-                    ObjectsInScene.Add(obj.GetId(), obj);
-                }
-            }
-            catch(Exception e)
-            {
-                Trace.WriteLine("Error in GameStart.HandleCreateObject():");
-                Trace.WriteLine(e.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Handles the ObjectCreate event from GameServer.
-        /// </summary>
-        /// <param name="id">Removes an object.</param>
-        private void HandleDestroyObject(int id)
-        {
-            try
-            {
-                ObjectsInScene.Remove(id);
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine("Error in GameStart.HandleDestroyObject():");
-                Trace.WriteLine(e.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Handles the ObjectCreate event from GameServer.
-        /// </summary>
-        /// <param name="id">Removes an object.</param>
-        private void HandleAssignLocalPlayer(int id)
-        {
-            try
-            {
-                IGameObject obj = ObjectsInScene[id];
-                LocalPlayer.SetLocalGameObject(obj);
-            }
-            catch(Exception e)
-            {
-                Trace.WriteLine("Error in GameStart."
-                    + "HandleAssignToLocalPlayer():");
-                Trace.WriteLine(e.ToString());
-            }
-        }
-
-        /// <summary>
         /// Handles the event triggered by the remote server when the game
         /// start command is received.
         /// </summary>
@@ -327,9 +268,6 @@ namespace SpaceMobaClient.Content.Scenes
             LocalPlayer = new LocalPlayer(GameServer);
 
             // Hook up event listeners
-            GameServer.OnCreate += HandleCreateObject;
-            GameServer.OnDestroy += HandleDestroyObject;
-            GameServer.OnAssignToLocalPlayer += HandleAssignLocalPlayer;
             GameServer.OnGameStart += HandleGameStart;
 
             // Begin asynchronously loading game resources, connecting
@@ -412,9 +350,6 @@ namespace SpaceMobaClient.Content.Scenes
         public void Unload()
         {
             // Clear event handlers
-            GameServer.OnCreate -= HandleCreateObject;
-            GameServer.OnDestroy -= HandleDestroyObject;
-            GameServer.OnAssignToLocalPlayer -= HandleAssignLocalPlayer;
             GameServer.OnGameStart -= HandleGameStart;
 
             // Stop the timer
@@ -488,7 +423,7 @@ namespace SpaceMobaClient.Content.Scenes
                 };
 
                 // Move to next scene.
-                SceneManager.GetSceneManager().GotoNextScene(handover);
+                SceneManager.GotoNextScene(handover);
             }
         }
     }
