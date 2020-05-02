@@ -92,6 +92,12 @@
 /processorParam:TextureFormat=Color
 /build:Gui/barforeground.png
 
+#begin Music/time_guitar.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/time_guitar.ogg
+
 #begin Objects/3e78cd76-c433-47f5-af1b-c7757fdb086c.png
 /importer:TextureImporter
 /processor:TextureProcessor

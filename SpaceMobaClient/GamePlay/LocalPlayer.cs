@@ -6,28 +6,66 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 // Game libraries
-using SpaceMobaClient.GamePlay.Objects;
+using SpaceMobaClient.GamePlay.Components;
 using SpaceMobaClient.Systems.IO;
-using SpaceMobaClient.Systems.Server;
+using SpaceMobaClient.Systems.Objects;
 
 namespace SpaceMobaClient.GamePlay
 {
     /// <summary>
     /// LocalPlayer handles player input, and drawing GUI.
     /// </summary>
-    public class LocalPlayer : ILocalPlayer
+    public static class LocalPlayer
     {
-        private IGameObject LocalGameObject;
-        private InputState PreviousInputState;
-        private IRemoteServer GameServer;
+        public static Entity Entity;
+        private static InputState PreviousInputState;
 
         /// <summary>
-        /// LocalPlayer handles player input, and GUI drawing.
+        /// X position of local player.
         /// </summary>
-        public LocalPlayer(IRemoteServer server)
+        public static int X
         {
-            LocalGameObject = null;
-            GameServer = server;
+            get
+            {
+                try
+                {
+                    return (int)(
+                        (PositionComponent)Entity[ComponentId.Position])
+                        .Position.X;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Y position of local player.
+        /// </summary>
+        public static int Y
+        {
+            get
+            {
+                try
+                {
+                    return (int)(
+                        (PositionComponent)Entity[ComponentId.Position])
+                        .Position.Y;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resets the local player.
+        /// </summary>
+        public static void Reset()
+        {
+            Entity = null;
 
             // Init input state
             PreviousInputState = new InputState
@@ -40,57 +78,10 @@ namespace SpaceMobaClient.GamePlay
         }
 
         /// <summary>
-        /// LocalPlayer handles player input, and GUI drawing.
-        /// </summary>
-        public LocalPlayer(IGameObject localGameObject)
-        {
-            LocalGameObject = localGameObject;
-        }
-
-        /// <summary>
-        /// Sets the current local game object.
-        /// </summary>
-        /// <param name="localGameObject">New object to represent
-        /// the local player.</param>
-        public void SetLocalGameObject(IGameObject localGameObject)
-        {
-            LocalGameObject = localGameObject;
-        }
-
-        /// <summary>
-        /// Gets a reference to the current local game object.
-        /// Note, this should never be null, but it can be changed.
-        /// </summary>
-        /// <returns>A reference to the local game object.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when the localgameobject reference becomes null.
-        /// </exception>
-        public IGameObject GetLocalGameObject()
-        {
-            if(LocalGameObject != null)
-            {
-                return LocalGameObject;
-            }
-            else
-            {
-                throw (new ObjectDisposedException("LocalGameObject"));
-            }
-        }
-
-        /// <summary>
-        /// Returns the current position of the local game object.
-        /// </summary>
-        /// <returns>Returns the vector2 position.</returns>
-        public Vector2 GetLocalGameObjectPosition()
-        {
-            return LocalGameObject.GetPosition();
-        }
-
-        /// <summary>
         /// Executes input handling for the local player.
         /// </summary>
         /// <param name="gameTime">Game frame interval.</param>
-        public void Update(GameTime gameTime)
+        public static InputState Update(GameTime gameTime)
         {
             // Poll keyboard for current state
             KeyboardState state = Keyboard.GetState();
@@ -109,9 +100,11 @@ namespace SpaceMobaClient.GamePlay
             if(currentInputState != PreviousInputState)
             {
                 // It has, so we should send the new state to the server.
-                GameServer.UpdateInput(currentInputState);
                 PreviousInputState = currentInputState;
+                return currentInputState;
             }
+
+            return null;
         }
     }
 }

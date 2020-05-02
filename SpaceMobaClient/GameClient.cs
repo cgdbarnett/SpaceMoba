@@ -5,7 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-using SpaceMobaClient.Content.Scenes;
+using SpaceMobaClient.GamePlay.Scenes;
+using SpaceMobaClient.Systems.Network;
 using SpaceMobaClient.Systems.Scenes;
 
 namespace SpaceMobaClient
@@ -129,7 +130,7 @@ namespace SpaceMobaClient
         /// game will run from.
         /// </summary>
         /// <remarks>
-        /// Every Scene you want in the game needs to be added to this list.
+        /// Every Scene in the game needs to be added to this list.
         /// </remarks>
         private void InstantiateScenes()
         {
@@ -139,7 +140,9 @@ namespace SpaceMobaClient
                 new SplashScreenScene(),
                 new LoadGameScene(),
                 new WaitForPlayersScene(),
-                new ErrorScene()
+                new CountdownScene(),
+                new InGameScene(),
+                new ErrorScene(),
             };
 
             SceneManager.SetSceneList(scenes);

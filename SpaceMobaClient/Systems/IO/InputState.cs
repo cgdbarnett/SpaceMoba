@@ -3,7 +3,7 @@
     /// <summary>
     /// A struct to store input state between frames.
     /// </summary>
-    public struct InputState
+    public class InputState
     {
         // Movement input
         public bool Forward;

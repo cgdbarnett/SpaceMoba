@@ -39,7 +39,7 @@ namespace SpaceMobaClient.Systems.Network
         }
 
         // Current input handler.
-        private static INetworkInputHandler InputHandler;
+        private static INetworkHandler InputHandler;
 
         /// <summary>
         /// Connect to remote server. This is a blocking
@@ -50,7 +50,7 @@ namespace SpaceMobaClient.Systems.Network
         /// <param name="port">Port number of server.</param>
         /// <param name="token">Token id for client.</param>
         public static void Connect(
-            string host, int port, int token, INetworkInputHandler handler
+            string host, int port, int token, INetworkHandler handler
             )
         {
             InputHandler = handler;
@@ -164,31 +164,35 @@ namespace SpaceMobaClient.Systems.Network
         /// </summary>
         public static void HandleIncomingMessages()
         {
-            List<NetIncomingMessage> messages = new List<NetIncomingMessage>();
-            Connection.ReadMessages(messages);
-
-            foreach (NetIncomingMessage msg in messages)
+            if (Connection != null && IsConnected)
             {
-                try
-                {
-                    switch (msg.MessageType)
-                    {
-                        case NetIncomingMessageType.StatusChanged:
-                            InputHandler.HandleStatusChange(
-                                Connection.ConnectionStatus
-                                );
-                            break;
+                List<NetIncomingMessage> messages = 
+                    new List<NetIncomingMessage>();
+                Connection.ReadMessages(messages);
 
-                        case NetIncomingMessageType.Data:
-                            InputHandler.HandleData(msg);
-                            break;
-                    }
-                }
-                catch (Exception e)
+                foreach (NetIncomingMessage msg in messages)
                 {
-                    Trace.WriteLine("Error occured in NetworkManager."
-                        + "HandleIncomingMessages():");
-                    Trace.WriteLine(e);
+                    try
+                    {
+                        switch (msg.MessageType)
+                        {
+                            case NetIncomingMessageType.StatusChanged:
+                                InputHandler.HandleStatusChange(
+                                    Connection.ConnectionStatus
+                                    );
+                                break;
+
+                            case NetIncomingMessageType.Data:
+                                InputHandler.HandleData(msg);
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine("Error occured in NetworkManager."
+                            + "HandleIncomingMessages():");
+                        Trace.WriteLine(e);
+                    }
                 }
             }
         }

@@ -65,7 +65,10 @@ namespace SpaceMobaClient.Systems.Objects
         {
             try
             {
-                ToBeAdded.Add(entity);
+                if (!ToBeAdded.Contains(entity))
+                {
+                    ToBeAdded.Add(entity);
+                }
             }
             catch(Exception e)
             {
@@ -82,7 +85,10 @@ namespace SpaceMobaClient.Systems.Objects
         {
             try
             {
-                ToBeRemoved.Add(entity.Id);
+                if (!ToBeRemoved.Contains(entity.Id))
+                {
+                    ToBeRemoved.Add(entity.Id);
+                }
             }
             catch (Exception e)
             {
@@ -99,7 +105,10 @@ namespace SpaceMobaClient.Systems.Objects
         {
             try
             {
-                ToBeRemoved.Add(entity);
+                if (!ToBeRemoved.Contains(entity))
+                {
+                    ToBeRemoved.Add(entity);
+                }
             }
             catch (Exception e)
             {
@@ -147,11 +156,20 @@ namespace SpaceMobaClient.Systems.Objects
                     case ComponentId.Animation:
                         component = new AnimationComponent(entity);
                         break;
+
+                    case ComponentId.AffectedByBlackhole:
+                        component = new AffectedByBlackholeComponent(entity);
+                        break;
+
+                    case ComponentId.Engine:
+                        component = new EngineComponent(entity);
+                        break;
                 }
 
                 if (component != null)
                 {
                     component.Deserialize(message);
+                    entity.AddOrUpdateComponent(component);
                 }
             }
 
@@ -174,17 +192,30 @@ namespace SpaceMobaClient.Systems.Objects
             byte componentId;
 
             // Start creating new entity with given id
-            Entity entity = Entities[message.ReadInt32()];
-
-            // Components
-            while ((componentId = message.ReadByte()) != 0)
+            try
             {
-                IComponent component = entity[(ComponentId)componentId];
-
-                if (component != null)
+                int id = message.ReadInt32();
+                if (Entities.ContainsKey(id))
                 {
-                    component.Deserialize(message);
-                }
+                    Entity entity = Entities[id];
+
+                    // Components
+                    while ((componentId = message.ReadByte()) != 0)
+                    {
+                        IComponent component = entity[(ComponentId)componentId];
+
+                        if (component != null)
+                        {
+                            component.Deserialize(message);
+                        }
+                    }
+                } 
+            }
+            catch(Exception e)
+            {
+                Trace.WriteLine("Exception in EntityManager." +
+                    " UpdateEntityFromMessage:");
+                Trace.WriteLine(e.ToString());
             }
         }
 
@@ -203,7 +234,7 @@ namespace SpaceMobaClient.Systems.Objects
                 }
                 catch(Exception e)
                 {
-                    Trace.WriteLine("Exception in EntityManager.Update:");
+                    Trace.WriteLine("Exception in EntityManager.Update (1):");
                     Trace.WriteLine(e.ToString());
                 }
             }
@@ -217,8 +248,8 @@ namespace SpaceMobaClient.Systems.Objects
                 }
                 catch(Exception e)
                 {
-                    Trace.WriteLine("Exception in EntityManager.Update:");
-                    Trace.WriteLine(e.Message);
+                    Trace.WriteLine("Exception in EntityManager.Update (2):");
+                    Trace.WriteLine(e.ToString());
                 }
             }
             ToBeAdded.Clear();
@@ -232,7 +263,7 @@ namespace SpaceMobaClient.Systems.Objects
                 }
                 catch(Exception e)
                 {
-                    Trace.WriteLine("Exception in EntityManager.Update:");
+                    Trace.WriteLine("Exception in EntityManager.Update (3):");
                     Trace.WriteLine(e.ToString());
                 }
             }

@@ -31,6 +31,7 @@ namespace GameInstanceServer.Map
             Mothership mothership = new Mothership();
             mothership.RegisterComponents();
 
+            /*
             // Fill the void with debri
             for(int i = 0; i < debriCount; i++)
             {
@@ -42,6 +43,7 @@ namespace GameInstanceServer.Map
                 Debri debri = new Debri(new Vector2(xpos, ypos));
                 debri.RegisterComponents();
             }
+            */
         }
     }
 }
