@@ -6,6 +6,7 @@ using System.Threading;
 // Game libraries
 using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Objects.Ships;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Map;
 using GameInstanceServer.Systems.ECS;
@@ -62,6 +63,7 @@ namespace GameInstanceServer
             ECS.RegisterSystem(new AnimationSystem());
             ECS.RegisterSystem(new BlachholeSystem());
             ECS.RegisterSystem(new EngineSystem());
+            ECS.RegisterSystem(new ShipLimiterSystem());
 
             // Create networking component without an entity
             ECS.RegisterComponentToSystem(

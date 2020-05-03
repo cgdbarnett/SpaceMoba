@@ -10,6 +10,8 @@
         public bool Backward;
         public bool Left;
         public bool Right;
+        public bool StrafLeft;
+        public bool StrafRight;
         public bool Attack;
 
         /// <summary>

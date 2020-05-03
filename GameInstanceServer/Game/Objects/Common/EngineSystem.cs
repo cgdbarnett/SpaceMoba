@@ -48,7 +48,7 @@ namespace GameInstanceServer.Game.Objects.Common
             // Update momentum
             EngineComponent engine = (EngineComponent)component;
             
-            engine.Position.AngularMomentum += engine.InputForce.Y * delta;
+            engine.Position.AngularMomentum += engine.InputAngularForce * delta;
             engine.Position.Momentum += engine.Force * delta;
         }
     }

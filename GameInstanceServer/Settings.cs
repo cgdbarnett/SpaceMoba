@@ -22,7 +22,7 @@
         #region NetReplication
 
         // Milliseconds
-        public const long ReplicationMaxUpdatePeriod = 100;
+        public const long ReplicationMaxUpdatePeriod = 500;
 
         #endregion
     }

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 // Game libraries
+using SpaceMobaClient.GamePlay.Gui;
 using SpaceMobaClient.GamePlay.Network;
 using SpaceMobaClient.GamePlay.World;
 using SpaceMobaClient.Systems.Gui;
@@ -31,6 +32,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         private Camera Camera;
         private readonly SpriteBatch SpriteBatch;
         private Background Background;
+        private InGameGui Gui;
 
         // Networking
         private GameNetworkHandler NetworkHandler;
@@ -57,6 +59,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         {
             NetworkHandler = (GameNetworkHandler)handover;
             Background = new Background();
+            Gui = new InGameGui();
         }
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
             GameClient.GetGameClient().Content.Unload();
             NetworkHandler = null;
             Background = null;
+            Gui = null;
             LocalPlayer.Reset();
         }
 
@@ -87,10 +91,16 @@ namespace SpaceMobaClient.GamePlay.Scenes
             SpriteBatch.Begin();
 
             // Draw background first
-            Background.Draw(SpriteBatch, Camera);
+            Background.DrawBottom(SpriteBatch, Camera);
 
             // Draw all entities
             EntityManager.Draw(SpriteBatch, Camera);
+
+            // Draw foreground last
+            Background.DrawTop(SpriteBatch, Camera);
+
+            // Draw GUI
+            Gui.Draw(SpriteBatch, Camera);
 
             // End drawing
             SpriteBatch.End();

@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="GamePlay\Components\AffectedByBlackholeComponent.cs" />
     <Compile Include="GamePlay\Components\EngineComponent.cs" />
+    <Compile Include="GamePlay\Gui\InGameGui.cs" />
     <Compile Include="GamePlay\Network\GameNetworkHandler.cs" />
     <Compile Include="GamePlay\Network\PacketWriter.cs" />
     <Compile Include="GamePlay\Scenes\CountdownScene.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Systems\Gui\GuiHealthbar.cs" />
     <Compile Include="Systems\Gui\GuiLabel.cs" />
     <Compile Include="Systems\Gui\IGuiComponent.cs" />
-    <Compile Include="Content\Gui\InGameGui.cs" />
     <Compile Include="GamePlay\Scenes\SplashScreenScene.cs" />
     <Compile Include="GameClient.cs" />
     <Compile Include="GamePlay\Camera.cs" />

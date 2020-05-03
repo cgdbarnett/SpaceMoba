@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Objects.Ships;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
 using GameInstanceServer.Systems.Networking;
@@ -71,6 +72,12 @@ namespace GameInstanceServer.Game
         public EngineComponent Engine => (EngineComponent)Components[4];
 
         /// <summary>
+        /// Gets the ship limiting component for the player.
+        /// </summary>
+        public ShipLimiterComponent ShipLimiter => 
+            (ShipLimiterComponent)Components[5];
+
+        /// <summary>
         /// Creates a new player entity.
         /// </summary>
         public PlayerEntity() : base(ECS.GetNextId())
@@ -94,6 +101,11 @@ namespace GameInstanceServer.Game
                 new EngineComponent()
                 {
                     InputForce = new Vector2()
+                },
+                new ShipLimiterComponent()
+                {
+                    HandlingRank = 0,
+                    SpeedRank = 0
                 }
             };
 
@@ -102,6 +114,8 @@ namespace GameInstanceServer.Game
             World.PositionComponent = Position;
             World.Entity = this;
             Engine.Position = Position;
+            ShipLimiter.Position = Position;
+            ShipLimiter.Engine = Engine;
         }
 
         /// <summary>

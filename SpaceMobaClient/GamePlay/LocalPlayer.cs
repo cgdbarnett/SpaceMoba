@@ -93,6 +93,8 @@ namespace SpaceMobaClient.GamePlay
                 Forward = state.IsKeyDown(Keys.W),
                 Left = state.IsKeyDown(Keys.A),
                 Right = state.IsKeyDown(Keys.D),
+                StrafLeft = state.IsKeyDown(Keys.Q),
+                StrafRight = state.IsKeyDown(Keys.E),
                 Attack = state.IsKeyDown(Keys.Space)
             };
 

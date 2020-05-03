@@ -22,18 +22,33 @@ namespace GameInstanceServer.Game.Objects.Common
         // State
         public PositionComponent Position;
         public Vector2 InputForce;
+        public float InputAngularForce;
+        public Vector2 EngineForce;
+        public float EngineAngularForce;
+
+        /// <summary>
+        /// Returns the linear force of the engine.
+        /// </summary>
         public Vector2 Force
         {
             get
             {
                 return InputForce.X * new Vector2(
-                (float)Math.Cos(
-                    MathHelper.ToRadians(Position.Direction)
-                    ),
-                (float)Math.Sin(
-                    MathHelper.ToRadians(Position.Direction)
+                    (float)Math.Cos(
+                        MathHelper.ToRadians(Position.Direction)
+                        ),
+                    (float)Math.Sin(
+                        MathHelper.ToRadians(Position.Direction)
+                        )
                     )
-                );
+                    + InputForce.Y * new Vector2(
+                        (float)Math.Cos(
+                            MathHelper.ToRadians(Position.Direction + 90)
+                            ),
+                        (float)Math.Sin(
+                            MathHelper.ToRadians(Position.Direction + 90)
+                            )
+                        );
             }
         }
 
@@ -51,7 +66,7 @@ namespace GameInstanceServer.Game.Objects.Common
             msg.Write((byte)SerializableComponentId.Engine);
             msg.Write(Force.X);
             msg.Write(Force.Y);
-            msg.Write(InputForce.Y);
+            msg.Write(InputAngularForce);
         }
     }
 }

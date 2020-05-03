@@ -175,11 +175,16 @@ namespace GameInstanceServer.Systems.Networking
                     case NetOpCode.UpdatePlayerInput:
                         {
                             // Temporary force input
-                            float forceX = (msg.ReadByte() - 1f) * 100f;
-                            float forceY = (msg.ReadByte() - 1f) * 120f;
+                            client.Entity.Engine.InputForce.X =
+                                (msg.ReadByte() - 1f) * 
+                                client.Entity.Engine.EngineForce.X;
+                            client.Entity.Engine.InputForce.Y =
+                                (msg.ReadByte() - 1f) *
+                                client.Entity.Engine.EngineForce.Y;
+                            client.Entity.Engine.InputAngularForce =
+                                (msg.ReadByte() - 1f) *
+                                client.Entity.Engine.EngineAngularForce;
                             bool attack = msg.ReadBoolean(); // Disregard atm
-                            client.Entity.Engine.InputForce 
-                                = new Vector2(forceX, forceY);
                             client.Entity.LastUpdated = 
                                 GameMaster.ElapsedMilliseconds;
                         }

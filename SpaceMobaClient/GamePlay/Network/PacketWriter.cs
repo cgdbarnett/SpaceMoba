@@ -39,12 +39,16 @@ namespace SpaceMobaClient.GamePlay.Network
 
             byte xx = 1;
             byte yy = 1;
+            byte ss = 1;
             if (input.Forward) xx++;
             if (input.Backward) xx--;
             if (input.Left) yy--;
             if (input.Right) yy++;
+            if (input.StrafLeft) ss--;
+            if (input.StrafRight) ss++;
 
             packet.Write(xx);
+            packet.Write(ss);
             packet.Write(yy);
             packet.Write(input.Attack);
 

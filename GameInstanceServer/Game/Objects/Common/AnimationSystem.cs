@@ -6,7 +6,7 @@ namespace GameInstanceServer.Systems.ECS
     // Extend class
     public partial class ComponentSystemId
     {
-        // Create Id for Position System.
+        // Create Id for Animation System.
         public static readonly ComponentSystemId AnimationSystem
             = new ComponentSystemId();
     }
