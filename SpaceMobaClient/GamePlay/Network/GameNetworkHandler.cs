@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Lidgren.Network;
 
 // Game libraries
+using SpaceMobaClient.GamePlay.Components;
 using SpaceMobaClient.Systems.Objects;
 using SpaceMobaClient.Systems.Network;
 
@@ -72,6 +73,8 @@ namespace SpaceMobaClient.GamePlay.Network
                             if(entity.Id == localPlayer)
                             {
                                 LocalPlayer.Entity = entity;
+                                IComponent team = new TeamComponent(entity);
+                                entity.AddOrUpdateComponent(team);
                             }
                         }
                     }
@@ -90,6 +93,11 @@ namespace SpaceMobaClient.GamePlay.Network
                 // Destroy an object
                 case NetOpCode.DestroyObject:
                     EntityManager.Remove(msg.ReadInt32());
+                    break;
+
+                // Update team
+                case NetOpCode.UpdateTeam:
+                    LocalPlayer.Entity[ComponentId.Team].Deserialize(msg);
                     break;
             }
         }

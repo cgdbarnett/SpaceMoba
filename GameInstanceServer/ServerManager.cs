@@ -7,6 +7,7 @@ using System.Threading;
 using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.Objects.Ships;
+using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Map;
 using GameInstanceServer.Systems.ECS;
@@ -47,6 +48,16 @@ namespace GameInstanceServer
             GameMaster.State = GameMaster.GameState.Loading;
             GameMaster.StartMasterTimer();
 
+            // Initialise teams
+            Trace.WriteLine("Initialising Teams.");
+            Trace.Indent();
+
+            Team teamA = new Team();
+            Team teamB = new Team();
+
+            Trace.Unindent();
+            Trace.WriteLine("Teams initialised.");
+
             // Register ECS systems
             Trace.WriteLine("Registering ECS Systems.");
             Trace.Indent();
@@ -64,22 +75,22 @@ namespace GameInstanceServer
             ECS.RegisterSystem(new BlachholeSystem());
             ECS.RegisterSystem(new EngineSystem());
             ECS.RegisterSystem(new ShipLimiterSystem());
+            ECS.RegisterSystem(new TeamSystem());
 
             // Create networking component without an entity
             ECS.RegisterComponentToSystem(
                 ComponentSystemId.NetworkingSystem, ECS.GetNextId(),
-                new NetworkingComponent(port, tokens)
+                new NetworkingComponent(port, tokens, teamA, teamB)
                 );
 
             Trace.Unindent();
             Trace.WriteLine("ECS Registered.");
 
-
             // Load map data
             Trace.WriteLine("Loading map data.");
             Trace.Indent();
 
-            MapData.SpawnWorld();
+            MapData.SpawnWorld(teamA, teamB);
 
             Trace.Unindent();
             Trace.WriteLine("Map loaded.");

@@ -73,9 +73,6 @@ namespace SpaceMobaClient.GamePlay.Scenes
             // Start countdown
             Timer.Reset();
             Timer.Start();
-
-            // Start in game music
-            SoundManager.PlaySong("Music/time_guitar");
         }
 
         /// <summary>

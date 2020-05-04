@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Lidgren.Network;
 
+using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Systems.ECS;
 
 namespace GameInstanceServer.Systems.Networking
@@ -22,7 +23,7 @@ namespace GameInstanceServer.Systems.Networking
         public Dictionary<NetConnection, NetworkingClientComponent> 
             Connections;
 
-        public readonly List<int> Tokens;
+        public readonly Dictionary<int, Team> Tokens;
 
         /// <summary>
         /// Get the ComponentSystemId for the Networking System.
@@ -38,7 +39,9 @@ namespace GameInstanceServer.Systems.Networking
         /// <summary>
         /// Creates the networking component.
         /// </summary>
-        public NetworkingComponent(int port, int[] tokens)
+        public NetworkingComponent(
+            int port, int[] tokens, Team TeamA, Team TeamB
+            )
         {
             Clients = new Dictionary<int, NetworkingClientComponent>();
             Connections = new Dictionary<NetConnection, NetworkingClientComponent>();
@@ -52,7 +55,27 @@ namespace GameInstanceServer.Systems.Networking
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
 
             // Copy tokens into memory
-            Tokens = new List<int>(tokens);
+            Tokens = new Dictionary<int, Team>()
+            {
+                {
+                    tokens[0], TeamA
+                },
+                {
+                    tokens[1], TeamA
+                },
+                {
+                    tokens[2], TeamA
+                },
+                {
+                    tokens[3], TeamB
+                },
+                {
+                    tokens[4], TeamB
+                },
+                {
+                    tokens[5], TeamB
+                }
+            };
 
             // Start server
             NetServer = new NetServer(config);

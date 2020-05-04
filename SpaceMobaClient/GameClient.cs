@@ -77,7 +77,7 @@ namespace SpaceMobaClient
             Graphics.PreferredBackBufferHeight = 1080;
             //Graphics.PreferredBackBufferWidth = 1280;
             //Graphics.PreferredBackBufferHeight = 740;
-            Graphics.IsFullScreen = true; // False while debugging
+            Graphics.IsFullScreen = false; // False while debugging
             Graphics.ApplyChanges();
 
             IsFixedTimeStep = false;

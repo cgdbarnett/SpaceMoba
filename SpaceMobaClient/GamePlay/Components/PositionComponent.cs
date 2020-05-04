@@ -15,11 +15,41 @@ namespace SpaceMobaClient.GamePlay.Components
     /// </summary>
     public class PositionComponent : IComponent
     {
-        // State of this component.
-        public Vector2 Position;
+        // Positional component
+        private Vector2 LastPosition;
+        private Vector2 NewPosition;
+        public Vector2 Position
+        {
+            get
+            {
+                return (NewPosition - LastPosition) * LerpValue + LastPosition;
+            }
+            set
+            {
+                NewPosition += value - Position;
+            }
+        }
+
+        // Momentum component
         public Vector2 Momentum;
+
+        // Direction component
         public float Direction;
+
+        // AngularMomentum component
         public float AngularMomentum;
+
+        // Lerping values
+        private const float TargetTime = 500;
+        private long LastUpdate;
+        private float LerpValue
+        {
+            get
+            {
+                return Math.Min((DateTime.Now.Ticks - LastUpdate) 
+                    / 10000f / TargetTime, 1.0f);
+            }
+        }
 
         /// <summary>
         /// Returns the reference to the parent entity.
@@ -52,6 +82,8 @@ namespace SpaceMobaClient.GamePlay.Components
         public PositionComponent(Entity parent)
         {
             Entity = parent;
+            LastPosition = new Vector2();
+            NewPosition = new Vector2();
         }
 
         /// <summary>
@@ -69,7 +101,8 @@ namespace SpaceMobaClient.GamePlay.Components
             Direction += AngularMomentum * deltaTime;
 
             // Update position
-            Position += Momentum * deltaTime;
+            NewPosition += Momentum * deltaTime;
+            LastPosition += Momentum * deltaTime;
         }
 
         /// <summary>
@@ -86,12 +119,21 @@ namespace SpaceMobaClient.GamePlay.Components
         /// <param name="message">Incoming message.</param>
         public void Deserialize(NetIncomingMessage message)
         {
-            Position.X = message.ReadFloat();
-            Position.Y = message.ReadFloat();
+            LastPosition.X = Position.X;
+            LastPosition.Y = Position.Y;
+            LastUpdate = DateTime.Now.Ticks;
+
+            NewPosition.X = message.ReadFloat();
+            NewPosition.Y = message.ReadFloat();
             Momentum.X = message.ReadFloat();
             Momentum.Y = message.ReadFloat();
             Direction = message.ReadFloat();
             AngularMomentum = message.ReadFloat();
+
+            if((NewPosition - LastPosition).LengthSquared() > 50 * 50)
+            {
+                LastPosition = NewPosition;
+            }
         }
 
         /// <summary>

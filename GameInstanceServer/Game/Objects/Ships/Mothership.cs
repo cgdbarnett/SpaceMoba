@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Lidgren.Network;
 
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
 
@@ -35,18 +36,23 @@ namespace GameInstanceServer.Game.Objects.Ships
         public WorldComponent World => (WorldComponent)Components[1];
 
         /// <summary>
+        /// Team component of mothership.
+        /// </summary>
+        public TeamComponent Team => (TeamComponent)Components[4];
+
+        /// <summary>
         /// Creates a Mothership entity.
         /// </summary>
-        public Mothership() : base(ECS.GetNextId())
+        public Mothership(int x, int y, Team team) : base(ECS.GetNextId())
         {
             // Register components.
             Components = new IComponent[]
             {
                 new PositionComponent()
                 {
-                    Position = new Vector2(6000, 1600),
+                    Position = new Vector2(x, y),
                     Momentum = Blackhole.GetInitialMomentum(
-                        new Vector2(6000, 1600)
+                        new Vector2(x, y)
                         ),
                     Direction = 0,
                     AngularMomentum = 0
@@ -56,13 +62,18 @@ namespace GameInstanceServer.Game.Objects.Ships
                 {
                     Sprite = "Objects/Ships/Mothership"
                 },
-                new AffectedByBlackholeComponent()
+                new AffectedByBlackholeComponent(),
+                new TeamComponent()
+                {
+                    Team = team
+                }
             };
 
             // Link components
             World.Entity = this;
             World.PositionComponent = Position;
             ((AffectedByBlackholeComponent)Components[3]).Position = Position;
+            Team.Team.Mothership = this;
         }
     }
 }

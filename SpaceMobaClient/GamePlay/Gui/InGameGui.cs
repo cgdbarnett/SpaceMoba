@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using SpaceMobaClient.GamePlay.Components;
+using SpaceMobaClient.Systems.Objects;
+
 namespace SpaceMobaClient.GamePlay.Gui
 {
     /// <summary>
@@ -75,6 +78,40 @@ namespace SpaceMobaClient.GamePlay.Gui
                 new Rectangle(10 + player_x, 890 + player_y, 2, 2),
                 Color.White
                 );
+
+            // Mothership
+            TeamComponent team = 
+                (TeamComponent)LocalPlayer.Entity[ComponentId.Team];
+            if (team != null)
+            {
+                if (team.MothershipPosition != null)
+                {
+                    int mother_x = 
+                        (int)(team.MothershipPosition.X / 12000 * 180);
+                    int mother_y = 
+                        (int)(team.MothershipPosition.Y / 12000 * 180);
+                    spriteBatch.Draw(Dot,
+                        new Rectangle(10 + mother_x, 890 + mother_y, 2, 2),
+                        Color.Blue
+                        );
+                }
+
+                // Team mates
+                for (int i = 0; i < team.MemberCount; i++)
+                {
+                    if (team.MemberPositions[i] != null)
+                    {
+                        int team_x =
+                            (int)(team.MemberPositions[i].X / 12000 * 180);
+                        int team_y =
+                            (int)(team.MemberPositions[i].Y / 12000 * 180);
+                        spriteBatch.Draw(Dot,
+                            new Rectangle(10 + team_x, 890 + team_y, 2, 2),
+                            Color.Green
+                            );
+                    }
+                }
+            }
         }
 
         /// <summary>

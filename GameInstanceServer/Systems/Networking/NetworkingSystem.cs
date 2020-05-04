@@ -139,7 +139,7 @@ namespace GameInstanceServer.Systems.Networking
                     ApproveIncomingConnection(component, token, msg, true);
                 }
             }
-            else if(component.Tokens.Contains(token))
+            else if(component.Tokens.ContainsKey(token))
             {
                 ApproveIncomingConnection(component, token, msg);
             }
@@ -172,12 +172,17 @@ namespace GameInstanceServer.Systems.Networking
             else
             {
                 // Create new player entity
-                PlayerEntity player = new PlayerEntity();
+                PlayerEntity player = 
+                    new PlayerEntity(component.Tokens[token]);
                 player.RegisterComponents();
+                player.Team.Team.RegisterPlayer(player);
 
-                // Player spawn. 
-                player.Position.Position = new Vector2(6000, 1600);
-                player.Position.Momentum = new Vector2(-110, 0);
+                // Player spawn.
+                player.Position.Position =
+                    player.Team.Team.Mothership.Position.Position + 
+                    new Vector2(100, 0);
+                player.Position.Momentum = 
+                    Blackhole.GetInitialMomentum(player.Position.Position);
                 player.Position.Direction = 0;
                 player.Position.AngularMomentum = 20;
 

@@ -137,9 +137,16 @@ namespace GameInstanceServer.Systems.Networking
                         );
                 client.OutgoingMessageQueue.Enqueue(msg);
             }
-
+            
             // GC should clear up the old dictionary
             client.ReplicatedEntities = newReplicated;
+
+            // Replicate team
+            {
+                NetOutgoingMessage msg = PacketWriter.UpdateTeam(
+                    client.NetConnection, client.Entity);
+                client.OutgoingMessageQueue.Enqueue(msg);
+            }
         }
 
         /// <summary>

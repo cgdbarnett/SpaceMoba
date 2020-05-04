@@ -14,6 +14,7 @@
         UpdatePlayerInput,
         CreateObject,
         UpdateObject,
-        DestroyObject
+        DestroyObject,
+        UpdateTeam
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.Objects.Resources;
 using GameInstanceServer.Game.Objects.Ships;
+using GameInstanceServer.Game.Teams;
 
 namespace GameInstanceServer.Map
 {
@@ -18,7 +19,7 @@ namespace GameInstanceServer.Map
         /// <summary>
         /// Spawns all objects that should exist when the game starts.
         /// </summary>
-        public static void SpawnWorld()
+        public static void SpawnWorld(Team teamA, Team teamB)
         {
             const int debriCount = 160;
             Random random = new Random();
@@ -27,11 +28,12 @@ namespace GameInstanceServer.Map
             Blackhole blackhole = new Blackhole(new Vector2(6000, 6000));
             blackhole.RegisterComponents();
 
-            // Mothership of lessor doom
-            Mothership mothership = new Mothership();
-            mothership.RegisterComponents();
+            // Spawn motherships
+            Mothership mothershipA = new Mothership(6000, 1600, teamA);
+            mothershipA.RegisterComponents();
+            Mothership mothershipB = new Mothership(6000, 10400, teamB);
+            mothershipB.RegisterComponents();
 
-            
             // Fill the void with debri
             for(int i = 0; i < debriCount; i++)
             {

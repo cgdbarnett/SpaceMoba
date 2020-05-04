@@ -145,5 +145,22 @@ namespace GameInstanceServer.Systems.Networking
 
             return message;
         }
+
+        /// <summary>
+        /// Updates the team positions and resources.
+        /// </summary>
+        /// <param name="target">Target NetConnection.</param>
+        /// <param name="obj">Entity.</param>
+        /// <returns>Packet to send to client.</returns>
+        public static NetOutgoingMessage
+            UpdateTeam(NetConnection target, PlayerEntity obj)
+        {
+            // Create base message
+            NetOutgoingMessage message = target.Peer.CreateMessage();
+            message.Write((short)NetOpCode.UpdateTeam);
+            obj.Team.Serialize(message);
+
+            return message;
+        }
     }
 }

@@ -37,8 +37,6 @@ namespace GameInstanceServer.Game.Objects.Common
         public void Serialize(NetOutgoingMessage msg)
         {
             msg.Write((byte)SerializableComponentId.AffectedByBlackhole);
-            msg.Write(Gravity.X);
-            msg.Write(Gravity.Y);
         }
     }
 }

@@ -6,9 +6,11 @@ using Microsoft.Xna.Framework;
 
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.Objects.Ships;
+using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
 using GameInstanceServer.Systems.Networking;
+using Lidgren.Network;
 
 namespace GameInstanceServer.Game
 {
@@ -78,9 +80,14 @@ namespace GameInstanceServer.Game
             (ShipLimiterComponent)Components[5];
 
         /// <summary>
+        /// Gets the team component for this player.
+        /// </summary>
+        public TeamComponent Team => (TeamComponent)Components[6];
+
+        /// <summary>
         /// Creates a new player entity.
         /// </summary>
-        public PlayerEntity() : base(ECS.GetNextId())
+        public PlayerEntity(Team team) : base(ECS.GetNextId())
         {
             // Create components
             Components = new IComponent[]
@@ -106,6 +113,10 @@ namespace GameInstanceServer.Game
                 {
                     HandlingRank = 0,
                     SpeedRank = 0
+                },
+                new TeamComponent()
+                {
+                    Team = team
                 }
             };
 

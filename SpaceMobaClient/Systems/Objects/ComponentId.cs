@@ -9,6 +9,7 @@
         Position,
         Animation,
         AffectedByBlackhole,
-        Engine
+        Engine,
+        Team
     }
 }
