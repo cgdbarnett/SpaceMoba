@@ -175,16 +175,6 @@ namespace GameInstanceServer.Systems.Networking
                 PlayerEntity player = 
                     new PlayerEntity(component.Tokens[token]);
                 player.RegisterComponents();
-                player.Team.Team.RegisterPlayer(player);
-
-                // Player spawn.
-                player.Position.Position =
-                    player.Team.Team.Mothership.Position.Position + 
-                    new Vector2(100, 0);
-                player.Position.Momentum = 
-                    Blackhole.GetInitialMomentum(player.Position.Position);
-                player.Position.Direction = 0;
-                player.Position.AngularMomentum = 20;
 
                 // Set new player client component
                 component.Clients.Add(token, player.Client);

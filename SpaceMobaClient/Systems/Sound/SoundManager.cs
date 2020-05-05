@@ -26,6 +26,8 @@ namespace SpaceMobaClient.Systems.Sound
                     .Load<Song>(song);
 
                 MediaPlayer.Play(CurrentSong);
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Volume = 0.25f;
             }
             catch(Exception e)
             {

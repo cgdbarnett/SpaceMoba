@@ -6,16 +6,17 @@ using Microsoft.Xna.Framework.Content;
 
 // Xna (Monogame) libraries
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 // Game libraries
 using SpaceMobaClient.GamePlay.Gui;
 using SpaceMobaClient.GamePlay.Network;
 using SpaceMobaClient.GamePlay.World;
-using SpaceMobaClient.Systems.Gui;
 using SpaceMobaClient.Systems.IO;
 using SpaceMobaClient.Systems.Network;
 using SpaceMobaClient.Systems.Objects;
 using SpaceMobaClient.Systems.Scenes;
+using SpaceMobaClient.Systems.Sound;
 
 namespace SpaceMobaClient.GamePlay.Scenes
 {
@@ -60,6 +61,8 @@ namespace SpaceMobaClient.GamePlay.Scenes
             NetworkHandler = (GameNetworkHandler)handover;
             Background = new Background();
             Gui = new InGameGui();
+            SoundManager.PlaySong("Music/bg_heartbeat");
+            LocalPlayer.StartEffects();
         }
 
         /// <summary>

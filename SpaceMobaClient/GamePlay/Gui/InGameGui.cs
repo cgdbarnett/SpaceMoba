@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace SpaceMobaClient.GamePlay.Gui
                 // Team mates
                 for (int i = 0; i < team.MemberCount; i++)
                 {
-                    if (team.MemberPositions[i] != null)
+                    if (team.MemberId[i] != LocalPlayer.Entity.Id)
                     {
                         int team_x =
                             (int)(team.MemberPositions[i].X / 12000 * 180);

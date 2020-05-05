@@ -127,6 +127,17 @@ namespace GameInstanceServer.Game
             Engine.Position = Position;
             ShipLimiter.Position = Position;
             ShipLimiter.Engine = Engine;
+
+            // Register to team
+            Team.Team.RegisterPlayer(this);
+
+            // Spawn according to team respawn
+            Position.Position = Team.Team.Mothership.Position.Position
+                + new Vector2(100, 0);
+            Position.Momentum = 
+                Blackhole.GetInitialMomentum(Position.Position);
+            Position.Direction = (new Random()).Next(0, 180);
+            Position.AngularMomentum = (new Random()).Next(-20, 20);
         }
 
         /// <summary>

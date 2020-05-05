@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
@@ -26,6 +22,7 @@ namespace SpaceMobaClient.GamePlay.Components
 
         public byte MemberCount;
         public Vector2[] MemberPositions;
+        public int[] MemberId;
 
         /// <summary>
         /// This component type.
@@ -51,6 +48,7 @@ namespace SpaceMobaClient.GamePlay.Components
             Entity = entity;
 
             MothershipPosition = new Vector2();
+            MemberId = new int[3];
             MemberPositions = new Vector2[3]
             {
                 new Vector2(),
@@ -69,12 +67,12 @@ namespace SpaceMobaClient.GamePlay.Components
             MothershipPosition.X = message.ReadFloat();
             MothershipPosition.Y = message.ReadFloat();
 
-            int count = message.ReadByte();
+            MemberCount = message.ReadByte();
 
             // Team members
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < MemberCount; i++)
             {
-                int id = message.ReadInt32();
+                MemberId[i] = message.ReadInt32();
                 MemberPositions[i].X = message.ReadFloat();
                 MemberPositions[i].Y = message.ReadFloat();
             }

@@ -97,7 +97,10 @@ namespace SpaceMobaClient.GamePlay.Network
 
                 // Update team
                 case NetOpCode.UpdateTeam:
-                    LocalPlayer.Entity[ComponentId.Team].Deserialize(msg);
+                    if (LocalPlayer.Entity != null)
+                    {
+                        LocalPlayer.Entity[ComponentId.Team].Deserialize(msg);
+                    }
                     break;
             }
         }

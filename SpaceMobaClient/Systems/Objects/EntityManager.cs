@@ -244,7 +244,14 @@ namespace SpaceMobaClient.Systems.Objects
             {
                 try
                 {
-                    Entities.Add(entity.Id, entity);
+                    if (Entities.ContainsKey(entity.Id))
+                    {
+                        Entities[entity.Id] = entity;
+                    }
+                    else
+                    {
+                        Entities.Add(entity.Id, entity);
+                    }
                 }
                 catch(Exception e)
                 {

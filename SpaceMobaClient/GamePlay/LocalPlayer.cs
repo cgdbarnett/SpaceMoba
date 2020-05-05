@@ -3,6 +3,7 @@ using System;
 
 // XNA (Monogame) libraries
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 
 // Game libraries
@@ -19,6 +20,8 @@ namespace SpaceMobaClient.GamePlay
     {
         public static Entity Entity;
         private static InputState PreviousInputState;
+
+        private static SoundEffectInstance EngineSound;
 
         /// <summary>
         /// X position of local player.
@@ -61,6 +64,19 @@ namespace SpaceMobaClient.GamePlay
         }
 
         /// <summary>
+        /// Starts playing sound effects
+        /// </summary>
+        public static void StartEffects()
+        {
+            SoundEffect engine = GameClient.GetGameClient().Content
+                .Load<SoundEffect>("Sounds/engine_idle");
+            EngineSound = engine.CreateInstance();
+            EngineSound.IsLooped = true;
+            EngineSound.Volume = 0.25f;
+            EngineSound.Play();
+        }
+
+        /// <summary>
         /// Resets the local player.
         /// </summary>
         public static void Reset()
@@ -98,11 +114,21 @@ namespace SpaceMobaClient.GamePlay
                 Attack = state.IsKeyDown(Keys.Space)
             };
 
+            if (currentInputState.Forward)
+            {
+                EngineSound.Pitch = 1.0f;
+            }
+            else
+            {
+                EngineSound.Pitch = 0.0f;
+            }
+
             // Check if any input state has changed
-            if(currentInputState != PreviousInputState)
+            if (currentInputState != PreviousInputState)
             {
                 // It has, so we should send the new state to the server.
                 PreviousInputState = currentInputState;
+
                 return currentInputState;
             }
 

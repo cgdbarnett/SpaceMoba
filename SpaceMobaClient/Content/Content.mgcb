@@ -13,6 +13,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin ../../../Resources/Music/Output/bg_heartbeat.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:../../../Resources/Music/Output/bg_heartbeat.ogg;Music/bg_heartbeat.ogg
+
+#begin ../../../Resources/Music/Output/engine_idle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../../../Resources/Music/Output/engine_idle.wav;Sounds/engine_idle.wav
+
 #begin ../../../Resources/Objects/Ships/GreenBeacon.png
 /importer:TextureImporter
 /processor:TextureProcessor
