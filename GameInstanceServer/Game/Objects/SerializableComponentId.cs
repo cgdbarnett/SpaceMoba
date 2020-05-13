@@ -10,6 +10,7 @@
         Animation,
         AffectedByBlackhole,
         Engine,
-        Team
+        Team,
+        Combat
     }
 }

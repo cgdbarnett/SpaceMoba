@@ -4,28 +4,20 @@ using Lidgren.Network;
 
 using GameInstanceServer.Systems.ECS;
 
-namespace GameInstanceServer.Game.Objects.Resources
+namespace GameInstanceServer.Game.Objects.Combat
 {
-    /// <summary>
-    /// Resource component.
-    /// </summary>
-    public class ResourceComponent : IComponent
+    public class WeaponComponent : IComponent
     {
         /// <summary>
-        /// Gets the ComponentSystem for Resources.
+        /// Gets the ComponentSystem for Weapons.
         /// </summary>
         public ComponentSystemId ComponentSystem
         {
             get
             {
-                return ComponentSystemId.ResourceSystem;
+                return ComponentSystemId.WeaponSystem;
             }
         }
-
-        /// <summary>
-        /// Resources this object is worth / carrying.
-        /// </summary>
-        public int Value;
 
         /// <summary>
         /// This is not a serializable component.
@@ -41,10 +33,10 @@ namespace GameInstanceServer.Game.Objects.Resources
         /// <summary>
         /// This is not a serializable component.
         /// </summary>
-        /// <param name="msg"></param>
+        /// <param name="msg">Outgoing message.</param>
         public void Serialize(NetOutgoingMessage msg)
         {
-            throw new NotImplementedException();
+            throw (new NotImplementedException());
         }
     }
 }

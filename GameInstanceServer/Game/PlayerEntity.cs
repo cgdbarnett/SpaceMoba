@@ -4,7 +4,9 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
+using GameInstanceServer.Game.Objects.Combat;
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Objects.Resources;
 using GameInstanceServer.Game.Objects.Ships;
 using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
@@ -85,6 +87,21 @@ namespace GameInstanceServer.Game
         public TeamComponent Team => (TeamComponent)Components[6];
 
         /// <summary>
+        /// Gets the combat component for this player.
+        /// </summary>
+        public CombatComponent Combat => (CombatComponent)Components[7];
+
+        /// <summary>
+        /// Gets the weapon component for this player.
+        /// </summary>
+        public WeaponComponent Weapon => (WeaponComponent)Components[8];
+
+        /// <summary>
+        /// Gets the resource component for this player.
+        /// </summary>
+        public ResourceComponent Resources => (ResourceComponent)Components[9];
+
+        /// <summary>
         /// Creates a new player entity.
         /// </summary>
         public PlayerEntity(Team team) : base(ECS.GetNextId())
@@ -117,6 +134,18 @@ namespace GameInstanceServer.Game
                 new TeamComponent()
                 {
                     Team = team
+                },
+                new CombatComponent()
+                {
+                    Health = 100,
+                    MaxHealth = 100,
+                    Armour = 100,
+                    MaxArmour = 100
+                },
+                new WeaponComponent(),
+                new ResourceComponent()
+                {
+                    Value = 0
                 }
             };
 

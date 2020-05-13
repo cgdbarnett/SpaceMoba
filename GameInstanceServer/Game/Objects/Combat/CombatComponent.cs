@@ -1,0 +1,64 @@
+﻿using Lidgren.Network;
+
+using GameInstanceServer.Systems.ECS;
+
+namespace GameInstanceServer.Game.Objects.Combat
+{
+    public class CombatComponent : IComponent
+    {
+        /// <summary>
+        /// Gets the ComponentSystem for Combat.
+        /// </summary>
+        public ComponentSystemId ComponentSystem
+        {
+            get
+            {
+                return ComponentSystemId.CombatSystem;
+            }
+        }
+
+        /// <summary>
+        /// Current health of entity.
+        /// </summary>
+        public int Health;
+
+        /// <summary>
+        /// Maximum health of entity.
+        /// </summary>
+        public int MaxHealth;
+
+        /// <summary>
+        /// Current armour of entity.
+        /// </summary>
+        public int Armour;
+
+        /// <summary>
+        /// Maximum armour of entity.
+        /// </summary>
+        public int MaxArmour;
+
+        /// <summary>
+        /// This is a serializable component.
+        /// </summary>
+        public bool Serializable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// This is a serializable component.
+        /// </summary>
+        /// <param name="msg">Outgoing message.</param>
+        public void Serialize(NetOutgoingMessage msg)
+        {
+            msg.Write((byte)SerializableComponentId.Combat);
+            msg.Write(Health);
+            msg.Write(MaxHealth);
+            msg.Write(Armour);
+            msg.Write(MaxArmour);
+        }
+    }
+}

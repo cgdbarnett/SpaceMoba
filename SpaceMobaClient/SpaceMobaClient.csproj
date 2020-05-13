@@ -61,13 +61,19 @@
     <Compile Include="GamePlay\Components\AffectedByBlackholeComponent.cs" />
     <Compile Include="GamePlay\Components\EngineComponent.cs" />
     <Compile Include="GamePlay\Components\TeamComponent.cs" />
+    <None Include="GamePlay\Gui\InGameGui-tmp.cs" />
     <Compile Include="GamePlay\Gui\InGameGui.cs" />
+    <Compile Include="GamePlay\Gui\InGameGui.Generated.cs" />
+    <Compile Include="GamePlay\Gui\LoginMenuGui.cs" />
+    <Compile Include="GamePlay\Gui\LoginMenuGui.Generated.cs" />
+    <Compile Include="GamePlay\Gui\TestUIControls.cs" />
     <Compile Include="GamePlay\Network\GameNetworkHandler.cs" />
     <Compile Include="GamePlay\Network\PacketWriter.cs" />
     <Compile Include="GamePlay\Scenes\CountdownScene.cs" />
     <Compile Include="GamePlay\Scenes\ErrorScene.cs" />
     <Compile Include="GamePlay\Scenes\InGameScene.cs" />
     <Compile Include="GamePlay\Scenes\LoadGameScene.cs" />
+    <Compile Include="GamePlay\Scenes\UITestScene.cs" />
     <Compile Include="GamePlay\Scenes\WaitForPlayersScene.cs" />
     <Compile Include="GamePlay\Components\AnimationComponent.cs" />
     <Compile Include="GamePlay\Components\PositionComponent.cs" />
@@ -95,14 +101,26 @@
     <Compile Include="Systems\Sound\SoundManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="info.lundin.math, Version=1.2.6.0, Culture=neutral, PublicKeyToken=2f7fe9ec5efab85f, processorArchitecture=MSIL">
+      <HintPath>..\packages\info.lundin.math.dll.1.2.6\lib\net40\info.lundin.math.dll</HintPath>
+    </Reference>
     <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="MonoGame.UI.Forms, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.UI.Forms.1.0.1\lib\MonoGame.UI.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Myra, Version=0.9.9.202, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Myra.0.9.9.202\lib\net45\Myra.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="XNAssets, Version=0.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XNAssets.0.5.0.6\lib\net45\XNAssets.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />

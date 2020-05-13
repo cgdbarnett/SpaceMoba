@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Myra;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -84,6 +86,9 @@ namespace SpaceMobaClient
             IsFixedTimeStep = false;
             TargetElapsedTime = new TimeSpan(150000);
             IsMouseVisible = true;
+            
+            // Initialise UI
+            MyraEnvironment.Game = this;
 
             base.Initialize();
         }
@@ -138,6 +143,7 @@ namespace SpaceMobaClient
             // Note: ID's need to be unique.
             List<IScene> scenes = new List<IScene>
             {
+                new UITestScene(),
                 new SplashScreenScene(),
                 new LoadGameScene(),
                 new WaitForPlayersScene(),
@@ -147,7 +153,7 @@ namespace SpaceMobaClient
             };
 
             SceneManager.SetSceneList(scenes);
-            SceneManager.GotoScene<SplashScreenScene>();
+            SceneManager.GotoScene<UITestScene>();
         }
     }
 }

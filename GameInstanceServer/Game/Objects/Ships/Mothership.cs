@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Lidgren.Network;
 
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Objects.Resources;
 using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
@@ -41,6 +42,11 @@ namespace GameInstanceServer.Game.Objects.Ships
         public TeamComponent Team => (TeamComponent)Components[4];
 
         /// <summary>
+        /// Resources component of mothership.
+        /// </summary>
+        public ResourceComponent Resources => (ResourceComponent)Components[5];
+
+        /// <summary>
         /// Creates a Mothership entity.
         /// </summary>
         public Mothership(int x, int y, Team team) : base(ECS.GetNextId())
@@ -66,6 +72,10 @@ namespace GameInstanceServer.Game.Objects.Ships
                 new TeamComponent()
                 {
                     Team = team
+                },
+                new ResourceComponent()
+                {
+                    Value = 0
                 }
             };
 

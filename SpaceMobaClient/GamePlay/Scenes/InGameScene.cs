@@ -1,10 +1,10 @@
 ﻿using System;
 
-// System libraries
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+using Myra.Graphics2D.UI;
 
 // Xna (Monogame) libraries
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 
@@ -61,6 +61,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
             NetworkHandler = (GameNetworkHandler)handover;
             Background = new Background();
             Gui = new InGameGui();
+            Desktop.Root = Gui;
             SoundManager.PlaySong("Music/bg_heartbeat");
             LocalPlayer.StartEffects();
         }
@@ -103,10 +104,13 @@ namespace SpaceMobaClient.GamePlay.Scenes
             Background.DrawTop(SpriteBatch, Camera);
 
             // Draw GUI
-            Gui.Draw(SpriteBatch, Camera);
+            //Gui.Draw(SpriteBatch, Camera);
+            //Desktop.Render();
 
             // End drawing
             SpriteBatch.End();
+
+            Desktop.Render();
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Threading;
 
 // Game libraries
 using GameInstanceServer.Game;
+using GameInstanceServer.Game.Objects.Combat;
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.Objects.Ships;
 using GameInstanceServer.Game.Teams;
@@ -69,13 +70,15 @@ namespace GameInstanceServer
             // World partioning
             ECS.RegisterSystem(new WorldSystem());
 
-            // Game systems
-            ECS.RegisterSystem(new PositionSystem());
+            // Game systems (Alphabetical order).
             ECS.RegisterSystem(new AnimationSystem());
             ECS.RegisterSystem(new BlachholeSystem());
+            ECS.RegisterSystem(new CombatSystem());
             ECS.RegisterSystem(new EngineSystem());
+            ECS.RegisterSystem(new PositionSystem());
             ECS.RegisterSystem(new ShipLimiterSystem());
             ECS.RegisterSystem(new TeamSystem());
+            ECS.RegisterSystem(new WeaponSystem());
 
             // Create networking component without an entity
             ECS.RegisterComponentToSystem(

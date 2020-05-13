@@ -228,7 +228,15 @@ namespace GameInstanceServer.Systems.Networking
                 case NetConnectionStatus.Disconnected:
                     Trace.WriteLine("Client disconnected.");
 
-                    component.Connections[msg.SenderConnection].Active = false;
+                    NetworkingClientComponent client =
+                        component.Connections[msg.SenderConnection];
+
+                    client.Active = false;
+
+                    // Unregister player from team, and unregister components.
+                    client.Entity.Team.Team.UnregisterPlayer(client.Entity);
+                    client.Entity.UnregisterComponents();
+                    client.Entity = null;
                     break;
             }
         }
