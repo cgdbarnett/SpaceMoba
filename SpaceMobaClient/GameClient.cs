@@ -80,7 +80,7 @@ namespace SpaceMobaClient
             //Graphics.PreferredBackBufferWidth = 1280;
             //Graphics.PreferredBackBufferHeight = 740;
             //Graphics.HardwareModeSwitch = false; // For borderless window (i hope)
-            Graphics.IsFullScreen = false; // False while debugging
+            Graphics.IsFullScreen = true; // False while debugging
             Graphics.ApplyChanges();
 
             IsFixedTimeStep = false;
@@ -143,7 +143,6 @@ namespace SpaceMobaClient
             // Note: ID's need to be unique.
             List<IScene> scenes = new List<IScene>
             {
-                new UITestScene(),
                 new SplashScreenScene(),
                 new LoadGameScene(),
                 new WaitForPlayersScene(),
@@ -153,7 +152,7 @@ namespace SpaceMobaClient
             };
 
             SceneManager.SetSceneList(scenes);
-            SceneManager.GotoScene<UITestScene>();
+            SceneManager.GotoScene<SplashScreenScene>();
         }
     }
 }

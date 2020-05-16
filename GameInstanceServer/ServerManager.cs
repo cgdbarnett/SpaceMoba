@@ -7,6 +7,7 @@ using System.Threading;
 using GameInstanceServer.Game;
 using GameInstanceServer.Game.Objects.Combat;
 using GameInstanceServer.Game.Objects.Common;
+using GameInstanceServer.Game.Objects.Resources;
 using GameInstanceServer.Game.Objects.Ships;
 using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
@@ -76,6 +77,7 @@ namespace GameInstanceServer
             ECS.RegisterSystem(new CombatSystem());
             ECS.RegisterSystem(new EngineSystem());
             ECS.RegisterSystem(new PositionSystem());
+            ECS.RegisterSystem(new ResourceSystem());
             ECS.RegisterSystem(new ShipLimiterSystem());
             ECS.RegisterSystem(new TeamSystem());
             ECS.RegisterSystem(new WeaponSystem());

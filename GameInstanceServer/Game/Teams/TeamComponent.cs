@@ -32,6 +32,7 @@ namespace GameInstanceServer.Game.Teams
         public void Serialize(NetOutgoingMessage msg)
         {
             // Mothership
+            msg.Write(Team.Mothership.Id);
             msg.Write(Team.Mothership.Position.Position.X);
             msg.Write(Team.Mothership.Position.Position.Y);
 

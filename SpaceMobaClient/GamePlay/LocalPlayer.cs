@@ -18,9 +18,15 @@ namespace SpaceMobaClient.GamePlay
     /// </summary>
     public static class LocalPlayer
     {
+        /// <summary>
+        /// Entity representing the local player.
+        /// </summary>
         public static Entity Entity;
+
+        // Input state
         private static InputState PreviousInputState;
 
+        // Sounds
         private static SoundEffectInstance EngineSound;
 
         /// <summary>

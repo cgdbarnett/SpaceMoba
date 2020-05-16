@@ -18,6 +18,7 @@ namespace SpaceMobaClient.GamePlay.Components
             private set;
         }
 
+        public int MothershipId;
         public Vector2 MothershipPosition;
 
         public byte MemberCount;
@@ -64,6 +65,7 @@ namespace SpaceMobaClient.GamePlay.Components
         public void Deserialize(NetIncomingMessage message)
         {
             // Mothership
+            MothershipId = message.ReadInt32();
             MothershipPosition.X = message.ReadFloat();
             MothershipPosition.Y = message.ReadFloat();
 

@@ -6,9 +6,11 @@ using System.Diagnostics;
 // Xna (Monogame) libraries
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 // Game libraries
 using SpaceMobaClient.GamePlay;
+using SpaceMobaClient.GamePlay.Components;
 
 namespace SpaceMobaClient.Systems.Objects
 {
@@ -21,6 +23,11 @@ namespace SpaceMobaClient.Systems.Objects
         /// Unique identifier of entity. (From server).
         /// </summary>
         public readonly int Id;
+
+        /// <summary>
+        /// Fires when the entity is clicked in game.
+        /// </summary>
+        public event EventHandler OnClick;
 
         /// <summary>
         /// Maps component ids to the instanced component.
@@ -98,8 +105,29 @@ namespace SpaceMobaClient.Systems.Objects
         /// Update all components of this entity.
         /// </summary>
         /// <param name="gameTime">Game frame interval.</param>
-        public void Update(GameTime gameTime)
+        /// <param name="camera">Active view camera.</param>
+        /// <param name="mouse">Current mouse state.</param>
+        public void Update(GameTime gameTime, Camera camera, MouseState mouse)
         {
+            // Check mouse input
+            if(mouse.LeftButton == ButtonState.Pressed)
+            {
+                if(OnClick != null)
+                {
+                    Vector2 pos = (
+                        (PositionComponent)Components[ComponentId.Position]
+                        ).Position;
+                    Vector2 offsetMousePos = new Vector2(
+                        mouse.X - camera.OffsetX, mouse.Y - camera.OffsetY
+                        );
+                    if ((pos - offsetMousePos).LengthSquared() <= 128 * 128)
+                    {
+                        OnClick.Invoke(this, null);
+                    }
+                }
+            }
+
+            // Update all components
             foreach(IComponent component in Components.Values)
             {
                 try

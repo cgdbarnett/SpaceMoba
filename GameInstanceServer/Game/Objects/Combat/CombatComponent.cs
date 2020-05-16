@@ -44,7 +44,7 @@ namespace GameInstanceServer.Game.Objects.Combat
         {
             get
             {
-                return true;
+                return false;
             }
         }
 

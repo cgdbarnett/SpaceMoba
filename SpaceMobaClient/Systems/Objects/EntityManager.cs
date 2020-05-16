@@ -6,6 +6,7 @@ using System.Diagnostics;
 // Xna (Monogame) libraries
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 // Lidgren libraries
 using Lidgren.Network;
@@ -55,6 +56,23 @@ namespace SpaceMobaClient.Systems.Objects
         {
             return Entities.ContainsKey(entity)
                 && !(ToBeRemoved.Contains(entity));
+        }
+
+        /// <summary>
+        /// Returns a reference to the entity from a given Id.
+        /// </summary>
+        /// <param name="entity">Id of entity.</param>
+        /// <returns>Entity or null.</returns>
+        public static Entity GetEntityById(int entity)
+        {
+            if(Contains(entity))
+            {
+                return Entities[entity];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -223,14 +241,18 @@ namespace SpaceMobaClient.Systems.Objects
         /// Updates all entities.
         /// </summary>
         /// <param name="gameTime">Game frame interval.</param>
-        public static void Update(GameTime gameTime)
+        /// <param name="camera">Active camera in scene.</param>
+        public static void Update(GameTime gameTime, Camera camera)
         {
+            // Get mouse state
+            MouseState mouseState = Mouse.GetState();
+
             // Iterate over all entities and update
             foreach(Entity entity in Entities.Values)
             {
                 try
                 {
-                    entity.Update(gameTime);
+                    entity.Update(gameTime, camera, mouseState);
                 }
                 catch(Exception e)
                 {

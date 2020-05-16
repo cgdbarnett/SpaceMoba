@@ -131,7 +131,10 @@ namespace SpaceMobaClient.GamePlay.Scenes
             }
 
             // Update entities
-            EntityManager.Update(gameTime);
+            EntityManager.Update(gameTime, Camera);
+
+            // Update GUI
+            Gui.Update(gameTime);
         }
     }
 }
