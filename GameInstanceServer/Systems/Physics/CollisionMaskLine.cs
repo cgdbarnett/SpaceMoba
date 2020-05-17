@@ -5,29 +5,29 @@ using Microsoft.Xna.Framework;
 namespace GameInstanceServer.Systems.Physics
 {
     /// <summary>
-    /// Provides collision detection for a circle.
+    /// Provides collision detection for a line.
     /// </summary>
-    public class CollisionMaskCircle : CollisionMask
+    public class CollisionMaskLine : CollisionMask
     {
         /// <summary>
-        /// Center of collision mask.
+        /// First point of the line.
         /// </summary>
-        public Vector2 Center;
+        public Vector2 Start;
 
         /// <summary>
-        /// Radius of collision mask.
+        /// Second point of the line.
         /// </summary>
-        public float Radius;
+        public Vector2 End;
 
         /// <summary>
-        /// Creates a new instance of a CollisionMaskCircle.
+        /// Creates a new instance of a CollisionMaskLine.
         /// </summary>
-        /// <param name="center">Initial center point.</param>
-        /// <param name="radius">Initial radius.</param>
-        public CollisionMaskCircle(Vector2 center, float radius)
+        /// <param name="start">First point of line.</param>
+        /// <param name="end">Second point of line.</param>
+        public CollisionMaskLine(Vector2 start, Vector2 end)
         {
-            Center = center;
-            Radius = radius;
+            Start = start;
+            End = end;
         }
         
         /// <summary>
@@ -38,17 +38,15 @@ namespace GameInstanceServer.Systems.Physics
         public override bool TestCollision(CollisionMask other)
         {
             // Circle circle collision
-            if (other.GetType() == typeof(CollisionMaskCircle))
+            if(other.GetType() == typeof(CollisionMaskCircle))
             {
                 CollisionMaskCircle mask = (CollisionMaskCircle)other;
 
-                return Collision.TestCollisionCircleCircle(this, mask);
+                return Collision.TestCollisionLineCircle(mask, this);
             }
             else if(other.GetType() == typeof(CollisionMaskLine))
             {
-                CollisionMaskLine mask = (CollisionMaskLine)other;
-
-                return Collision.TestCollisionLineCircle(this, mask);
+                throw (new NotImplementedException());
             }
             else
             {

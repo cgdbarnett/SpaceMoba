@@ -12,7 +12,7 @@ using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
 using GameInstanceServer.Systems.Networking;
-using Lidgren.Network;
+using GameInstanceServer.Systems.Physics;
 
 namespace GameInstanceServer.Game
 {
@@ -140,9 +140,17 @@ namespace GameInstanceServer.Game
                     Health = 100,
                     MaxHealth = 100,
                     Armour = 100,
-                    MaxArmour = 100
+                    MaxArmour = 100,
+                    CollisionMask = new CollisionMaskCircle(new Vector2(), 128),
+                    Entity = this
                 },
-                new WeaponComponent(),
+                new WeaponComponent()
+                {
+                    Cooldown = 200,
+                    CurrentCooldown = 0,
+                    Direction = 0f,
+                    Trigger = false
+                },
                 new ResourceComponent()
                 {
                     Value = 0
@@ -156,6 +164,9 @@ namespace GameInstanceServer.Game
             Engine.Position = Position;
             ShipLimiter.Position = Position;
             ShipLimiter.Engine = Engine;
+            Weapon.Position = Position;
+            Weapon.Team = Team;
+            Combat.Position = Position;
 
             // Register to team
             Team.Team.RegisterPlayer(this);
@@ -167,6 +178,9 @@ namespace GameInstanceServer.Game
                 Blackhole.GetInitialMomentum(Position.Position);
             Position.Direction = (new Random()).Next(0, 180);
             Position.AngularMomentum = (new Random()).Next(-20, 20);
+
+            // Register components
+            RegisterComponents();
         }
 
         /// <summary>

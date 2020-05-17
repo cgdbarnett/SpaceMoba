@@ -81,6 +81,8 @@ namespace GameInstanceServer
             ECS.RegisterSystem(new ShipLimiterSystem());
             ECS.RegisterSystem(new TeamSystem());
             ECS.RegisterSystem(new WeaponSystem());
+            ECS.RegisterSystem(new LifetimeSystem());
+            ECS.RegisterSystem(new ProjectileSystem());
 
             // Create networking component without an entity
             ECS.RegisterComponentToSystem(
@@ -122,7 +124,7 @@ namespace GameInstanceServer
         public void Run()
         {
             // Target frequency
-            const int targetFrequency = 15;
+            const int targetFrequency = 20;
             const int targetMilliseconds = 1000 / targetFrequency;
             TimeSpan frameTime = new TimeSpan(FrameTimer.ElapsedTicks);
 

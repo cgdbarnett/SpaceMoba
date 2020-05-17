@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 using GameInstanceServer.Systems.ECS;
-using GameInstanceServer.Systems.Physics;
 
 // Modify component system id from ECS for a new id.
 namespace GameInstanceServer.Systems.ECS
@@ -10,29 +11,29 @@ namespace GameInstanceServer.Systems.ECS
     public partial class ComponentSystemId
     {
         // Create Id for Resource System.
-        public static readonly ComponentSystemId CombatSystem
+        public static readonly ComponentSystemId LifetimeSystem
             = new ComponentSystemId();
     }
 }
 
-namespace GameInstanceServer.Game.Objects.Combat
+namespace GameInstanceServer.Game.Objects.Common
 {
     /// <summary>
-    /// Combat system.
+    /// Manages entities that have a limited lifespan.
     /// </summary>
-    public class CombatSystem : ComponentSystem
+    public class LifetimeSystem : ComponentSystem
     {
         /// <summary>
-        /// Creates a CombatSystem.
+        /// Creates a LifetimeSystem.
         /// </summary>
-        public CombatSystem()
+        public LifetimeSystem()
         {
-            Id = ComponentSystemId.CombatSystem;
+            Id = ComponentSystemId.LifetimeSystem;
             WantsUpdates = true;
         }
 
         /// <summary>
-        /// Update a component of the system.
+        /// Updates a lifetime component.
         /// </summary>
         /// <param name="component">Component to update.</param>
         /// <param name="gameTime">Game frame interval.</param>
@@ -40,14 +41,13 @@ namespace GameInstanceServer.Game.Objects.Combat
             IComponent component, TimeSpan gameTime
             )
         {
-            CombatComponent combat = (CombatComponent)component;
+            LifetimeComponent lifetime = (LifetimeComponent)component;
+            lifetime.LifetimeRemaining -= (int)gameTime.TotalMilliseconds;
 
-            ((CollisionMaskCircle)combat.CollisionMask).Center = 
-                combat.Position.Position;
-
-            if(combat.Health <= 0)
+            if(lifetime.LifetimeRemaining <= 0)
             {
-                combat.Entity.UnregisterComponents();
+                // DESTROY
+                lifetime.Entity.UnregisterComponents();
             }
         }
     }

@@ -181,7 +181,7 @@ namespace GameInstanceServer.Systems.Networking
                     // Handle input from the client.
                     case NetOpCode.UpdatePlayerInput:
                         {
-                            // Temporary force input
+                            // Force input
                             client.Entity.Engine.InputForce.X =
                                 (msg.ReadByte() - 1f) * 
                                 client.Entity.Engine.EngineForce.X;
@@ -191,7 +191,11 @@ namespace GameInstanceServer.Systems.Networking
                             client.Entity.Engine.InputAngularForce =
                                 (msg.ReadByte() - 1f) *
                                 client.Entity.Engine.EngineAngularForce;
-                            bool attack = msg.ReadBoolean(); // Disregard atm
+
+                            // Weapon input
+                            client.Entity.Weapon.Trigger = msg.ReadBoolean();
+
+                            // Update last update
                             client.Entity.LastUpdated = 
                                 GameMaster.ElapsedMilliseconds;
                         }

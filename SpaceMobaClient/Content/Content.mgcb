@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../Resources/Objects/Ships/GreenBeacon.png;Objects/Ships/GreenBeacon.png
 
+#begin ../../../Resources/Objects/Weapons/line_projectile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../Resources/Objects/Weapons/line_projectile.png;Objects/Weapons/line_projectile.png
+
 #begin Backgrounds/loading_screen.png
 /importer:TextureImporter
 /processor:TextureProcessor

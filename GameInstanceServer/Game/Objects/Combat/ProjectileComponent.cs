@@ -1,56 +1,52 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 using Lidgren.Network;
 
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.Teams;
+using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Systems.Physics;
 
 namespace GameInstanceServer.Game.Objects.Combat
 {
-    /// <summary>
-    /// A base weapon component.
-    /// </summary>
-    public class WeaponComponent : IComponent
+    public class ProjectileComponent : IComponent
     {
         /// <summary>
-        /// Flags whether the trigger is currently active.
+        /// Parent entity of component.
         /// </summary>
-        public bool Trigger;
+        public Entity Entity;
 
         /// <summary>
-        /// Current cooldown remaining on weapon.
+        /// Team of component.
         /// </summary>
-        public int CurrentCooldown;
+        public Team Team;
 
         /// <summary>
-        /// Length of cooldown.
+        /// World component of entity.
         /// </summary>
-        public int Cooldown;
+        public WorldComponent World;
 
         /// <summary>
-        /// Direction weapon is currently facing.
-        /// </summary>
-        public float Direction;
-
-        /// <summary>
-        /// Position component of parent entity.
+        /// Position component of entity.
         /// </summary>
         public PositionComponent Position;
 
         /// <summary>
-        /// Team component of parent entity.
+        /// CollisionMask of entity.
         /// </summary>
-        public TeamComponent Team = null;
+        public CollisionMaskLine CollisionMask;
 
         /// <summary>
-        /// Gets the ComponentSystem for Weapons.
+        /// Gets the ComponentSystem for Projectiles.
         /// </summary>
         public ComponentSystemId ComponentSystem
         {
             get
             {
-                return ComponentSystemId.WeaponSystem;
+                return ComponentSystemId.ProjectileSystem;
             }
         }
 

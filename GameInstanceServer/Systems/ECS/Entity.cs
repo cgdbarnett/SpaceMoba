@@ -88,6 +88,29 @@ namespace GameInstanceServer.Systems.ECS
         }
 
         /// <summary>
+        /// Gets a reference to the component with a given id.
+        /// </summary>
+        /// <param name="id">ComponentSystemId of component.</param>
+        /// <returns>Component or null.</returns>
+        public IComponent GetComponent(ComponentSystemId id)
+        {
+            if (Components == null)
+            {
+                throw (new NullReferenceException());
+            }
+
+            foreach (IComponent component in Components)
+            {
+                if(component.ComponentSystem == id)
+                {
+                    return component;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Serializes the entity to a given outgoing message.
         /// </summary>
         /// <param name="msg">Outgoing message to append to.</param>

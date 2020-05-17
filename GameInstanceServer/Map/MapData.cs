@@ -26,13 +26,10 @@ namespace GameInstanceServer.Map
 
             // BLACK HOLE OF DOOM
             Blackhole blackhole = new Blackhole(new Vector2(6000, 6000));
-            blackhole.RegisterComponents();
 
             // Spawn motherships
             Mothership mothershipA = new Mothership(6000, 1600, teamA);
-            mothershipA.RegisterComponents();
             Mothership mothershipB = new Mothership(6000, 10400, teamB);
-            mothershipB.RegisterComponents();
 
             // Fill the void with debri
             for(int i = 0; i < debriCount; i++)
@@ -43,7 +40,6 @@ namespace GameInstanceServer.Map
                 float ypos = 6000 + len * (float)Math.Sin(dir);
 
                 Debri debri = new Debri(new Vector2(xpos, ypos));
-                debri.RegisterComponents();
             }
         }
     }

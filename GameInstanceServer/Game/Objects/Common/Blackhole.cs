@@ -56,6 +56,9 @@ namespace GameInstanceServer.Game.Objects.Common
             ((WorldComponent)Components[2]).PositionComponent = 
                 (PositionComponent)Components[1];
             ((WorldComponent)Components[2]).Entity = this;
+
+            // Register components
+            RegisterComponents();
         }
 
         /// <summary>

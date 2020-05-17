@@ -84,6 +84,9 @@ namespace GameInstanceServer.Game.Objects.Ships
             World.PositionComponent = Position;
             ((AffectedByBlackholeComponent)Components[3]).Position = Position;
             Team.Team.Mothership = this;
+
+            // Register components
+            RegisterComponents();
         }
     }
 }

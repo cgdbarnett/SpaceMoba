@@ -174,7 +174,6 @@ namespace GameInstanceServer.Systems.Networking
                 // Create new player entity
                 PlayerEntity player = 
                     new PlayerEntity(component.Tokens[token]);
-                player.RegisterComponents();
 
                 // Set new player client component
                 component.Clients.Add(token, player.Client);

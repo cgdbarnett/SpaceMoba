@@ -1,6 +1,8 @@
 ﻿using Lidgren.Network;
 
+using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Systems.Physics;
 
 namespace GameInstanceServer.Game.Objects.Combat
 {
@@ -16,6 +18,11 @@ namespace GameInstanceServer.Game.Objects.Combat
                 return ComponentSystemId.CombatSystem;
             }
         }
+
+        /// <summary>
+        /// Parent entity of component.
+        /// </summary>
+        public Entity Entity;
 
         /// <summary>
         /// Current health of entity.
@@ -36,6 +43,16 @@ namespace GameInstanceServer.Game.Objects.Combat
         /// Maximum armour of entity.
         /// </summary>
         public int MaxArmour;
+
+        /// <summary>
+        /// CollisionMask of entity.
+        /// </summary>
+        public CollisionMask CollisionMask;
+
+        /// <summary>
+        /// PositionSystem of entity.
+        /// </summary>
+        public PositionComponent Position;
 
         /// <summary>
         /// This is a serializable component.

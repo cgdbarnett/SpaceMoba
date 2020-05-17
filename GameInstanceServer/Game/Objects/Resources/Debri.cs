@@ -2,9 +2,11 @@
 
 using Microsoft.Xna.Framework;
 
+using GameInstanceServer.Game.Objects.Combat;
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Systems.Physics;
 
 namespace GameInstanceServer.Game.Objects.Resources
 {
@@ -50,12 +52,27 @@ namespace GameInstanceServer.Game.Objects.Resources
                 new WorldComponent()
                 {
                     Entity = this
+                },
+                new CombatComponent()
+                {
+                    Health = 1,
+                    MaxHealth = 1,
+                    Armour = 0,
+                    MaxArmour = 0,
+                    CollisionMask = new CollisionMaskCircle(
+                        new Vector2(), 16
+                        ),
+                    Entity = this
                 }
             };
 
             // Link as required
             ((AffectedByBlackholeComponent)Components[2]).Position = Position;
             ((WorldComponent)Components[3]).PositionComponent = Position;
+            ((CombatComponent)Components[4]).Position = Position;
+
+            // Register components
+            RegisterComponents();
         }
     }
 }
