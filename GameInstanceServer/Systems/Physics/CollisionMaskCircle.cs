@@ -12,7 +12,17 @@ namespace GameInstanceServer.Systems.Physics
         /// <summary>
         /// Center of collision mask.
         /// </summary>
-        public Vector2 Center;
+        public Vector2 Center
+        {
+            get
+            {
+                return Position;
+            }
+            set
+            {
+                Position = value;
+            }
+        }
 
         /// <summary>
         /// Radius of collision mask.
@@ -26,7 +36,7 @@ namespace GameInstanceServer.Systems.Physics
         /// <param name="radius">Initial radius.</param>
         public CollisionMaskCircle(Vector2 center, float radius)
         {
-            Center = center;
+            Position = center;
             Radius = radius;
         }
         

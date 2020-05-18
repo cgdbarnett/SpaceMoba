@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Lidgren.Network;
 
 using GameInstanceServer.Systems.ECS;
-using GameInstanceServer.Game.World;
+using GameInstanceServer.Systems.Physics;
 
 namespace GameInstanceServer.Game.Objects.Common
 {
@@ -19,6 +19,11 @@ namespace GameInstanceServer.Game.Objects.Common
         public Vector2 Momentum;
         public float Direction;
         public float AngularMomentum;
+
+        /// <summary>
+        /// CollisionMask of entity.
+        /// </summary>
+        public CollisionMask CollisionMask;
 
         /// <summary>
         /// Gets the ComponentSystem for Positioned objects.

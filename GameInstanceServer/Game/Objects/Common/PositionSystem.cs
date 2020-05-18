@@ -47,6 +47,10 @@ namespace GameInstanceServer.Game.Objects.Common
 
             // Update direction
             position.Direction += position.AngularMomentum * delta;
+
+            // Update collision mask
+            position.CollisionMask.Position = position.Position;
+            position.CollisionMask.Direction = position.Direction;
         }
     }
 }

@@ -45,17 +45,8 @@ namespace GameInstanceServer.Game.Objects.Combat
         public int MaxArmour;
 
         /// <summary>
-        /// CollisionMask of entity.
-        /// </summary>
-        public CollisionMask CollisionMask;
-
-        /// <summary>
-        /// PositionSystem of entity.
-        /// </summary>
-        public PositionComponent Position;
-
-        /// <summary>
-        /// This is a serializable component.
+        /// This is a serializable component, but called
+        /// at a custom time.
         /// </summary>
         public bool Serializable
         {
@@ -71,7 +62,6 @@ namespace GameInstanceServer.Game.Objects.Combat
         /// <param name="msg">Outgoing message.</param>
         public void Serialize(NetOutgoingMessage msg)
         {
-            msg.Write((byte)SerializableComponentId.Combat);
             msg.Write(Health);
             msg.Write(MaxHealth);
             msg.Write(Armour);

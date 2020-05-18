@@ -42,7 +42,10 @@ namespace GameInstanceServer.Game.Objects.Resources
                     Position = spawn,
                     Momentum = Blackhole.GetInitialMomentum(spawn),
                     AngularMomentum = random.Next(-40, 40),
-                    Direction = random.Next(0, 360)
+                    Direction = random.Next(0, 360),
+                    CollisionMask = new CollisionMaskCircle(
+                        spawn, 32
+                        )
                 },
                 new AnimationComponent()
                 {
@@ -59,9 +62,6 @@ namespace GameInstanceServer.Game.Objects.Resources
                     MaxHealth = 1,
                     Armour = 0,
                     MaxArmour = 0,
-                    CollisionMask = new CollisionMaskCircle(
-                        new Vector2(), 16
-                        ),
                     Entity = this
                 }
             };
@@ -69,7 +69,6 @@ namespace GameInstanceServer.Game.Objects.Resources
             // Link as required
             ((AffectedByBlackholeComponent)Components[2]).Position = Position;
             ((WorldComponent)Components[3]).PositionComponent = Position;
-            ((CombatComponent)Components[4]).Position = Position;
 
             // Register components
             RegisterComponents();

@@ -1,7 +1,6 @@
 ﻿using System;
 
 using GameInstanceServer.Systems.ECS;
-using GameInstanceServer.Systems.Physics;
 
 // Modify component system id from ECS for a new id.
 namespace GameInstanceServer.Systems.ECS
@@ -41,9 +40,6 @@ namespace GameInstanceServer.Game.Objects.Combat
             )
         {
             CombatComponent combat = (CombatComponent)component;
-
-            ((CollisionMaskCircle)combat.CollisionMask).Center = 
-                combat.Position.Position;
 
             if(combat.Health <= 0)
             {

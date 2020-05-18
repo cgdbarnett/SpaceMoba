@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
 
+using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
@@ -48,14 +49,6 @@ namespace GameInstanceServer.Game.Objects.Combat
         {
             ProjectileComponent projectile = (ProjectileComponent)component;
 
-            // Update collision mask
-            // Todo(Chris): Remove magic number, length.
-            projectile.CollisionMask.Start = projectile.Position.Position;
-            projectile.CollisionMask.End = new Vector2(
-                (float)Math.Cos(MathHelper.ToRadians(projectile.Position.Direction)),
-                (float)Math.Sin(MathHelper.ToRadians(projectile.Position.Direction))
-                ) * 20 + projectile.CollisionMask.Start;
-
             // Get nearby entities
             List<Entity> entities = 
                 projectile.World.Cell.GetNearbyObjects(
@@ -63,15 +56,18 @@ namespace GameInstanceServer.Game.Objects.Combat
                     );
             foreach(Entity entity in entities)
             {
-                IComponent combat = 
-                    entity.GetComponent(ComponentSystemId.CombatSystem);
-                if(combat != null)
+                IComponent combat =
+                            entity.GetComponent(ComponentSystemId.CombatSystem);
+                if (combat != null)
                 {
+                    IComponent position =
+                        entity.GetComponent(ComponentSystemId.PositionSystem);
+
                     // Check for collision
-                    if(
-                        ((CombatComponent)combat)
+                    if (
+                        ((PositionComponent)position)
                         .CollisionMask
-                        .TestCollision(projectile.CollisionMask)
+                        .TestCollision(projectile.Position.CollisionMask)
                         )
                     {
                         // Check team

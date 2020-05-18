@@ -61,7 +61,10 @@ namespace GameInstanceServer.Game.Objects.Combat
                         (float)Math.Cos(MathHelper.ToRadians(direction)),
                         (float)Math.Sin(MathHelper.ToRadians(direction))
                         ) * 1000,
-                    AngularMomentum = 0
+                    AngularMomentum = 0,
+                    CollisionMask = new CollisionMaskLine(
+                        new Vector2(x, y), 20, direction
+                        )
                 },
                 new AnimationComponent()
                 {
@@ -74,10 +77,7 @@ namespace GameInstanceServer.Game.Objects.Combat
                 },
                 new ProjectileComponent()
                 {
-                    Team = team,
-                    CollisionMask = new CollisionMaskLine(
-                        new Vector2(), new Vector2()
-                        )
+                    Team = team
                 }
             };
 

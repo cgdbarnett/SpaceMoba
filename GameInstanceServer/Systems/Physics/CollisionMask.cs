@@ -1,4 +1,6 @@
-﻿namespace GameInstanceServer.Systems.Physics
+﻿using Microsoft.Xna.Framework;
+
+namespace GameInstanceServer.Systems.Physics
 {
     /// <summary>
     /// An abstract class that collidable entities use to
@@ -6,6 +8,16 @@
     /// </summary>
     public abstract class CollisionMask
     {
+        /// <summary>
+        /// Origin of collision mask.
+        /// </summary>
+        public Vector2 Position;
+
+        /// <summary>
+        /// Rotation around origin of mask.
+        /// </summary>
+        public float Direction;
+
         /// <summary>
         /// Implemented by child classes, returns a bool with
         /// whether this collision mask is colliding with another.

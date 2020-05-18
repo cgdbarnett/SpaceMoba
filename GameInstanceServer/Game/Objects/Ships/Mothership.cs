@@ -11,6 +11,7 @@ using GameInstanceServer.Game.Objects.Resources;
 using GameInstanceServer.Game.Teams;
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Systems.Physics;
 
 namespace GameInstanceServer.Game.Objects.Ships
 {
@@ -61,7 +62,10 @@ namespace GameInstanceServer.Game.Objects.Ships
                         new Vector2(x, y)
                         ),
                     Direction = 0,
-                    AngularMomentum = 0
+                    AngularMomentum = 0,
+                    CollisionMask = new CollisionMaskCircle(
+                        new Vector2(x, y), 128
+                        )
                 },
                 new WorldComponent(),
                 new AnimationComponent()

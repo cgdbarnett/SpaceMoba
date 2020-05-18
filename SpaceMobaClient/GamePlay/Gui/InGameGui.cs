@@ -47,6 +47,9 @@ namespace SpaceMobaClient.GamePlay.Gui
 
             // Update minimap
             UpdateMinimap(gameTime);
+
+            // Update healthbars
+            UpdateVitals();
         }
 
         /// <summary>
@@ -108,6 +111,27 @@ namespace SpaceMobaClient.GamePlay.Gui
                         }
                         currentMember++;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates progress bars for all team member (including self) vitals.
+        /// </summary>
+        private void UpdateVitals()
+        {
+            TeamComponent team =
+                (TeamComponent)LocalPlayer.Entity[ComponentId.Team];
+            for (int i = 0; i < team.MemberCount; i++)
+            {
+                // For now, only update local player
+                if(team.MemberId[i] == LocalPlayer.Entity.Id)
+                {
+                    VitalsPanel.Visible = true;
+                    HealthBar.Value = team.MemberHealth[i];
+                    HealthBar.Maximum = team.MemberMaxHealth[i];
+                    ArmourBar.Value = team.MemberArmour[i];
+                    ArmourBar.Maximum = team.MemberMaxArmour[i];
                 }
             }
         }

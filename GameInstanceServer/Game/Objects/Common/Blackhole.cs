@@ -8,6 +8,7 @@ using Lidgren.Network;
 
 using GameInstanceServer.Game.World;
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Systems.Physics;
 
 namespace GameInstanceServer.Game.Objects.Common
 {
@@ -46,7 +47,10 @@ namespace GameInstanceServer.Game.Objects.Common
                     Position = new Vector2(position.X, position.Y),
                     Momentum = new Vector2(),
                     Direction = 0,
-                    AngularMomentum = 0
+                    AngularMomentum = 0,
+                    CollisionMask = new CollisionMaskCircle(
+                        new Vector2(position.X, position.Y), 400
+                        )
                 },
                 new WorldComponent()
             };

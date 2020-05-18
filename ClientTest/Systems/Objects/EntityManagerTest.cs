@@ -3,6 +3,7 @@ using Xunit;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using Lidgren.Network;
 
@@ -16,6 +17,7 @@ namespace ClientTest.Systems.Objects
     /// </summary>
     public class EntityManagerTest
     {
+        private Camera camera = new Camera(0, 0, 1920, 1080);
         /// <summary>
         /// Tests if removing an entity during the update
         /// process behaves as expected.
@@ -38,8 +40,8 @@ namespace ClientTest.Systems.Objects
             EntityManager.Add(test);
             EntityManager.Add(new Entity(2));
 
-            EntityManager.Update(null);
-            EntityManager.Update(null);
+            EntityManager.Update(null, camera);
+            EntityManager.Update(null, camera);
 
             Assert.False(EntityManager.Contains(1));
         }
@@ -66,8 +68,8 @@ namespace ClientTest.Systems.Objects
             EntityManager.Add(test);
             EntityManager.Add(new Entity(2));
 
-            EntityManager.Update(null);
-            EntityManager.Update(null);
+            EntityManager.Update(null, camera);
+            EntityManager.Update(null, camera);
 
             Assert.True(EntityManager.Contains(3));
         }
@@ -82,11 +84,11 @@ namespace ClientTest.Systems.Objects
             EntityManager.Add(new Entity(0));
             EntityManager.Add(new Entity(1));
             EntityManager.Add(new Entity(2));
-            EntityManager.Update(null);
+            EntityManager.Update(null, camera);
 
             Assert.True(EntityManager.Contains(1));
             EntityManager.Remove(1);
-            EntityManager.Update(null);
+            EntityManager.Update(null, camera);
             Assert.False(EntityManager.Contains(1));
         }
     }

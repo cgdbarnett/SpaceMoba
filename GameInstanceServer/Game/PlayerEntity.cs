@@ -115,7 +115,8 @@ namespace GameInstanceServer.Game
                     Position = new Vector2(),
                     Momentum = new Vector2(),
                     AngularMomentum = 0,
-                    Direction = 0
+                    Direction = 0,
+                    CollisionMask = new CollisionMaskCircle(new Vector2(), 128),
                 },
                 new WorldComponent(),
                 new AnimationComponent()
@@ -141,7 +142,6 @@ namespace GameInstanceServer.Game
                     MaxHealth = 100,
                     Armour = 100,
                     MaxArmour = 100,
-                    CollisionMask = new CollisionMaskCircle(new Vector2(), 128),
                     Entity = this
                 },
                 new WeaponComponent()
@@ -166,7 +166,6 @@ namespace GameInstanceServer.Game
             ShipLimiter.Engine = Engine;
             Weapon.Position = Position;
             Weapon.Team = Team;
-            Combat.Position = Position;
 
             // Register to team
             Team.Team.RegisterPlayer(this);

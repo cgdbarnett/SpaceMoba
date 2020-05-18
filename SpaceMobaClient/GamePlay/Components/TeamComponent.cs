@@ -24,6 +24,10 @@ namespace SpaceMobaClient.GamePlay.Components
         public byte MemberCount;
         public Vector2[] MemberPositions;
         public int[] MemberId;
+        public int[] MemberHealth;
+        public int[] MemberMaxHealth;
+        public int[] MemberArmour;
+        public int[] MemberMaxArmour;
 
         /// <summary>
         /// This component type.
@@ -56,6 +60,10 @@ namespace SpaceMobaClient.GamePlay.Components
                 new Vector2(),
                 new Vector2()
             };
+            MemberHealth = new int[3];
+            MemberMaxHealth = new int[3];
+            MemberArmour = new int[3];
+            MemberMaxArmour = new int[3];
         }
 
         /// <summary>
@@ -77,6 +85,10 @@ namespace SpaceMobaClient.GamePlay.Components
                 MemberId[i] = message.ReadInt32();
                 MemberPositions[i].X = message.ReadFloat();
                 MemberPositions[i].Y = message.ReadFloat();
+                MemberHealth[i] = message.ReadInt32();
+                MemberMaxHealth[i] = message.ReadInt32();
+                MemberArmour[i] = message.ReadInt32();
+                MemberMaxArmour[i] = message.ReadInt32();
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GameInstanceServer.Systems.ECS
 {
@@ -129,8 +130,10 @@ namespace GameInstanceServer.Systems.ECS
             {
                 OnUpdate.Invoke(null, gameTime);
             }
-            catch
+            catch(Exception e)
             {
+                Trace.WriteLine("Exception in ECS.Update():");
+                Trace.WriteLine(e.ToString());
             }
         }
     }

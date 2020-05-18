@@ -3,6 +3,7 @@ using Xunit;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using Lidgren.Network;
 
@@ -86,6 +87,8 @@ namespace ClientTest.Systems.Objects
     /// </summary>
     public class EntityTest
     {
+        private Camera camera = new Camera(0, 0, 1920, 1080);
+
         /// <summary>
         /// Tests the indexer returns the correct entity.
         /// </summary>
@@ -164,7 +167,7 @@ namespace ClientTest.Systems.Objects
             int value1Before = ((TestComponent)entity[(ComponentId)1]).Value;
 
             // No methods use the game time, so null is okay.
-            entity.Update(null);
+            entity.Update(null, camera, Mouse.GetState());
 
             int value0After = ((TestComponent)entity[(ComponentId)0]).Value;
             int value1After = ((TestComponent)entity[(ComponentId)1]).Value;

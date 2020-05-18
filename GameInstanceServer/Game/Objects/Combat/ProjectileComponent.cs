@@ -33,12 +33,7 @@ namespace GameInstanceServer.Game.Objects.Combat
         /// Position component of entity.
         /// </summary>
         public PositionComponent Position;
-
-        /// <summary>
-        /// CollisionMask of entity.
-        /// </summary>
-        public CollisionMaskLine CollisionMask;
-
+        
         /// <summary>
         /// Gets the ComponentSystem for Projectiles.
         /// </summary>

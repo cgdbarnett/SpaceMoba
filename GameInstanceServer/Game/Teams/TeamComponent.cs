@@ -4,6 +4,7 @@ using Lidgren.Network;
 
 using GameInstanceServer.Game.Objects;
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Game.Objects.Combat;
 
 namespace GameInstanceServer.Game.Teams
 {
@@ -43,6 +44,10 @@ namespace GameInstanceServer.Game.Teams
                 msg.Write(Team.Members[i].Id);
                 msg.Write(Team.Members[i].Position.Position.X);
                 msg.Write(Team.Members[i].Position.Position.Y);
+                CombatComponent combat = 
+                    (CombatComponent)Team.Members[i]
+                    .GetComponent(ComponentSystemId.CombatSystem);
+                combat.Serialize(msg);
             }
         }
     }
