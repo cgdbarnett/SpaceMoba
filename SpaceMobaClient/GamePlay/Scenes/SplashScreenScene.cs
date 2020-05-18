@@ -89,34 +89,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
             // When elapsed time reaches 2 seconds, goto next scene.
             if(Timer.ElapsedMilliseconds > 2000)
             {
-                // Temp code
-                int token = 1;
-
-                if(Program.Parameters != null)
-                {
-                    if(Program.Parameters.Length >= 1)
-                    {
-                        token = int.Parse(Program.Parameters[0]);
-
-                        // Temporary
-                        SceneManager.GotoNextScene(
-                            new object[] {
-                        "localhost",
-                        8080,
-                        token
-                            });
-                    }
-                    else
-                    {
-                        Trace.WriteLine("Invalid parameters passed.");
-                        SceneManager.GotoScene<ErrorScene>();
-                    }
-                }
-                else
-                {
-                    Trace.WriteLine("Invalid parameters passed.");
-                    SceneManager.GotoScene<ErrorScene>();
-                }
+                SceneManager.GotoNextScene();
             }
         }
     }

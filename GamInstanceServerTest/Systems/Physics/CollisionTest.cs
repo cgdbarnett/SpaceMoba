@@ -17,7 +17,8 @@ namespace GameInstanceServerTest.Systems.Physics
         [Fact]
         public void TestCollisionLineCircle()
         {
-            CollisionMaskLine line = new CollisionMaskLine(
+            // Deprecated
+            /*CollisionMaskLine line = new CollisionMaskLine(
                 new Vector2(5, 20), new Vector2(20, 10)
                 );
             CollisionMaskCircle circle = new CollisionMaskCircle(
@@ -36,6 +37,7 @@ namespace GameInstanceServerTest.Systems.Physics
             line.Start.X = 49;
             line.End.Y = 49;
             Assert.True(Collision.TestCollisionLineCircle(circle, line));
+            */
         }
     }
 }

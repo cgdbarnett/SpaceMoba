@@ -20,6 +20,8 @@ namespace SpaceMobaClient.GamePlay.Gui
 {
 	partial class LoginMenuGui: Grid
 	{
+        TextButton LoginButton;
+
 		private void BuildUI()
 		{
 			var label1 = new Label();
@@ -58,18 +60,14 @@ namespace SpaceMobaClient.GamePlay.Gui
 			textBox2.GridRow = 1;
 			textBox2.Background = new SolidBrush("#1C1C1FFF");
 
-			var textButton1 = new TextButton();
-			textButton1.Text = "Login";
-			textButton1.Font = GameClient.GetGameClient().Content.Load<SpriteFont>("Fonts/Iceberg24");
-            textButton1.Width = 200;
-			textButton1.Height = 40;
-			textButton1.Margin = new Thickness(0, 90, 0, 0);
-			textButton1.HorizontalAlignment = Myra.Graphics2D.UI.HorizontalAlignment.Stretch;
-			textButton1.GridRow = 2;
-            textButton1.Click += (object Sender, EventArgs args) =>
-            {
-                SceneManager.GotoNextScene();
-            };
+			LoginButton = new TextButton();
+            LoginButton.Text = "Login";
+            LoginButton.Font = GameClient.GetGameClient().Content.Load<SpriteFont>("Fonts/Iceberg24");
+            LoginButton.Width = 200;
+            LoginButton.Height = 40;
+            LoginButton.Margin = new Thickness(0, 90, 0, 0);
+            LoginButton.HorizontalAlignment = Myra.Graphics2D.UI.HorizontalAlignment.Stretch;
+            LoginButton.GridRow = 2;
 
 			var panel1 = new Panel();
 			panel1.HorizontalAlignment = Myra.Graphics2D.UI.HorizontalAlignment.Center;
@@ -82,7 +80,7 @@ namespace SpaceMobaClient.GamePlay.Gui
 			panel1.Border = new SolidBrush("#FFFFFFFF");
 			panel1.Widgets.Add(textBox1);
 			panel1.Widgets.Add(textBox2);
-			panel1.Widgets.Add(textButton1);
+			panel1.Widgets.Add(LoginButton);
 
 			var panel2 = new Panel();
 			panel2.BorderThickness = new Thickness(2);

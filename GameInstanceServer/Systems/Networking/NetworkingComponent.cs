@@ -26,6 +26,15 @@ namespace GameInstanceServer.Systems.Networking
         public readonly Dictionary<int, Team> Tokens;
 
         /// <summary>
+        /// Returns the number of connected clients.
+        /// </summary>
+        public int ConnectedClients
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Get the ComponentSystemId for the Networking System.
         /// </summary>
         public ComponentSystemId ComponentSystem
@@ -43,6 +52,8 @@ namespace GameInstanceServer.Systems.Networking
             int port, int[] tokens, Team TeamA, Team TeamB
             )
         {
+            ConnectedClients = 0;
+
             Clients = new Dictionary<int, NetworkingClientComponent>();
             Connections = new Dictionary<NetConnection, NetworkingClientComponent>();
 
@@ -55,27 +66,18 @@ namespace GameInstanceServer.Systems.Networking
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
 
             // Copy tokens into memory
-            Tokens = new Dictionary<int, Team>()
+            Tokens = new Dictionary<int, Team>();
+            for(int i = 0; i < tokens.Length; i++)
             {
+                if (i < tokens.Length / 2)
                 {
-                    tokens[0], TeamA
-                },
-                {
-                    tokens[1], TeamA
-                },
-                {
-                    tokens[2], TeamA
-                },
-                {
-                    tokens[3], TeamB
-                },
-                {
-                    tokens[4], TeamB
-                },
-                {
-                    tokens[5], TeamB
+                    Tokens.Add(tokens[i], TeamA);
                 }
-            };
+                else
+                {
+                    Tokens.Add(tokens[i], TeamB);
+                }
+            }
 
             // Start server
             NetServer = new NetServer(config);

@@ -103,10 +103,6 @@ namespace SpaceMobaClient.GamePlay.Scenes
             // Draw foreground last
             Background.DrawTop(SpriteBatch, Camera);
 
-            // Draw GUI
-            //Gui.Draw(SpriteBatch, Camera);
-            //Desktop.Render();
-
             // End drawing
             SpriteBatch.End();
 

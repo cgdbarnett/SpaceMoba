@@ -11,11 +11,6 @@ namespace GameInstanceServer.Game.Teams
     public class Team
     {
         /// <summary>
-        /// Maximum players per team.
-        /// </summary>
-        public const int MaxTeamSize = 3;
-
-        /// <summary>
         /// Unique identifier of team.
         /// </summary>
         public int Id
@@ -48,7 +43,7 @@ namespace GameInstanceServer.Game.Teams
         /// </summary>
         public Team()
         {
-            Members = new PlayerEntity[MaxTeamSize];
+            Members = new PlayerEntity[Settings.MaxTeamSize];
             Id = ECS.GetNextId();
             MemberCount = 0;
         }
@@ -59,7 +54,7 @@ namespace GameInstanceServer.Game.Teams
         /// <param name="entity">Player to register.</param>
         public void RegisterPlayer(PlayerEntity entity)
         {
-            if(MemberCount >= MaxTeamSize)
+            if(MemberCount >= Settings.MaxTeamSize)
             {
                 throw (new ArgumentOutOfRangeException());
             }

@@ -25,5 +25,11 @@
         public const long ReplicationMaxUpdatePeriod = 2000;
 
         #endregion
+
+        #region Game
+
+        public static int MaxTeamSize = 3;
+
+        #endregion
     }
 }

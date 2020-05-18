@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using Microsoft.Xna.Framework;
-
 using Lidgren.Network;
 
 using GameInstanceServer.Game;
-using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Systems.ECS;
 
 // Modify component system id from ECS for a new id.
@@ -163,6 +160,7 @@ namespace GameInstanceServer.Systems.Networking
             )
         {
             Trace.WriteLine("Client approved.");
+            component.ConnectedClients++;
 
             if (cleanup)
             {
@@ -231,6 +229,7 @@ namespace GameInstanceServer.Systems.Networking
                         component.Connections[msg.SenderConnection];
 
                     client.Active = false;
+                    component.ConnectedClients--;
 
                     // Unregister player from team, and unregister components.
                     client.Entity.Team.Team.UnregisterPlayer(client.Entity);

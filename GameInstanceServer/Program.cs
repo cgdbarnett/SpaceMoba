@@ -20,17 +20,20 @@ namespace GameInstanceServer
             try
             {
                 // Read arguments
-                int[] tokens = new int[6];
                 int.TryParse(args[0], out int port);
-                for (int i = 0; i < 6; i++)
+                int.TryParse(args[1], out int count);
+                int[] tokens = new int[count];
+                for (int i = 0; i < count; i++)
                 {
-                    int.TryParse(args[i + 1], out tokens[i]);
+                    int.TryParse(args[i + 2], out tokens[i]);
                 }
 
                 Trace.WriteLine("Starting ServerManager.");
                 Trace.IndentLevel++;
+
                 // Create server manager
-                ServerManager server = new ServerManager(port, tokens);
+                ServerManager server = new ServerManager(port, count, tokens);
+
                 Trace.IndentLevel--;
                 Trace.WriteLine("End ServerManager.");
 

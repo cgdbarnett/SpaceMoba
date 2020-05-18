@@ -28,6 +28,8 @@ namespace GameInstanceServer
         // State of game server
         private Stopwatch Timer, FrameTimer;
 
+        private NetworkingComponent NetworkState;
+
         /// <summary>
         /// Returns whether the server is currently active.
         /// </summary>
@@ -44,8 +46,9 @@ namespace GameInstanceServer
         /// on a given port.
         /// </summary>
         /// <param name="port">Port to listen on.</param>
+        /// <param name="teamSize">Team Size as specified by login.</param>
         /// <param name="tokens">User tokens for connection.</param>
-        public ServerManager(int port, int[] tokens)
+        public ServerManager(int port, int teamSize, int[] tokens)
         {
             GameMaster.State = GameMaster.GameState.Loading;
             GameMaster.StartMasterTimer();
@@ -53,6 +56,8 @@ namespace GameInstanceServer
             // Initialise teams
             Trace.WriteLine("Initialising Teams.");
             Trace.Indent();
+
+            Settings.MaxTeamSize = teamSize;
 
             Team teamA = new Team();
             Team teamB = new Team();
@@ -85,9 +90,10 @@ namespace GameInstanceServer
             ECS.RegisterSystem(new ProjectileSystem());
 
             // Create networking component without an entity
+            NetworkState = new NetworkingComponent(port, tokens, teamA, teamB);
             ECS.RegisterComponentToSystem(
                 ComponentSystemId.NetworkingSystem, ECS.GetNextId(),
-                new NetworkingComponent(port, tokens, teamA, teamB)
+                NetworkState
                 );
 
             Trace.Unindent();
@@ -157,7 +163,11 @@ namespace GameInstanceServer
                     break;
 
                 case GameMaster.GameState.InGame:
-                    //
+                    // Check clients are still connected
+                    if(NetworkState.ConnectedClients <= 0)
+                    {
+                        GameMaster.EndGame();
+                    }
                     break;
 
                 case GameMaster.GameState.GameOver:
