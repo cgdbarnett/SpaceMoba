@@ -74,6 +74,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         {
             if(Ready)
             {
+                GameClient.GetGameClient().GraphicsDevice.Clear(Color.Black);
                 SpriteBatch.Begin();
                 SpriteBatch.Draw(Image, ImageDestination, Color.White);
                 SpriteBatch.End();

@@ -91,6 +91,8 @@ namespace SpaceMobaClient.GamePlay.Scenes
         /// <param name="gameTime">Game frame interval.</param>
         public void Draw(GameTime gameTime)
         {
+            // Clear background, and draw GUI
+            GameClient.GetGameClient().GraphicsDevice.Clear(Color.Black);
             Desktop.Render();
         }
 

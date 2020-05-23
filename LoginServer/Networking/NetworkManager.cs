@@ -116,13 +116,24 @@ namespace LoginServer.Networking
                                     msg.SenderConnection, null);
                             }
                             break;
+
+                        case NetConnectionStatus.Connected:
+                            if(OnClientConnect != null)
+                            {
+                                OnClientConnect.Invoke(
+                                    msg.SenderConnection, null
+                                    );
+                            }
+                            break;
                     }
                     break;
 
                 case NetIncomingMessageType.Data:
                     if(OnClientMessageReceived != null)
                     {
-                        OnClientMessageReceived.Invoke(msg.SenderConnection, msg);
+                        OnClientMessageReceived.Invoke(
+                            msg.SenderConnection, msg
+                            );
                     }
                     break;
             }
@@ -138,11 +149,6 @@ namespace LoginServer.Networking
             // Todo: Link to database to approve client credentials.
 
             msg.SenderConnection.Approve();
-
-            if(OnClientConnect != null)
-            {
-                OnClientConnect.Invoke(msg.SenderConnection, null);
-            }
         }
     }
 }

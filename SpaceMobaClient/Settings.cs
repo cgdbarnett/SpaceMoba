@@ -27,6 +27,7 @@ namespace SpaceMobaClient
         /// </summary>
 #if DEBUG
         public static readonly string LoginHost = "127.0.0.1";
+        //public static readonly string LoginHost = "3.14.141.85";
 #else
         public static readonly string LoginHost = "3.14.141.85";
 #endif
