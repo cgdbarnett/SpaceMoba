@@ -22,7 +22,7 @@ namespace SpaceMobaClient.Systems.Sound
         {
             try
             {
-                CurrentSong = GameClient.GetGameClient().Content
+                CurrentSong = GameManager.Content
                     .Load<Song>(song);
 
                 MediaPlayer.Play(CurrentSong);

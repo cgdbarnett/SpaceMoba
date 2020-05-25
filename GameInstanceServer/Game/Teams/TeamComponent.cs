@@ -34,6 +34,7 @@ namespace GameInstanceServer.Game.Teams
         {
             // Mothership
             msg.Write(Team.Mothership.Id);
+            msg.Write(Team.Mothership.Resources.Value);
             msg.Write(Team.Mothership.Position.Position.X);
             msg.Write(Team.Mothership.Position.Position.Y);
 
@@ -42,6 +43,7 @@ namespace GameInstanceServer.Game.Teams
             for(int i = 0; i < Team.MemberCount; i++)
             {
                 msg.Write(Team.Members[i].Id);
+                msg.Write(Team.Members[i].Resources.Value);
                 msg.Write(Team.Members[i].Position.Position.X);
                 msg.Write(Team.Members[i].Position.Position.Y);
                 CombatComponent combat = 

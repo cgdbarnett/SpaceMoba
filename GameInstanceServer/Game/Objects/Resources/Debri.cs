@@ -27,6 +27,16 @@ namespace GameInstanceServer.Game.Objects.Resources
         public PositionComponent Position => (PositionComponent)Components[0];
 
         /// <summary>
+        /// Combat component of entity.
+        /// </summary>
+        public CombatComponent Combat => (CombatComponent)Components[4];
+
+        /// <summary>
+        /// Resource component of entity.
+        /// </summary>
+        public ResourceComponent Resources => (ResourceComponent)Components[5];
+
+        /// <summary>
         /// Creates a new instance of a debri entity.
         /// </summary>
         /// <param name="spawn">Spawn location.</param>
@@ -51,7 +61,10 @@ namespace GameInstanceServer.Game.Objects.Resources
                 {
                     Sprite = "Objects/Resources/Debri"
                 },
-                new AffectedByBlackholeComponent(),
+                new AffectedByBlackholeComponent()
+                {
+                    Entity = this
+                },
                 new WorldComponent()
                 {
                     Entity = this
@@ -63,6 +76,10 @@ namespace GameInstanceServer.Game.Objects.Resources
                     Armour = 0,
                     MaxArmour = 0,
                     Entity = this
+                },
+                new ResourceComponent()
+                {
+                    Value = 50
                 }
             };
 
@@ -72,6 +89,40 @@ namespace GameInstanceServer.Game.Objects.Resources
 
             // Register components
             RegisterComponents();
+        }
+
+        /// <summary>
+        /// Destroys the debris. If the cause of death is player attacking,
+        /// then award them resources.
+        /// </summary>
+        /// <param name="reason">Reason for destroying.</param>
+        public override void Destroy(
+            DestroyReason reason = DestroyReason.Normal
+            )
+        {
+            switch(reason)
+            {
+                case DestroyReason.CombatEvent:
+                    // If the last entity has a resource component,
+                    // the resource value of this entity should be passed to
+                    // the attacker.
+                    if (Combat.DamageLog.Count > 0)
+                    {
+                        Entity attacker = Combat
+                            .DamageLog[Combat.DamageLog.Count - 1].Attacker;
+
+                        IComponent attackerResources = attacker.GetComponent(
+                                ComponentSystemId.ResourceSystem
+                                );
+                        if(attackerResources != null)
+                        {
+                            ((ResourceComponent)attackerResources).Value += 
+                                Resources.Value;
+                        }
+                    }
+                    break;
+            }
+            base.Destroy();
         }
     }
 }

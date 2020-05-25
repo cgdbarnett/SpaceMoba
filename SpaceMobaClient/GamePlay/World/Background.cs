@@ -18,17 +18,17 @@ namespace SpaceMobaClient.GamePlay.World
         public Background()
         {
             Textures = new Texture2D[6];
-            Textures[0] = GameClient.GetGameClient().Content
+            Textures[0] = GameManager.Content
                 .Load<Texture2D>("Backgrounds/starfield_deep");
-            Textures[1] = GameClient.GetGameClient().Content
+            Textures[1] = GameManager.Content
                 .Load<Texture2D>("Backgrounds/starfield_mid");
-            Textures[2] = GameClient.GetGameClient().Content
+            Textures[2] = GameManager.Content
                 .Load<Texture2D>("Backgrounds/starfield_mid2");
-            Textures[3] = GameClient.GetGameClient().Content
+            Textures[3] = GameManager.Content
                 .Load<Texture2D>("Backgrounds/starfield_near");
-            Textures[4] = GameClient.GetGameClient().Content
+            Textures[4] = GameManager.Content
                 .Load<Texture2D>("Backgrounds/starfield_near");
-            Textures[5] = GameClient.GetGameClient().Content
+            Textures[5] = GameManager.Content
                 .Load<Texture2D>("Backgrounds/starfield_top");
         }
 

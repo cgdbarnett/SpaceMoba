@@ -27,7 +27,7 @@ namespace SpaceMobaClient.GamePlay.Network
         {
             // Init GameServer
             Connection = new NetClient(
-                new NetPeerConfiguration(Settings.AppIdentifier)
+                new NetPeerConfiguration(GameManager.AppIdentifier)
                 );
             Connection.Start();
 
@@ -36,7 +36,7 @@ namespace SpaceMobaClient.GamePlay.Network
             hailMessage.Write("hello");
 
             NetConnection connection = Connection.Connect(
-                Settings.LoginHost, Settings.LoginPort, hailMessage
+                GameManager.LoginHost, GameManager.LoginPort, hailMessage
                 );
 
             // Wait for connection
@@ -137,7 +137,7 @@ namespace SpaceMobaClient.GamePlay.Network
 
                 Thread.Sleep(2000);
                 SceneManager.GotoScene<LoadGameScene>(
-                    new object[] { Settings.LoginHost, port, token }
+                    new object[] { GameManager.LoginHost, port, token }
                     );
 
                 Connection.Disconnect("bye");

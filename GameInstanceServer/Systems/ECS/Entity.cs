@@ -10,6 +10,16 @@ namespace GameInstanceServer.Systems.ECS
     public partial class Entity
     {
         /// <summary>
+        /// Reasons for destroying an Entity.
+        /// </summary>
+        public enum DestroyReason
+        {
+            Normal,
+            OutOfBounds,
+            CombatEvent
+        }
+
+        /// <summary>
         /// Components this entity contains. Should be populated by
         /// classes implementing Entity.
         /// </summary>
@@ -52,9 +62,20 @@ namespace GameInstanceServer.Systems.ECS
         }
 
         /// <summary>
+        /// Destroy this entity.
+        /// </summary>
+        /// <param name="reason">Optional, reason for destroying.</param>
+        public virtual void Destroy(
+            DestroyReason reason = DestroyReason.Normal
+            )
+        {
+            UnregisterComponents();
+        }
+
+        /// <summary>
         /// Registers all components to their systems in the ECS.
         /// </summary>
-        public void RegisterComponents()
+        protected void RegisterComponents()
         {
             if(Components == null)
             {
@@ -72,7 +93,7 @@ namespace GameInstanceServer.Systems.ECS
         /// <summary>
         /// Unregisters all components from their systems in the ECS.
         /// </summary>
-        public void UnregisterComponents()
+        protected void UnregisterComponents()
         {
             if (Components == null)
             {

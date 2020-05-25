@@ -20,11 +20,16 @@ namespace GameInstanceServer.Systems.ECS
             {
                 if(_Systems == null)
                 {
-                    _Systems = new Dictionary<ComponentSystemId, ComponentSystem>();
+                    _Systems = 
+                        new Dictionary<ComponentSystemId, ComponentSystem>();
                 }
                 return _Systems;
             }
         }
+
+        // Components that need to be unregistered.
+        private static readonly List<Tuple<int, ComponentSystemId>>
+            UnregisterComponents = new List<Tuple<int, ComponentSystemId>>();
 
         /// <summary>
         /// Unique identifier counter.
@@ -112,7 +117,9 @@ namespace GameInstanceServer.Systems.ECS
         {
             try
             {
-                Systems[system].UnregisterComponent(id);
+                UnregisterComponents.Add(
+                    new Tuple<int, ComponentSystemId>(id, system)
+                    );
             }
             catch (Exception e)
             {
@@ -129,6 +136,18 @@ namespace GameInstanceServer.Systems.ECS
             try
             {
                 OnUpdate.Invoke(null, gameTime);
+                
+                if(UnregisterComponents.Count > 0)
+                {
+                    foreach(
+                        Tuple<int, ComponentSystemId> entry
+                        in UnregisterComponents
+                        )
+                    {
+                        Systems[entry.Item2].UnregisterComponent(entry.Item1);
+                    }
+                }
+                UnregisterComponents.Clear();
             }
             catch(Exception e)
             {

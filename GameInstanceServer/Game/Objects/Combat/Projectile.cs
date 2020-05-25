@@ -18,6 +18,11 @@ namespace GameInstanceServer.Game.Objects.Combat
     public class Projectile : Entity
     {
         /// <summary>
+        /// Entity who spawned the projectile. Can be null.
+        /// </summary>
+        public Entity Owner;
+
+        /// <summary>
         /// This is a serializable entity.
         /// </summary>
         public override bool Serializable => true;
@@ -37,6 +42,9 @@ namespace GameInstanceServer.Game.Objects.Combat
         /// </summary>
         public LifetimeComponent Lifetime => (LifetimeComponent)Components[3];
 
+        /// <summary>
+        /// Gets the projectile component of this entity.
+        /// </summary>
         public ProjectileComponent ProjectileComponent
             => (ProjectileComponent)Components[4];
 
@@ -47,7 +55,9 @@ namespace GameInstanceServer.Game.Objects.Combat
         /// <param name="y">Initial y position.</param>
         /// <param name="direction">Initial direction.</param>
         /// <param name="team">Team who owns projectile.</param>
-        public Projectile(float x, float y, float direction, Team team = null)
+        /// <param name="owner">Player who owns projectile.</param>
+        public Projectile(float x, float y, float direction, Team team = null, 
+            Entity owner = null)
             : base(ECS.GetNextId())
         {
             // Todo(Chris): Get rid of magic numbers.
@@ -88,7 +98,7 @@ namespace GameInstanceServer.Game.Objects.Combat
             ProjectileComponent.Entity = this;
             ProjectileComponent.Position = Position;
             ProjectileComponent.World = World;
-
+            Owner = owner;
 
             // Register components
             RegisterComponents();

@@ -26,7 +26,7 @@ namespace SpaceMobaClient.GamePlay.Gui
 		{
 			var label1 = new Label();
 			label1.Text = "Blackhole";
-			label1.Font = GameClient.GetGameClient().Content.Load<SpriteFont>("Fonts/Iceberg32");
+			label1.Font = GameManager.Content.Load<SpriteFont>("Fonts/Iceberg32");
 			label1.DisabledTextColor = Color.White;
 			label1.OverTextColor = new Color
 			{
@@ -41,7 +41,7 @@ namespace SpaceMobaClient.GamePlay.Gui
 
 			var textBox1 = new TextBox();
 			textBox1.Text = "Username";
-			textBox1.Font = GameClient.GetGameClient().Content.Load<SpriteFont>("Fonts/Iceberg24");
+			textBox1.Font = GameManager.Content.Load<SpriteFont>("Fonts/Iceberg24");
             textBox1.TextVerticalAlignment = Myra.Graphics2D.UI.VerticalAlignment.Center;
 			textBox1.HorizontalAlignment = Myra.Graphics2D.UI.HorizontalAlignment.Center;
 			textBox1.Width = 200;
@@ -50,7 +50,7 @@ namespace SpaceMobaClient.GamePlay.Gui
 
 			var textBox2 = new TextBox();
 			textBox2.Text = "Password";
-			textBox2.Font = GameClient.GetGameClient().Content.Load<SpriteFont>("Fonts/Iceberg24");
+			textBox2.Font = GameManager.Content.Load<SpriteFont>("Fonts/Iceberg24");
             textBox2.PasswordField = true;
 			textBox2.TextVerticalAlignment = Myra.Graphics2D.UI.VerticalAlignment.Center;
 			textBox2.HorizontalAlignment = Myra.Graphics2D.UI.HorizontalAlignment.Center;
@@ -62,7 +62,7 @@ namespace SpaceMobaClient.GamePlay.Gui
 
 			LoginButton = new TextButton();
             LoginButton.Text = "Login";
-            LoginButton.Font = GameClient.GetGameClient().Content.Load<SpriteFont>("Fonts/Iceberg24");
+            LoginButton.Font = GameManager.Content.Load<SpriteFont>("Fonts/Iceberg24");
             LoginButton.Width = 200;
             LoginButton.Height = 40;
             LoginButton.Margin = new Thickness(0, 90, 0, 0);

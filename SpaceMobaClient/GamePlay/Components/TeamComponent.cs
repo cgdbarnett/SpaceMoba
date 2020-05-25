@@ -19,11 +19,13 @@ namespace SpaceMobaClient.GamePlay.Components
         }
 
         public int MothershipId;
+        public int MothershipResources;
         public Vector2 MothershipPosition;
 
         public byte MemberCount;
         public Vector2[] MemberPositions;
         public int[] MemberId;
+        public int[] MemberResources;
         public int[] MemberHealth;
         public int[] MemberMaxHealth;
         public int[] MemberArmour;
@@ -53,7 +55,9 @@ namespace SpaceMobaClient.GamePlay.Components
             Entity = entity;
 
             MothershipPosition = new Vector2();
+            MothershipResources = 0;
             MemberId = new int[3];
+            MemberResources = new int[3];
             MemberPositions = new Vector2[3]
             {
                 new Vector2(),
@@ -74,6 +78,7 @@ namespace SpaceMobaClient.GamePlay.Components
         {
             // Mothership
             MothershipId = message.ReadInt32();
+            MothershipResources = message.ReadInt32();
             MothershipPosition.X = message.ReadFloat();
             MothershipPosition.Y = message.ReadFloat();
 
@@ -83,6 +88,7 @@ namespace SpaceMobaClient.GamePlay.Components
             for (int i = 0; i < MemberCount; i++)
             {
                 MemberId[i] = message.ReadInt32();
+                MemberResources[i] = message.ReadInt32();
                 MemberPositions[i].X = message.ReadFloat();
                 MemberPositions[i].Y = message.ReadFloat();
                 MemberHealth[i] = message.ReadInt32();

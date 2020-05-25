@@ -47,7 +47,7 @@ namespace GameInstanceServer.Game.Objects.Common
             if(lifetime.LifetimeRemaining <= 0)
             {
                 // DESTROY
-                lifetime.Entity.UnregisterComponents();
+                lifetime.Entity.Destroy();
             }
         }
     }

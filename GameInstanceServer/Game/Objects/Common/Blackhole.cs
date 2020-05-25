@@ -14,10 +14,21 @@ namespace GameInstanceServer.Game.Objects.Common
 {
     public class Blackhole : Entity
     {
+        public override bool Serializable => true;
+
         /// <summary>
         /// Position of the centre of the black hole.
         /// </summary>
         public static Vector2 Position
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the collision mask of the blackhole.
+        /// </summary>
+        public static CollisionMask CollisionMask
         {
             get;
             private set;
@@ -40,7 +51,7 @@ namespace GameInstanceServer.Game.Objects.Common
             {
                 new AnimationComponent()
                 {
-                    Sprite = "Resources/Objects/Blackhole"
+                    Sprite = "Objects/Blackhole"
                 },
                 new PositionComponent()
                 {
@@ -53,10 +64,14 @@ namespace GameInstanceServer.Game.Objects.Common
                         )
                 },
                 new WorldComponent()
+                {
+                    Entity = this
+                }
             };
 
             // Link components
             Position = ((PositionComponent)Components[1]).Position;
+            CollisionMask = ((PositionComponent)Components[1]).CollisionMask;
             ((WorldComponent)Components[2]).PositionComponent = 
                 (PositionComponent)Components[1];
             ((WorldComponent)Components[2]).Entity = this;

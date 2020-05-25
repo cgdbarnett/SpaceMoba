@@ -233,7 +233,7 @@ namespace GameInstanceServer.Systems.Networking
 
                     // Unregister player from team, and unregister components.
                     client.Entity.Team.Team.UnregisterPlayer(client.Entity);
-                    client.Entity.UnregisterComponents();
+                    client.Entity.Destroy();
                     client.Entity = null;
                     break;
             }

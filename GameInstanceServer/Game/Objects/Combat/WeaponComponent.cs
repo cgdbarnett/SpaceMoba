@@ -34,6 +34,11 @@ namespace GameInstanceServer.Game.Objects.Combat
         public float Direction;
 
         /// <summary>
+        /// Reference to the parent entity.
+        /// </summary>
+        public Entity Parent = null;
+
+        /// <summary>
         /// Position component of parent entity.
         /// </summary>
         public PositionComponent Position;

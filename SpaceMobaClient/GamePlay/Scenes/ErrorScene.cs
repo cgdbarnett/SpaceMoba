@@ -33,7 +33,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         {
             // Instantiate everything
             GraphicsDevice graphics =
-                GameClient.GetGameClient().GetGraphicsDevice();
+                GameManager.GraphicsDevice;
 
             SpriteBatch = new SpriteBatch(graphics);
         }
@@ -46,7 +46,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         {
             // Load resources required for loading screen
             ContentManager content =
-                GameClient.GetGameClient().GetContentManager();
+                GameManager.Content;
             LoadingScreen =
                 content.Load<Texture2D>("Backgrounds/title_screen");
             StatusLabel = new GuiLabel(
@@ -70,8 +70,8 @@ namespace SpaceMobaClient.GamePlay.Scenes
         /// <param name="gameTime">Game frame interval.</param>
         public void Draw(GameTime gameTime)
         {
-            GraphicsDevice graphics = GameClient.GetGameClient()
-                .GetGraphicsDevice();
+            GraphicsDevice graphics = GameManager
+                .GraphicsDevice;
             try
             {
                 SpriteBatch.Begin();

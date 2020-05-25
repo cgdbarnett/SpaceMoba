@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+
 using GameInstanceServer.Systems.ECS;
 
 // Modify component system id from ECS for a new id.
@@ -54,9 +56,12 @@ namespace GameInstanceServer.Game.World
             {
                 WorldGrid.Add((WorldComponent)component);
             }
-            catch
+            catch (Exception e)
             {
-                // Handle? or ignore
+                Trace.WriteLine(
+                    "Exception in WorldSystem.RegisterComponent:"
+                    );
+                Trace.WriteLine(e.ToString());
             }
         }
 
@@ -74,9 +79,12 @@ namespace GameInstanceServer.Game.World
             {
                 WorldGrid.Remove(component);
             }
-            catch
+            catch(Exception e)
             {
-                // Handle? or ignore
+                Trace.WriteLine(
+                    "Exception in WorldSystem.UnregisterComponent:"
+                    );
+                Trace.WriteLine(e.ToString());
             }
         }
 

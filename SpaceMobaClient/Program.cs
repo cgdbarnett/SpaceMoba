@@ -1,7 +1,5 @@
 ﻿using System;
 
-using System.Threading;
-
 namespace SpaceMobaClient
 {
     /// <summary>
@@ -19,11 +17,7 @@ namespace SpaceMobaClient
         static void Main(string[] args)
         {
             Parameters = args;
-
-            Thread.Sleep(2000);
-
-            using (var game = GameClient.GetGameClient())
-                game.Run();
+            GameManager.Run();
         }
     }
 }

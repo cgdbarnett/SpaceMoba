@@ -13,6 +13,7 @@ namespace GameInstanceServer.Game.Objects.Common
         // Positional and blackhole fields.
         public PositionComponent Position;
         public Vector2 Gravity;
+        public Entity Entity;
 
         /// <summary>
         /// Gets the ComponentSystem for AffectedByBlackholeComponent.

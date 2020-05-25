@@ -82,17 +82,21 @@ namespace GameInstanceServer.Game.Objects.Combat
                                 ApplyDamage((CombatComponent)combat);
 
                                 // Destroy self, and stop loop.
-                                projectile.Entity.UnregisterComponents();
+                                projectile.Entity.Destroy();
                                 break;
                             }
                         }
                         else
                         {
                             // Apply damage
-                            ApplyDamage((CombatComponent)combat);
+                            Projectile parentEntity = 
+                                (Projectile)projectile.Entity;
+                            CombatSystem.ApplyDamage(
+                                (CombatComponent)combat, 20, parentEntity.Owner
+                                );
 
                             // Destroy self, and stop loop.
-                            projectile.Entity.UnregisterComponents();
+                            projectile.Entity.Destroy();
                             break;
                         }
                     }

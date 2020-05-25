@@ -1,4 +1,6 @@
-﻿using Lidgren.Network;
+﻿using System.Collections.Generic;
+
+using Lidgren.Network;
 
 using GameInstanceServer.Game.Objects.Common;
 using GameInstanceServer.Systems.ECS;
@@ -43,6 +45,11 @@ namespace GameInstanceServer.Game.Objects.Combat
         /// Maximum armour of entity.
         /// </summary>
         public int MaxArmour;
+
+        /// <summary>
+        /// Log of recent incoming damage.
+        /// </summary>
+        public List<Damage> DamageLog = new List<Damage>(3);
 
         /// <summary>
         /// This is a serializable component, but called

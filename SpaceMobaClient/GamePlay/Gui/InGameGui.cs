@@ -45,17 +45,48 @@ namespace SpaceMobaClient.GamePlay.Gui
             int fps = (int)(1000 / gameTime.ElapsedGameTime.TotalMilliseconds);
             FpsLabel.Text = fps.ToString();
 
+            // Update resources
+            UpdateResources();
+
             // Update minimap
-            UpdateMinimap(gameTime);
+            UpdateMinimap();
 
             // Update healthbars
             UpdateVitals();
         }
 
         /// <summary>
+        /// Updates the resource values in the resource panel.
+        /// </summary>
+        private void UpdateResources()
+        {
+            // Get team component
+            TeamComponent team =
+                (TeamComponent)LocalPlayer.Entity[ComponentId.Team];
+            if (team != null)
+            {
+                ResourcesMothershipLabel.Text = 
+                    team.MothershipResources.ToString();
+                for (int i = 0; i < team.MemberCount; i++)
+                {
+                    if (team.MemberId[i] == LocalPlayer.Entity.Id)
+                    {
+                        ResourcesPlayershipLabel.Text = 
+                            team.MemberResources[i].ToString();
+                    }
+                }
+            }
+            else
+            {
+                ResourcesMothershipLabel.Text = "NA";
+                ResourcesPlayershipLabel.Text = "NA";
+            }
+        }
+
+        /// <summary>
         /// Update icons for players on the minimap.
         /// </summary>
-        private void UpdateMinimap(GameTime gameTime)
+        private void UpdateMinimap()
         {
             // Player icon
             int player_x = (int)((float)LocalPlayer.X / 12000 * 180);

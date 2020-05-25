@@ -74,7 +74,7 @@ namespace SpaceMobaClient.GamePlay
         /// </summary>
         public static void StartEffects()
         {
-            SoundEffect engine = GameClient.GetGameClient().Content
+            SoundEffect engine = GameManager.Content
                 .Load<SoundEffect>("Sounds/engine_idle");
             EngineSound = engine.CreateInstance();
             EngineSound.IsLooped = true;

@@ -45,7 +45,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         {
             // Instantiate everything
             GraphicsDevice graphics =
-                GameClient.GetGameClient().GetGraphicsDevice();
+                GameManager.GraphicsDevice;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         public void Draw(GameTime gameTime)
         {
             // Clear background, and draw GUI
-            GameClient.GetGameClient().GraphicsDevice.Clear(Color.Black);
+            GameManager.GraphicsDevice.Clear(Color.Black);
             Desktop.Render();
         }
 

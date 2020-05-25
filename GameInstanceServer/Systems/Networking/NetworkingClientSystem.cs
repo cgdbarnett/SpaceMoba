@@ -74,6 +74,10 @@ namespace GameInstanceServer.Systems.Networking
         private void ReplicateForClient(NetworkingClientComponent client)
         {
             // Get nearby objects
+            if(client.Entity == null)
+            {
+                return;
+            }
             List<Entity> objects =
                 client.Entity.World.Cell.GetNearbyObjects(
                     client.Entity.Position.Position

@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 
 using GameInstanceServer.Systems.ECS;
+using GameInstanceServer.Systems.Physics;
 
 // Modify component system id from ECS for a new id.
 namespace GameInstanceServer.Systems.ECS
@@ -49,14 +50,25 @@ namespace GameInstanceServer.Game.Objects.Common
                 (AffectedByBlackholeComponent)component;
             PositionComponent position = blackhole.Position;
 
-            // Get decay, and gravity vector
-            float decay = Blackhole.GetDecay(position.Position);
-            blackhole.Gravity = Blackhole.GetMomentum(position.Position);
+            // Check for collision with blackhole
+            if (Collision.TestCollision(
+                Blackhole.CollisionMask, position.CollisionMask
+                ))
+            {
+                // Destroy entity
+                blackhole.Entity.Destroy();
+            }
+            else
+            {
+                // Get decay, and gravity vector
+                float decay = Blackhole.GetDecay(position.Position);
+                blackhole.Gravity = Blackhole.GetMomentum(position.Position);
 
-            position.Momentum += blackhole.Gravity * delta;
+                position.Momentum += blackhole.Gravity * delta;
 
-            // Apply decay to momentums, and then apply gravity
-            position.Momentum -= position.Momentum * decay;
+                // Apply decay to momentums, and then apply gravity
+                position.Momentum -= position.Momentum * decay;
+            }
         }
     }
 }

@@ -44,7 +44,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         public InGameScene()
         {
             GraphicsDevice graphics = 
-                GameClient.GetGameClient().GraphicsDevice;
+                GameManager.GraphicsDevice;
             SpriteBatch = new SpriteBatch(graphics);
             Camera = new Camera(0, 0, 
                 graphics.Viewport.Width, graphics.Viewport.Height
@@ -71,7 +71,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         /// </summary>
         public void Unload()
         {
-            GameClient.GetGameClient().Content.Unload();
+            GameManager.Content.Unload();
             NetworkHandler = null;
             Background = null;
             Gui = null;
@@ -91,7 +91,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
             }
 
             // Start drawing
-            GameClient.GetGameClient().GraphicsDevice.Clear(Color.Black);
+            GameManager.GraphicsDevice.Clear(Color.Black);
             SpriteBatch.Begin();
 
             // Draw background first

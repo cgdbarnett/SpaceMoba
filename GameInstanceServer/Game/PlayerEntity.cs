@@ -149,7 +149,8 @@ namespace GameInstanceServer.Game
                     Cooldown = 200,
                     CurrentCooldown = 0,
                     Direction = 0f,
-                    Trigger = false
+                    Trigger = false,
+                    Parent = this
                 },
                 new ResourceComponent()
                 {

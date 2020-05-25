@@ -94,7 +94,7 @@ namespace SpaceMobaClient.GamePlay.Components
             // Get resource name, and try load
             try
             {
-                Sprite = GameClient.GetGameClient().Content
+                Sprite = GameManager.Content
                     .Load<Texture2D>(message.ReadString());
             }
             catch(Exception e)

@@ -36,9 +36,9 @@ namespace SpaceMobaClient.GamePlay.Scenes
         /// </summary>
         public SplashScreenScene()
         {
-            SpriteBatch = new SpriteBatch(GameClient.GetGameClient().
-                GetGraphicsDevice());
-            ImageDestination = GameClient.GetGameClient().GetGraphicsDevice().
+            SpriteBatch = new SpriteBatch(GameManager.
+                GraphicsDevice);
+            ImageDestination = GameManager.GraphicsDevice.
                 Viewport.Bounds;
             Timer = new Stopwatch();
             Ready = false;
@@ -50,7 +50,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         /// <param name="handover">Null.</param>
         public void Load(object handover)
         {
-            Image = GameClient.GetGameClient().GetContentManager().
+            Image = GameManager.Content.
                 Load<Texture2D>("Backgrounds/title_screen");
             Timer.Start();
             Ready = true;
@@ -62,7 +62,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         /// <param name="content">ContentManager from Game.Content</param>
         public void Unload()
         {
-            GameClient.GetGameClient().GetContentManager().Unload();
+            GameManager.Content.Unload();
             Timer.Stop();
             Ready = false;
         }
@@ -74,7 +74,7 @@ namespace SpaceMobaClient.GamePlay.Scenes
         {
             if(Ready)
             {
-                GameClient.GetGameClient().GraphicsDevice.Clear(Color.Black);
+                GameManager.GraphicsDevice.Clear(Color.Black);
                 SpriteBatch.Begin();
                 SpriteBatch.Draw(Image, ImageDestination, Color.White);
                 SpriteBatch.End();

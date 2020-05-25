@@ -17,52 +17,18 @@ namespace SpaceMobaClient
     /// Implemented as a Singleton, this is the main entry point of the
     /// GameClient. It also provides global state between scenes.
     /// </summary>
-    public class GameClient : Game
+    public class BlackholeGame : Game
     {
-        // Singleton reference of GameClient
-        private static GameClient Instance;
-
         // Monogame essential classes
         private GraphicsDeviceManager Graphics;
         
         /// <summary>
         /// 
         /// </summary>
-        private GameClient()
+        public BlackholeGame()
         {
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-        }
-
-        /// <summary>
-        /// Returns a reference to the singleton instance of GameClient.
-        /// </summary>
-        /// <returns>Reference to GameClient</returns>
-        public static GameClient GetGameClient()
-        {
-            if(Instance == null)
-            {
-                Instance = new GameClient();
-            }
-            return Instance;
-        }
-
-        /// <summary>
-        /// Returns a reference to the ContentManager.
-        /// </summary>
-        /// <returns>ContentManager from Game.</returns>
-        public ContentManager GetContentManager()
-        {
-            return Content;
-        }
-
-        /// <summary>
-        /// Returns a reference to the GraphicsDevice.
-        /// </summary>
-        /// <returns>GraphicsDevice from Game.</returns>
-        public GraphicsDevice GetGraphicsDevice()
-        {
-            return GraphicsDevice;
         }
 
         /// <summary>
@@ -74,18 +40,13 @@ namespace SpaceMobaClient
         protected override void Initialize()
         {
             // Initialise game window
-            Window.Title = "Black Hole";
-#if DEBUG
-            Graphics.PreferredBackBufferWidth = 1920;
-            Graphics.PreferredBackBufferHeight = 1080;
-            Graphics.IsFullScreen = false;
-#else
-            Graphics.PreferredBackBufferWidth = 1920;
-            Graphics.PreferredBackBufferHeight = 1080;
-            Graphics.IsFullScreen = true;
-#endif
+            Window.Title = GameManager.WindowTitle;
+            Graphics.PreferredBackBufferWidth = GameManager.WindowWidth;
+            Graphics.PreferredBackBufferHeight = GameManager.WindowHeight;
+            Graphics.IsFullScreen = GameManager.IsFullscreen;
             Graphics.ApplyChanges();
 
+            // Initialise game step
             IsFixedTimeStep = false;
             TargetElapsedTime = new TimeSpan(150000);
             IsMouseVisible = true;
@@ -143,7 +104,8 @@ namespace SpaceMobaClient
         /// </remarks>
         private void InstantiateScenes()
         {
-            // Note: ID's need to be unique.
+            // Order is important, is used for traversing scenes using Next and
+            // Previous.
             List<IScene> scenes = new List<IScene>
             {
                 new SplashScreenScene(),
@@ -155,6 +117,7 @@ namespace SpaceMobaClient
                 new ErrorScene(),
             };
 
+            // Initialise scene manager.
             SceneManager.SetSceneList(scenes);
             SceneManager.GotoScene<SplashScreenScene>();
         }

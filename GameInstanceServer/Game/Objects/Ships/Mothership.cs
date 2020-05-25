@@ -72,7 +72,10 @@ namespace GameInstanceServer.Game.Objects.Ships
                 {
                     Sprite = "Objects/Ships/Mothership"
                 },
-                new AffectedByBlackholeComponent(),
+                new AffectedByBlackholeComponent()
+                {
+                    Entity = this
+                },
                 new TeamComponent()
                 {
                     Team = team

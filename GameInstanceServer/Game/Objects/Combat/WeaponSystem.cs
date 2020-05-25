@@ -49,9 +49,9 @@ namespace GameInstanceServer.Game.Objects.Combat
                 {
                     // LETS FIRE
                     Projectile pulse = new Projectile(
-                        weapon.Position.Position.X, weapon.Position.Position.Y
-                        , weapon.Position.Direction, weapon.Team.Team
-                        );
+                    weapon.Position.Position.X, weapon.Position.Position.Y
+                    , weapon.Position.Direction, weapon.Team.Team, weapon.Parent
+                    );
                     weapon.CurrentCooldown = weapon.Cooldown;
                 }
             }
